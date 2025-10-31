@@ -1,0 +1,10 @@
+import 'package:shelf/shelf.dart';
+
+Middleware {{name}}() {
+  return (Handler innerHandler) {
+    return (Request request) {
+      //
+      return innerHandler(request);
+    };
+  };
+}

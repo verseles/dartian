@@ -1,0 +1,32 @@
+name: {{project_name}}
+description: A new Dartian project.
+version: 1.0.0
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  dartian_core:
+    path: ../packages/dartian_core
+  dartian_http:
+    path: ../packages/dartian_http
+  dartian_router:
+    path: ../packages/dartian_router
+  dartian_di:
+    path: ../packages/dartian_di
+  dartian_orm:
+    path: ../packages/dartian_orm
+  dartian_redis:
+    path: ../packages/dartian_redis
+  dartian_queue:
+    path: ../packages/dartian_queue
+  dartian_scheduler:
+    path: ../packages/dartian_scheduler
+  dartian_view:
+    path: ../packages/dartian_view
+  dartian_i18n:
+    path: ../packages/dartian_i18n
+
+dev_dependencies:
+  lints: ^2.0.0
+  test: ^1.21.0

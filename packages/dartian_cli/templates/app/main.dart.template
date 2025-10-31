@@ -1,0 +1,13 @@
+import 'package:dartian_http/dartian_http.dart';
+import 'package:dartian_router/dartian_router.dart';
+
+void main() async {
+  final router = Router();
+  router.get('/', (Request request) {
+    return Response.ok('Hello, Dartian!');
+  });
+
+  final handler = router.handler;
+  final server = await serve(handler, 'localhost', 8080);
+  print('Server listening on port ${server.port}');
+}

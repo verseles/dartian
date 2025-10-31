@@ -1,0 +1,16 @@
+name: dartian_view
+description: Server-side view rendering for Dartian.
+version: 0.0.1
+
+environment:
+  sdk: '^3.9.4'
+
+dependencies:
+  mustache_template: ^2.0.0
+  dartian_http:
+    path: ../dartian_http
+
+dev_dependencies:
+  test: ^1.24.0
+
+resolution: workspace
