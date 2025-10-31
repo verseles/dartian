@@ -1,6 +1,7 @@
 name: dartian_queue
 description: A starting point for Dart libraries or applications.
 version: 1.0.0
+publish_to: none
 # repository: https://github.com/my_org/my_repo
 
 environment:
@@ -10,6 +11,8 @@ environment:
 dependencies:
   dartian_core:
     path: ../dartian_core
+  dartian_redis:
+    path: ../dartian_redis
   redis: ^4.0.0
   # path: ^1.9.0
 
