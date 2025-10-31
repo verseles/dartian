@@ -1,0 +1,13 @@
+import 'package:dartian_validation/dartian_validation.dart';
+
+class {{name}} implements Rule {
+  @override
+  bool passes(dynamic value) {
+    //
+  }
+
+  @override
+  String message() {
+    return 'The {{name}} is invalid.';
+  }
+}

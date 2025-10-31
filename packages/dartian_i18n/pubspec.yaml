@@ -1,0 +1,16 @@
+name: dartian_i18n
+description: Internationalization for the Dartian framework.
+version: 0.0.1
+
+environment:
+  sdk: '^3.9.4'
+
+dependencies:
+  dartian_http:
+    path: ../dartian_http
+  path: ^1.8.0
+
+dev_dependencies:
+  test: ^1.24.0
+
+resolution: workspace

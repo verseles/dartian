@@ -1,0 +1,8 @@
+import 'package:dartian_events/dartian_events.dart';
+
+class {{name}} implements Listener {
+  @override
+  void handle(Event event) {
+    //
+  }
+}

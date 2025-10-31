@@ -1,0 +1,21 @@
+name: dartian_router
+description: A starting point for Dart libraries or applications.
+version: 0.0.1
+# repository: https://github.com/my_org/my_repo
+
+environment:
+  sdk: '^3.9.4'
+
+dependencies:
+  shelf: ^1.2.0
+  shelf_router: ^1.1.2
+  dartian_http:
+    path: ../dartian_http
+  dartian_di:
+    path: ../dartian_di
+
+dev_dependencies:
+  test: ^1.16.0
+  http: ^0.13.3
+
+resolution: workspace

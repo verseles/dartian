@@ -1,0 +1,21 @@
+name: dartian
+description: Dartian Monorepo
+version: 0.0.1
+
+environment:
+  sdk: '^3.9.4'
+
+workspace:
+  - packages/dartian_cli
+  - packages/dartian_core
+  - packages/dartian_di
+  - packages/dartian_http
+  - packages/dartian_i18n
+  - packages/dartian_orm
+  - packages/dartian_queue
+  - packages/dartian_redis
+  - packages/dartian_router
+  - packages/dartian_scheduler
+  - packages/dartian_view
+  - packages/dartian_events
+  - packages/dartian_validation
