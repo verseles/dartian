@@ -4,6 +4,19 @@ This document provides a detailed overview of the Dartian Framework's developmen
 
 ---
 
+## 🎯 Current Focus: CI Pipeline Stabilization (In Progress)
+
+The CI pipeline is currently failing due to a large number of static analysis (`dart analyze`) issues across the monorepo. Before proceeding with any new features, the immediate priority is to resolve these issues to ensure codebase stability and improve the developer experience.
+
+**Status:**
+*   [ ] **Dependencies:** Adding missing dependencies and `publish_to: none` properties to various `pubspec.yaml` files.
+*   [ ] **Code Quality:** Fixing unused imports, incorrect annotations, and other linting warnings.
+*   [ ] **Templates:** Correcting errors in the `dartian_cli` project templates.
+*   [ ] **Examples:** Replacing broken placeholder code in `example` directories with functional demonstrations.
+*   [ ] **Blocked:** A persistent null safety issue in `packages/dartian_router/lib/src/router.dart` is currently blocking progress.
+
+---
+
 ## ✅ Completed Features
 
 The following core modules and features are implemented, tested, and considered stable for an initial alpha release.
@@ -37,13 +50,6 @@ The following core modules and features are implemented, tested, and considered 
     -   [x] Database layer built on `drift` with an Eloquent-like API.
     -   [x] Supports SQLite.
     -   [x] Implements models, seeders, and factories for test data generation.
-
--   **Phase 6: Queues (`dartian_queue`)**
-    -   [x] **DX Improvement:** Resolved the persistent compilation blocker, significantly improving the stability and reliability of the queue system.
-    -   [x] **DX Improvement:** Performed a comprehensive code quality audit, removing all analysis warnings and ensuring the code adheres to best practices. This makes the code easier to read, maintain, and contribute to.
-    -   [x] **DX Improvement:** Rewrote the package's example file to provide a clear, functional, and well-documented demonstration of how to use the queue, lowering the barrier to entry for new developers.
-    -   [x] Foundational `Queue` and `Job` abstractions are in place.
-    -   [x] `SyncQueue` and `IsolateQueue` drivers are implemented and tested.
 
 -   **Phase 7: Scheduler (`dartian_scheduler`)**
     -   [x] Cron-based task scheduler with a fluent API is functional.
@@ -79,7 +85,7 @@ The following core modules and features are implemented, tested, and considered 
 -   **Phase 6: Redis for Cache & Queues**
     -   [x] `RedisClient` wrapper is implemented in `dartian_redis`.
     -   [x] `RedisCache` driver is implemented.
-    -   [ ] The `RedisQueue` driver in `dartian_queue` is implemented but requires further development to handle job serialization and deserialization robustly. The immediate compilation blocker has been resolved.
+    -   [ ] **Blocked**: The `RedisQueue` driver in `dartian_queue` is incomplete and blocked by a persistent compilation error related to package dependencies that I was unable to resolve. The framework currently lacks a production-ready queue driver.
 
 ---
 
@@ -97,6 +103,7 @@ The following features from the original plan have not been implemented.
 
 ## Next Steps
 
-1.  Enhance the `RedisQueue` driver in `dartian_queue` to provide a robust job serialization/deserialization mechanism.
-2.  Fix the environmental issues to complete the Docker integration tests.
-3.  Re-evaluate and attempt to implement the Hot Reload feature for the `serve` command.
+1.  **Resolve the CI pipeline issues.**
+2.  Resolve the compilation blocker in the `dartian_queue` package to complete the `RedisQueue` driver.
+3.  Fix the environmental issues to complete the Docker integration tests.
+4.  Re-evaluate and attempt to implement the Hot Reload feature for the `serve` command.

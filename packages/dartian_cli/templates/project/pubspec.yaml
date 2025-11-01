@@ -1,31 +1,35 @@
+# Linter exceptions for the project template.
+# ignore: name_not_string
 name: {{project_name}}
 description: A new Dartian project.
 version: 1.0.0
+publish_to: none
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
+  shelf: ^1.4.1
   dartian_core:
-    path: ../packages/dartian_core
+    path: packages/dartian_core
   dartian_http:
-    path: ../packages/dartian_http
+    path: packages/dartian_http
   dartian_router:
-    path: ../packages/dartian_router
+    path: packages/dartian_router
   dartian_di:
-    path: ../packages/dartian_di
+    path: packages/dartian_di
   dartian_orm:
-    path: ../packages/dartian_orm
+    path: packages/dartian_orm
   dartian_redis:
-    path: ../packages/dartian_redis
+    path: packages/dartian_redis
   dartian_queue:
-    path: ../packages/dartian_queue
+    path: packages/dartian_queue
   dartian_scheduler:
-    path: ../packages/dartian_scheduler
+    path: packages/dartian_scheduler
   dartian_view:
-    path: ../packages/dartian_view
+    path: packages/dartian_view
   dartian_i18n:
-    path: ../packages/dartian_i18n
+    path: packages/dartian_i18n
 
 dev_dependencies:
   lints: ^2.0.0

@@ -13,6 +13,7 @@ class TestJob extends Job {
     // No-op
   }
 
+  @override
   Map<String, dynamic> toJson() => {'id': id};
 
   static TestJob fromJson(Map<String, dynamic> json) => TestJob(json['id']);

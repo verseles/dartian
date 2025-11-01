@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:isolate';
 import 'package:dartian_queue/dartian_queue.dart';
 import 'package:dartian_queue/src/drivers/driver.dart';
+import 'package:dartian_queue/src/drivers/sync_queue.dart';
+import 'package:dartian_queue/src/drivers/isolate_queue.dart';
 import 'package:test/test.dart';
 
 void _testIsolateHandler(SendPort port) {
@@ -53,6 +55,7 @@ void main() {
 
 class TestJob implements Job {
   final Completer<bool> completer;
+  @override
   SendPort? sendPort;
 
   TestJob(this.completer);
@@ -79,7 +82,6 @@ class TestQueue implements QueueDriver {
     return job;
   }
 
-  @override
   Future<void> ack(Job job) async {
     acked = true;
   }

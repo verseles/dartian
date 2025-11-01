@@ -5,6 +5,7 @@ import 'driver.dart';
 
 class IsolateJob extends Job {
   final Function(SendPort) handler;
+  @override
   final SendPort sendPort;
 
   IsolateJob(this.handler, this.sendPort);

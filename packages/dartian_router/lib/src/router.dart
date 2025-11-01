@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart' as shelf_router;
-import 'package:dartian_http/dartian_http.dart';
 import 'package:dartian_di/dartian_di.dart';
 
 class Router {
@@ -44,10 +43,11 @@ class Router {
   String? route(String name, [Map<String, String> params = const {}]) {
     var path = _namedRoutes[name];
     if (path == null) return null;
+    var localPath = path;
     params.forEach((key, value) {
-      path = path!.replaceAll('<$key>', value);
+      localPath = localPath.replaceAll('<$key>', value);
     });
-    return path;
+    return localPath;
   }
 
   void _addRoute<T extends Object>(String method, String path, Function handler, {String? name}) {
@@ -65,7 +65,7 @@ class Router {
       if (handler is Function(Request)) {
         response = handler(request);
       } else if (_container != null) {
-        final controller = _container!.resolve<T>();
+        final controller = _container.resolve<T>();
         response = (handler(controller) as Function(Request))(request);
       } else {
         throw Exception('Invalid handler type');
