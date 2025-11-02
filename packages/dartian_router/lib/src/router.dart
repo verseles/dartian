@@ -62,7 +62,11 @@ class Router {
       pipeline = pipeline.addMiddleware(middleware);
     }
 
-    final routeHandler = (Request request) {
+    _router.add(method, path, pipeline.addHandler(_createRouteHandler<T>(handler)));
+  }
+
+  Handler _createRouteHandler<T extends Object>(Function handler) {
+    return (Request request) {
       if (handler is FutureOr<Response> Function(Request)) {
         return handler(request);
       } else if (_container != null) {
@@ -75,9 +79,7 @@ class Router {
       throw Exception(
           'Invalid handler type: must be Function(Request) or Function(Controller) returning Function(Request)');
     };
-
-    _router.add(method, path, pipeline.addHandler(routeHandler));
   }
 
-  Handler get handler => _router;
+  Handler get handler => _router.call;
 }

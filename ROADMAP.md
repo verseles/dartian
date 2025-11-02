@@ -4,9 +4,9 @@ This document provides a detailed overview of the Dartian Framework's developmen
 
 ---
 
-## 🎯 Current Focus: CI Pipeline Stabilization (Mostly Complete)
+## 🎯 Current Focus: CI Pipeline Stabilization (Complete)
 
-The CI pipeline is now stable for all packages except `dartian_orm`. All other static analysis (`dart analyze`) issues across the monorepo have been resolved.
+The CI pipeline is now stable for all packages. All static analysis (`dart analyze`) issues across the monorepo have been resolved.
 
 **Status:**
 *   [x] **Dependencies:** Added missing dependencies and `publish_to: none` properties to various `pubspec.yaml` files.
@@ -14,8 +14,7 @@ The CI pipeline is now stable for all packages except `dartian_orm`. All other s
 *   [x] **Templates:** Corrected errors in the `dartian_cli` project templates.
 *   [x] **Examples:** Replaced broken placeholder code in `example` directories with functional demonstrations.
 *   [x] **`dartian_router` Blocker:** Resolved the persistent null safety issue in `packages/dartian_router/lib/src/router.dart`.
-*   [ ] **`dartian_orm` Blocker:** The `dartian_orm` package is blocked by a persistent issue with `build_runner` not generating the required `.g.dart` files.
-
+*   [x] **`dartian_orm` Blocker:** The `dartian_orm` package is no longer blocked. The issue with `build_runner` not generating the required `.g.dart` files has been resolved.
 ---
 
 ## ✅ Completed Features
@@ -104,7 +103,6 @@ The following features from the original plan have not been implemented.
 
 ## Next Steps
 
-1.  **Resolve the `dartian_orm` `build_runner` issue.**
-2.  Resolve the compilation blocker in the `dartian_queue` package to complete the `RedisQueue` driver.
-3.  Fix the environmental issues to complete the Docker integration tests.
-4.  Re-evaluate and attempt to implement the Hot Reload feature for the `serve` command.
+1.  Resolve the compilation blocker in the `dartian_queue` package to complete the `RedisQueue` driver.
+2.  Fix the environmental issues to complete the Docker integration tests.
+3.  Re-evaluate and attempt to implement the Hot Reload feature for the `serve` command.

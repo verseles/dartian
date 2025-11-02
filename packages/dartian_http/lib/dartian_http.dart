@@ -1,5 +1,3 @@
-library dartian_http;
-
 export 'src/http/kernel.dart';
 export 'src/http/response.dart';
 export 'src/http/request_extensions.dart';
