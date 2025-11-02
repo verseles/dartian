@@ -50,7 +50,9 @@ class Router {
     return localPath;
   }
 
-  void _addRoute<T extends Object>(String method, String path, Function handler, {String? name}) {
+  void _addRoute<T extends Object>(
+      String method, String path, Function handler,
+      {String? name}) {
     if (name != null) {
       _namedRoutes[name] = path;
     }
@@ -61,16 +63,17 @@ class Router {
     }
 
     final routeHandler = (Request request) {
-      dynamic response;
-      if (handler is Function(Request)) {
-        response = handler(request);
+      if (handler is FutureOr<Response> Function(Request)) {
+        return handler(request);
       } else if (_container != null) {
         final controller = _container.resolve<T>();
-        response = (handler(controller) as Function(Request))(request);
-      } else {
-        throw Exception('Invalid handler type');
+        final method = handler(controller) as Function;
+        if (method is FutureOr<Response> Function(Request)) {
+          return method(request);
+        }
       }
-      return response as FutureOr<Response>;
+      throw Exception(
+          'Invalid handler type: must be Function(Request) or Function(Controller) returning Function(Request)');
     };
 
     _router.add(method, path, pipeline.addHandler(routeHandler));

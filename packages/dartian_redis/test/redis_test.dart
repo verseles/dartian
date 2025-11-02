@@ -1,5 +1,4 @@
 import 'package:dartian_redis/dartian_redis.dart';
-import 'package:dartian_redis/src/drivers/redis_cache.dart';
 import 'package:test/test.dart';
 
 void main() {

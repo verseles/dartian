@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:shelf/shelf.dart';
-import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:dartian_http/dartian_http.dart';
 
 class TestServer {
