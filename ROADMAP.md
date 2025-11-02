@@ -4,16 +4,17 @@ This document provides a detailed overview of the Dartian Framework's developmen
 
 ---
 
-## 🎯 Current Focus: CI Pipeline Stabilization (In Progress)
+## 🎯 Current Focus: CI Pipeline Stabilization (Mostly Complete)
 
-The CI pipeline is currently failing due to a large number of static analysis (`dart analyze`) issues across the monorepo. Before proceeding with any new features, the immediate priority is to resolve these issues to ensure codebase stability and improve the developer experience.
+The CI pipeline is now stable for all packages except `dartian_orm`. All other static analysis (`dart analyze`) issues across the monorepo have been resolved.
 
 **Status:**
-*   [ ] **Dependencies:** Adding missing dependencies and `publish_to: none` properties to various `pubspec.yaml` files.
-*   [ ] **Code Quality:** Fixing unused imports, incorrect annotations, and other linting warnings.
-*   [ ] **Templates:** Correcting errors in the `dartian_cli` project templates.
-*   [ ] **Examples:** Replacing broken placeholder code in `example` directories with functional demonstrations.
-*   [ ] **Blocked:** A persistent null safety issue in `packages/dartian_router/lib/src/router.dart` is currently blocking progress.
+*   [x] **Dependencies:** Added missing dependencies and `publish_to: none` properties to various `pubspec.yaml` files.
+*   [x] **Code Quality:** Fixed unused imports, incorrect annotations, and other linting warnings.
+*   [x] **Templates:** Corrected errors in the `dartian_cli` project templates.
+*   [x] **Examples:** Replaced broken placeholder code in `example` directories with functional demonstrations.
+*   [x] **`dartian_router` Blocker:** Resolved the persistent null safety issue in `packages/dartian_router/lib/src/router.dart`.
+*   [ ] **`dartian_orm` Blocker:** The `dartian_orm` package is blocked by a persistent issue with `build_runner` not generating the required `.g.dart` files.
 
 ---
 
@@ -103,7 +104,7 @@ The following features from the original plan have not been implemented.
 
 ## Next Steps
 
-1.  **Resolve the CI pipeline issues.**
+1.  **Resolve the `dartian_orm` `build_runner` issue.**
 2.  Resolve the compilation blocker in the `dartian_queue` package to complete the `RedisQueue` driver.
 3.  Fix the environmental issues to complete the Docker integration tests.
 4.  Re-evaluate and attempt to implement the Hot Reload feature for the `serve` command.

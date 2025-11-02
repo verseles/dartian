@@ -1,6 +1,7 @@
-import 'package:dartian_orm/dartian_orm.dart';
+import 'package:dartian_orm/database.dart';
+import 'package:drift/native.dart';
 
 void main() {
-  var awesome = Awesome();
-  print('awesome: ${awesome.isAwesome}');
+  final database = AppDatabase(NativeDatabase.memory());
+  print('Database schema version: ${database.schemaVersion}');
 }

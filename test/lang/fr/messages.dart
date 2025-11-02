@@ -1,1 +1,1 @@
-const messages = {'hello' => 'Bonjour!',};
+const messages = {'hello': 'Bonjour!'};

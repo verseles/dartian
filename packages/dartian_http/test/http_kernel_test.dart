@@ -1,4 +1,3 @@
-import 'package:dartian_http/dartian_http.dart';
 import 'package:http/http.dart' as http;
 import 'package:shelf/shelf.dart' as shelf;
 import 'package:test/test.dart';

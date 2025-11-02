@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'drivers/driver.dart';
-import 'queue.dart';
 
 class Worker {
   final QueueDriver _driver;
