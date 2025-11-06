@@ -1,6 +1,8 @@
 library dartian_cli;
 
 import 'package:args/args.dart';
+import 'package:dartian_http/dartian_http.dart';
+import 'package:dartian_router/dartian_router.dart';
 
 class DartianCli {
   static const version = '0.0.1';
@@ -33,8 +35,10 @@ class DartianCli {
         return 'Dartian $version';
       case 'help':
         return _showHelp();
-      case 'new':
       case 'serve':
+        // This would be implemented with hot reload
+        return 'Serve command with hot reload (placeholder)';
+      case 'new':
       case 'make':
       case 'migrate':
       case 'queue':

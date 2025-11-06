@@ -6,6 +6,11 @@ environment:
 
 dependencies:
   args: ^2.4.0
+  watcher: ^1.1.0
+  dartian_http:
+    path: ../dartian_http
+  dartian_router:
+    path: ../dartian_router
 
 dev_dependencies:
   test: ^1.24.0
