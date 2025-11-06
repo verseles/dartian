@@ -1,0 +1,12 @@
+name: dartian_http
+description: Dartian HTTP kernel
+version: 0.0.1
+
+environment:
+  sdk: ^3.9.4
+
+dependencies:
+  shelf: ^1.4.1
+
+dev_dependencies:
+  test: ^1.24.0
