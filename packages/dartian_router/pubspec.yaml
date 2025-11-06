@@ -1,0 +1,13 @@
+name: dartian_router
+description: Dartian router with fluent DSL
+version: 0.0.1
+
+environment:
+  sdk: ^3.9.4
+
+dependencies:
+  shelf_router: ^1.1.4
+  shelf: ^1.4.1
+
+dev_dependencies:
+  test: ^1.24.0
