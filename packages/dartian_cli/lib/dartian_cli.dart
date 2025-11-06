@@ -1,8 +1,6 @@
 library dartian_cli;
 
 import 'package:args/args.dart';
-import 'package:dartian_http/dartian_http.dart';
-import 'package:dartian_router/dartian_router.dart';
 
 class DartianCli {
   static const version = '0.0.1';
