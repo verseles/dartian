@@ -1,0 +1,16 @@
+name: dartian_scheduler
+description: Task scheduling for Dartian
+version: 0.0.1
+publish_to: none
+
+environment:
+  sdk: ^3.9.4
+
+dependencies:
+  dartian_core:
+    path: ../dartian_core
+  dartian_queue:
+    path: ../dartian_queue
+
+dev_dependencies:
+  test: ^1.24.0
