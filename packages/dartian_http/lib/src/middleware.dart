@@ -219,9 +219,9 @@ class CsrfMiddleware {
 
     final cookies = cookieHeader.split(';');
     for (final cookie in cookies) {
-      final parts = cookie.trim().split('=');
-      if (parts.length == 2 && parts[0] == cookieName) {
-        return parts[1];
+      final trimmed = cookie.trim();
+      if (trimmed.startsWith('$cookieName=')) {
+        return trimmed.substring(cookieName.length + 1);
       }
     }
 

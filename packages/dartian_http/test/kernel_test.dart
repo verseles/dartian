@@ -88,5 +88,23 @@ void main() {
       final response = serverError();
       expect(response.statusCode, 500);
     });
+
+    test('handles exceptions thrown by handler', () async {
+      final handler = (Request request) => throw Exception('Test error');
+      kernel.setHandler(handler);
+      final request = Request('GET', Uri.parse('http://localhost:8000/test'));
+
+      expect(
+        () async => await kernel.handle(request),
+        throwsException,
+      );
+    });
+
+    test('listen throws StateError when no handler is set', () async {
+      expect(
+        () async => await kernel.listen('localhost', 8080),
+        throwsStateError,
+      );
+    });
   });
 }
