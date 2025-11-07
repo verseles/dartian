@@ -6,6 +6,7 @@ import 'package:dartian_cli/src/commands/schedule_run_command.dart';
 import 'package:dartian_cli/src/commands/build_command.dart';
 import 'package:dartian_cli/src/commands/migrate_command.dart';
 import 'package:dartian_cli/src/commands/migrate_rollback_command.dart';
+import 'package:dartian_cli/src/commands/test_command.dart';
 
 void main(List<String> arguments) async {
   // Check if async commands are being used
@@ -45,6 +46,11 @@ void main(List<String> arguments) async {
         final rollbackArgs = arguments.sublist(1);
         final command = MigrateRollbackCommand();
         await command.run(rollbackArgs);
+        return;
+      case 'test':
+        final testArgs = arguments.sublist(1);
+        final command = TestCommand();
+        await command.run(testArgs);
         return;
     }
   }

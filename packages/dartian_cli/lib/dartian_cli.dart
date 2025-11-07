@@ -62,7 +62,8 @@ class DartianCli {
         // Migrate command is now handled in bin/dartian.dart
         return 'Use: dartian migrate [--status] [--database=path]';
       case 'test':
-        return 'Not implemented yet';
+        // Test command is now handled in bin/dartian.dart
+        return 'Use: dartian test [--coverage] [--name=pattern] [files]';
       default:
         return _showHelp();
     }
