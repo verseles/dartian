@@ -7,3 +7,4 @@ export 'src/session.dart';
 export 'src/jwt.dart';
 export 'src/password.dart';
 export 'src/auth_middleware.dart';
+export 'src/guard.dart';

@@ -59,6 +59,8 @@ class DartianCli {
         }
         return 'Use: dartian build exe|aot-snapshot|wasm';
       case 'migrate':
+        // Migrate command is now handled in bin/dartian.dart
+        return 'Use: dartian migrate [--status] [--database=path]';
       case 'test':
         return 'Not implemented yet';
       default:
