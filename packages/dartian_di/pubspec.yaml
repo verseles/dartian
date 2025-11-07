@@ -1,0 +1,13 @@
+name: dartian_di
+description: Dependency injection container for Dartian using get_it
+version: 0.0.1
+
+environment:
+  sdk: ^3.9.4
+
+dependencies:
+  get_it: ^8.0.0
+  # Will use build_runner for code generation in Phase 12
+
+dev_dependencies:
+  test: ^1.24.0
