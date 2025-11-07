@@ -1,0 +1,16 @@
+name: dartian_auth
+description: Authentication and security for Dartian (session and JWT)
+version: 0.0.1
+publish_to: none
+
+environment:
+  sdk: ^3.9.4
+
+dependencies:
+  dartian_core:
+    path: ../dartian_core
+  crypto: ^3.0.0
+  shelf: ^1.4.1
+
+dev_dependencies:
+  test: ^1.24.0
