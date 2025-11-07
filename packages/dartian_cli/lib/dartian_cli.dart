@@ -36,8 +36,8 @@ class DartianCli {
       case 'help':
         return _showHelp();
       case 'serve':
-        // This would be implemented with hot reload
-        return 'Serve command with hot reload (placeholder)';
+        // Serve command is now handled in bin/dartian.dart with ServeCommand
+        return 'Use: dartian serve [--host localhost] [--port 8000]';
       case 'make':
         return _handleMakeCommand(commandArgs);
       case 'new':

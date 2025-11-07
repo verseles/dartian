@@ -38,9 +38,9 @@ void main() {
       expect(result, contains('Usage: dartian'));
     });
 
-    test('serve command placeholder', () {
+    test('serve command shows usage', () {
       final result = DartianCli.run(['serve']);
-      expect(result, contains('placeholder'));
+      expect(result, contains('dartian serve'));
     });
 
     test('new command not implemented', () {
