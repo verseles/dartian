@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:isolate';
 import '../queue.dart';
+import '../queue_manager.dart';
+import 'sync_worker.dart';
 
 /// Isolate-based queue implementation
 class IsolateQueue implements Queue {

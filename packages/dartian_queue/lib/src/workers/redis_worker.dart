@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 import '../queue.dart';
-import '../../dartian_redis/dartian_redis.dart';
+import '../queue_manager.dart';
+import 'package:dartian_redis/dartian_redis.dart';
 
 /// Redis-based queue implementation
 class RedisQueue implements Queue {

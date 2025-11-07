@@ -1,5 +1,6 @@
 import 'dart:async';
 import '../queue.dart';
+import '../queue_manager.dart';
 
 /// Synchronous queue implementation using in-memory storage
 class SyncQueue implements Queue {
