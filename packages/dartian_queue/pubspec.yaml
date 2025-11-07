@@ -1,0 +1,16 @@
+name: dartian_queue
+description: Job queue system for Dartian (sync, isolate, Redis)
+version: 0.0.1
+
+environment:
+  sdk: ^3.9.4
+
+dependencies:
+  dartian_redis:
+    path: ../dartian_redis
+  dartian_core:
+    path: ../dartian_core
+  async: ^2.11.0
+
+dev_dependencies:
+  test: ^1.24.0

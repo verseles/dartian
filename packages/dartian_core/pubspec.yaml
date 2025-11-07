@@ -1,0 +1,9 @@
+name: dartian_core
+description: Core utilities and telemetry hooks for Dartian
+version: 0.0.1
+
+environment:
+  sdk: ^3.9.4
+
+dev_dependencies:
+  test: ^1.24.0

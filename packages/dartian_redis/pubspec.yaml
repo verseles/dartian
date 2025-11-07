@@ -1,0 +1,14 @@
+name: dartian_redis
+description: Redis cache and pub/sub for Dartian
+version: 0.0.1
+
+environment:
+  sdk: ^3.9.4
+
+dependencies:
+  redis: ^4.8.0
+  dartian_core:
+    path: ../dartian_core
+
+dev_dependencies:
+  test: ^1.24.0
