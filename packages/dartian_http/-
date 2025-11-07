@@ -1,0 +1,99 @@
+/home/helio/Dropbox/WORK/dart/dartian/packages/dartian_http/lib/src/kernel.dart
+       |import 'dart:io';
+       |import 'package:shelf/shelf.dart';
+       |import 'package:shelf/shelf_io.dart';
+       |
+       |/// HTTP Kernel for handling HTTP requests
+       |class HttpKernel {
+       |  final List<Middleware> _middleware = [];
+       |  Handler? _handler;
+       |
+       |  /// Add middleware to the pipeline
+      1|  void use(Middleware middleware) {
+      2|    _middleware.add(middleware);
+       |  }
+       |
+       |  /// Handle a request and return a response
+      1|  Future<Response> handle(Request request) async {
+      1|    if (_handler == null) {
+      1|      return Response.internalServerError(
+       |        body: 'No handler registered',
+       |      );
+       |    }
+       |
+      2|    return await _handler!(request);
+       |  }
+       |
+       |  /// Set the request handler
+      1|  void setHandler(Handler handler) {
+       |    // Apply all middleware to the handler
+       |    var currentHandler = handler;
+      3|    for (var middleware in _middleware.reversed) {
+      1|      currentHandler = middleware(currentHandler);
+       |    }
+      1|    _handler = currentHandler;
+       |  }
+       |
+       |  /// Start the HTTP server
+      0|  Future<HttpServer> listen(String host, int port) async {
+      0|    if (_handler == null) {
+      0|      throw StateError('No handler registered. Call setHandler() first.');
+       |    }
+       |
+      0|    final server = await serve(_handler!, host, port);
+      0|    print('Server listening on http://$host:$port');
+       |    return server;
+       |  }
+       |}
+/home/helio/Dropbox/WORK/dart/dartian/packages/dartian_http/lib/src/response.dart
+       |import 'dart:convert';
+       |import 'package:shelf/shelf.dart';
+       |
+       |/// Create a JSON response
+      1|Response jsonResponse(Map<String, dynamic> data, {int status = 200}) {
+      1|  return Response(
+       |    status,
+      1|    headers: {
+       |      'Content-Type': 'application/json; charset=utf-8',
+       |    },
+      1|    body: json.encode(data),
+       |  );
+       |}
+       |
+       |/// Create an HTML response
+      1|Response htmlResponse(String content, {int status = 200}) {
+      1|  return Response(
+       |    status,
+      1|    headers: {
+       |      'Content-Type': 'text/html; charset=utf-8',
+       |    },
+       |    body: content,
+       |  );
+       |}
+       |
+       |/// Create a plain text response
+      1|Response textResponse(String content, {int status = 200}) {
+      1|  return Response(
+       |    status,
+      1|    headers: {
+       |      'Content-Type': 'text/plain; charset=utf-8',
+       |    },
+       |    body: content,
+       |  );
+       |}
+       |
+       |/// Create a 404 Not Found response
+      1|Response notFound([String? message]) {
+      1|  return textResponse(
+       |    message ?? 'Not Found',
+       |    status: 404,
+       |  );
+       |}
+       |
+       |/// Create a 500 Internal Server Error response
+      1|Response serverError([String? message]) {
+      1|  return textResponse(
+       |    message ?? 'Internal Server Error',
+       |    status: 500,
+       |  );
+       |}

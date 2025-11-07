@@ -1,0 +1,74 @@
+/home/helio/Dropbox/WORK/dart/dartian/packages/dartian_router/lib/src/router.dart
+       |import 'package:shelf/shelf.dart';
+       |import 'package:shelf_router/shelf_router.dart' as shelf_router;
+       |
+       |/// A fluent DSL for building routes
+       |class Router {
+       |  final shelf_router.Router _router;
+       |  final String? _prefix;
+       |  final Map<String, String> _namedRoutes = {};
+       |
+      1|  Router({String? prefix})
+      1|      : _router = shelf_router.Router(),
+       |        _prefix = prefix;
+       |
+       |  /// Add a GET route
+      1|  Router get(String pattern, Handler handler, {String? name}) {
+      3|    final fullPattern = _prefix != null ? '$_prefix$pattern' : pattern;
+      2|    _router.get(pattern, handler);
+       |    if (name != null) {
+      2|      _namedRoutes[name] = fullPattern;
+       |    }
+       |    return this;
+       |  }
+       |
+       |  /// Add a POST route
+      1|  Router post(String pattern, Handler handler, {String? name}) {
+      1|    final fullPattern = _prefix != null ? '$_prefix$pattern' : pattern;
+      2|    _router.post(pattern, handler);
+       |    if (name != null) {
+      2|      _namedRoutes[name] = fullPattern;
+       |    }
+       |    return this;
+       |  }
+       |
+       |  /// Add a PUT route
+      1|  Router put(String pattern, Handler handler, {String? name}) {
+      1|    final fullPattern = _prefix != null ? '$_prefix$pattern' : pattern;
+      2|    _router.put(pattern, handler);
+       |    if (name != null) {
+      2|      _namedRoutes[name] = fullPattern;
+       |    }
+       |    return this;
+       |  }
+       |
+       |  /// Add a DELETE route
+      1|  Router delete(String pattern, Handler handler, {String? name}) {
+      1|    final fullPattern = _prefix != null ? '$_prefix$pattern' : pattern;
+      2|    _router.delete(pattern, handler);
+       |    if (name != null) {
+      2|      _namedRoutes[name] = fullPattern;
+       |    }
+       |    return this;
+       |  }
+       |
+       |  /// Create a route group with a common prefix
+      1|  Router group(String pattern, void Function(Router router) callback) {
+      2|    final subRouter = Router(prefix: _prefix != null ? '$_prefix$pattern' : pattern);
+      1|    callback(subRouter);
+      1|    _mergeRouter(subRouter);
+       |    return this;
+       |  }
+       |
+       |  /// Get the underlying shelf Router
+      2|  shelf_router.Router get shelfRouter => _router;
+       |
+       |  /// Get a named route pattern
+      1|  String? getRoute(String name) {
+      2|    return _namedRoutes[name];
+       |  }
+       |
+      1|  void _mergeRouter(Router other) {
+       |    // Named routes are already merged during route registration
+       |  }
+       |}
