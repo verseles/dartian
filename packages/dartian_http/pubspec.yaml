@@ -8,6 +8,7 @@ environment:
 
 dependencies:
   shelf: ^1.4.1
+  crypto: ^3.0.0
   dartian_i18n:
     path: ../dartian_i18n
   dartian_core:

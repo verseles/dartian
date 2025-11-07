@@ -7,6 +7,7 @@
       "name": "dartian_auth",
       "version": "0.0.1",
       "dependencies": [
+        "bcrypt",
         "crypto",
         "dartian_core",
         "shelf"
@@ -58,6 +59,11 @@
         "stack_trace",
         "stream_channel"
       ]
+    },
+    {
+      "name": "bcrypt",
+      "version": "1.1.3",
+      "dependencies": []
     },
     {
       "name": "crypto",

@@ -10,6 +10,7 @@ dependencies:
   dartian_core:
     path: ../dartian_core
   crypto: ^3.0.0
+  bcrypt: ^1.1.3
   shelf: ^1.4.1
 
 dev_dependencies:

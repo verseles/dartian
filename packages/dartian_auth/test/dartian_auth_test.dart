@@ -3,12 +3,14 @@ import 'package:dartian_auth/dartian_auth.dart';
 
 void main() {
   group('Password', () {
-    test('should hash password with salt', () {
+    test('should hash password with bcrypt', () {
       final password = 'mypassword123';
       final hashed = Password.hash(password);
 
       expect(hashed, isNotEmpty);
-      expect(hashed, contains(':'));
+      // Bcrypt format: $2a$10$...
+      expect(hashed, startsWith('\$2a\$'));
+      expect(hashed.length, greaterThan(50));
     });
 
     test('should verify correct password', () {
@@ -37,13 +39,31 @@ void main() {
       expect(password1, isNotEmpty);
       expect(password2, isNotEmpty);
       expect(password1, isNot(equals(password2)));
-      expect(password1.length, equals(12));
+      expect(password1.length, equals(16)); // Changed default from 12 to 16
     });
 
     test('should generate password with custom length', () {
       final password = Password.generate(length: 20);
 
       expect(password.length, equals(20));
+    });
+
+    test('should detect if hash needs rehashing', () {
+      const password = 'testpassword';
+      final hash10 = Password.hash(password, cost: 10);
+      final hash12 = Password.hash(password, cost: 12);
+
+      expect(Password.needsRehash(hash10, targetCost: 12), isTrue);
+      expect(Password.needsRehash(hash12, targetCost: 12), isFalse);
+    });
+
+    test('should throw on empty password', () {
+      expect(() => Password.hash(''), throwsArgumentError);
+    });
+
+    test('should throw on invalid cost', () {
+      expect(() => Password.hash('test', cost: 3), throwsArgumentError);
+      expect(() => Password.hash('test', cost: 32), throwsArgumentError);
     });
   });
 

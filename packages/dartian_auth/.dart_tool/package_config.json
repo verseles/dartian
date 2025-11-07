@@ -26,6 +26,12 @@
       "languageVersion": "3.4"
     },
     {
+      "name": "bcrypt",
+      "rootUri": "file:///home/helio/.pub-cache/hosted/pub.dev/bcrypt-1.1.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
       "name": "boolean_selector",
       "rootUri": "file:///home/helio/.pub-cache/hosted/pub.dev/boolean_selector-2.1.2",
       "packageUri": "lib/",
