@@ -81,10 +81,24 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.7"
+  dartian_core:
+    dependency: transitive
+    description:
+      path: "../dartian_core"
+      relative: true
+    source: path
+    version: "0.0.1"
   dartian_http:
     dependency: "direct main"
     description:
       path: "../dartian_http"
+      relative: true
+    source: path
+    version: "0.0.1"
+  dartian_i18n:
+    dependency: "direct main"
+    description:
+      path: "../dartian_i18n"
       relative: true
     source: path
     version: "0.0.1"

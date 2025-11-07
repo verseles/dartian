@@ -23,9 +23,9 @@ void main() {
       expect(result, contains('build'));
     });
 
-    test('unknown subcommand shows not implemented', () {
+    test('unknown subcommand shows help message', () {
       final result = DartianCli.run(['make']);
-      expect(result, equals('Not implemented yet'));
+      expect(result, contains('Make command requires a subcommand'));
     });
 
     test('no arguments shows help', () {
