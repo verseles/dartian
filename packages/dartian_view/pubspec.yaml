@@ -1,0 +1,15 @@
+name: dartian_view
+version: 0.0.1
+description: Dartian SSR views
+publish_to: none
+
+environment:
+  sdk: ^3.9.4
+
+dependencies:
+  mustache_template: ^2.0.0
+  dartian_core:
+    path: ../dartian_core
+
+dev_dependencies:
+  test: ^1.24.0

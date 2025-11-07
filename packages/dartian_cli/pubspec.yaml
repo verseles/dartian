@@ -1,6 +1,8 @@
 name: dartian_cli
 description: Dartian framework CLI
 version: 0.0.1
+publish_to: none
+
 environment:
   sdk: ^3.9.4
 

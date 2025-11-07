@@ -6,7 +6,7 @@ environment:
   sdk: ^3.9.4
 
 dependencies:
-  redis: ^4.8.0
+  redis: ^4.0.0
   dartian_core:
     path: ../dartian_core
 
