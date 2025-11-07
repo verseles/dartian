@@ -1,0 +1,14 @@
+name: dartian_orm
+description: ORM for Dartian using Drift
+version: 0.0.1
+
+environment:
+  sdk: ^3.9.4
+
+dependencies:
+  sqlite3: ^2.9.4
+  path: ^1.9.1
+
+dev_dependencies:
+  test: ^1.24.0
+  build_runner: ^2.4.0
