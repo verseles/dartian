@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:shelf/shelf.dart';
 import 'package:dartian_i18n/dartian_i18n.dart';
 
@@ -11,7 +10,7 @@ Middleware i18nMiddleware({String defaultLocale = 'en'}) {
 
       // Detect locale from Accept-Language header
       final acceptLanguage = request.headers['Accept-Language'];
-      final detectedLocale = I18nHelper.detectFromHeader(acceptLanguage);
+      final detectedLocale = I18nUtils.detectFromHeader(acceptLanguage);
 
       if (detectedLocale != null) {
         i18n.setLocale(detectedLocale);

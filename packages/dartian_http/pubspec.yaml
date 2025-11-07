@@ -10,6 +10,8 @@ dependencies:
   shelf: ^1.4.1
   dartian_i18n:
     path: ../dartian_i18n
+  dartian_core:
+    path: ../dartian_core
 
 dev_dependencies:
   test: ^1.24.0

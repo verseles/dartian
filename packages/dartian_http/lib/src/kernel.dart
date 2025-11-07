@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
+import 'package:dartian_core/dartian_core.dart';
 
 /// HTTP Kernel for handling HTTP requests
 class HttpKernel {
@@ -20,7 +21,34 @@ class HttpKernel {
       );
     }
 
-    return await _handler!(request);
+    // Trigger request start hooks
+    TelemetryHooks.triggerRequest(request);
+
+    // Track response time
+    final startTime = DateTime.now();
+
+    try {
+      final response = await _handler!(request);
+
+      // Calculate duration
+      final duration = DateTime.now().difference(startTime);
+
+      // Trigger response complete hooks
+      TelemetryHooks.triggerResponse(response, duration);
+
+      return response;
+    } catch (error) {
+      // Calculate duration even for errors
+      final duration = DateTime.now().difference(startTime);
+
+      // Trigger response complete hooks for error responses
+      final errorResponse = Response.internalServerError(
+        body: 'Internal Server Error',
+      );
+      TelemetryHooks.triggerResponse(errorResponse, duration);
+
+      rethrow;
+    }
   }
 
   /// Set the request handler

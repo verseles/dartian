@@ -1,6 +1,7 @@
 import 'package:test/test.dart';
 import 'package:dartian_http/dartian_http.dart';
 import 'package:dartian_i18n/dartian_i18n.dart';
+import 'package:shelf/shelf.dart';
 import 'dart:io';
 
 void main() {
@@ -43,7 +44,7 @@ void main() {
       // Create a request with Accept-Language header
       final request = Request(
         'GET',
-        Uri.parse('http://localhost:8000'),
+        Uri.parse('http://localhost:8000/'),
         headers: {'Accept-Language': 'pt-BR,pt;q=0.9,en;q=0.8'},
       );
 
@@ -66,7 +67,7 @@ void main() {
       // Create a request without Accept-Language header
       final request = Request(
         'GET',
-        Uri.parse('http://localhost:8000'),
+        Uri.parse('http://localhost:8000/'),
       );
 
       wrappedHandler(request);
@@ -90,7 +91,7 @@ void main() {
 
       final request = Request(
         'GET',
-        Uri.parse('http://localhost:8000'),
+        Uri.parse('http://localhost:8000/'),
       );
 
       wrappedHandler(request);
