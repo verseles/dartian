@@ -38,14 +38,28 @@ class DartianCli {
       case 'serve':
         // Serve command is now handled in bin/dartian.dart with ServeCommand
         return 'Use: dartian serve [--host localhost] [--port 8000]';
+      case 'new':
+        // New command is now handled in bin/dartian.dart with NewCommand
+        return 'Use: dartian new <project-name>';
       case 'make':
         return _handleMakeCommand(commandArgs);
-      case 'new':
-      case 'migrate':
       case 'queue':
+        if (commandArgs.isEmpty || commandArgs[0] != 'work') {
+          return 'Usage: dartian queue:work [options]';
+        }
+        return 'Use: dartian queue:work [--queue=default] [--driver=sync]';
       case 'schedule':
-      case 'test':
+        if (commandArgs.isEmpty || commandArgs[0] != 'run') {
+          return 'Usage: dartian schedule:run';
+        }
+        return 'Use: dartian schedule:run';
       case 'build':
+        if (commandArgs.isEmpty) {
+          return 'Usage: dartian build <type>\nTypes: exe, aot-snapshot, wasm';
+        }
+        return 'Use: dartian build exe|aot-snapshot|wasm';
+      case 'migrate':
+      case 'test':
         return 'Not implemented yet';
       default:
         return _showHelp();

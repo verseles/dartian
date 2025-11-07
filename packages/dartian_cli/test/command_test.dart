@@ -43,9 +43,9 @@ void main() {
       expect(result, contains('dartian serve'));
     });
 
-    test('new command not implemented', () {
-      final result = DartianCli.run(['new', 'test']);
-      expect(result, equals('Not implemented yet'));
+    test('new command shows usage', () {
+      final result = DartianCli.run(['new']);
+      expect(result, contains('dartian new'));
     });
   });
 }
