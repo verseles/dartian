@@ -63,6 +63,8 @@ class DartianCli {
     switch (subcommand) {
       case 'view':
         return _makeView(args);
+      case 'lang':
+        return _makeLang(args);
       case 'controller':
       case 'model':
       case 'migration':
@@ -71,7 +73,7 @@ class DartianCli {
       case 'test':
         return 'Generator for $subcommand not yet implemented';
       default:
-        return 'Unknown make subcommand: $subcommand. Available: view, controller, model, migration, request, provider, test';
+        return 'Unknown make subcommand: $subcommand. Available: view, lang, controller, model, migration, request, provider, test';
     }
   }
 
@@ -82,6 +84,15 @@ class DartianCli {
 
     final name = arguments[0];
     return _generateView(name);
+  }
+
+  static String _makeLang(List<String> arguments) {
+    if (arguments.isEmpty) {
+      return 'Usage: dartian make:lang <locale>';
+    }
+
+    final locale = arguments[0];
+    return _generateLanguage(locale);
   }
 
   static String _generateView(String name) {
@@ -136,6 +147,61 @@ class DartianCli {
       return 'View template created successfully at $templatePath';
     } catch (e) {
       return 'Error creating view: $e';
+    }
+  }
+
+  static String _generateLanguage(String locale) {
+    try {
+      // Create lang directory if it doesn't exist
+      final langDir = Directory('resources/lang');
+      if (!langDir.existsSync()) {
+        langDir.createSync(recursive: true);
+      }
+
+      // Create locale directory
+      final localeDirPath = 'resources/lang/$locale';
+      final localeDir = Directory(localeDirPath);
+      if (!localeDir.existsSync()) {
+        localeDir.createSync(recursive: true);
+      }
+
+      // Generate messages file
+      final messagesPath = '$localeDirPath/messages.json';
+      final messagesFile = File(messagesPath);
+
+      // Check if file already exists
+      if (messagesFile.existsSync()) {
+        return 'Error: Language file already exists at $messagesPath';
+      }
+
+      // Generate boilerplate content
+      final content = '''{
+  "app": {
+    "title": "Application Title",
+    "description": "Application Description"
+  },
+  "navigation": {
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "buttons": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "submit": "Submit"
+  },
+  "messages": {
+    "welcome": "Welcome, {name}!",
+    "error": "An error occurred",
+    "success": "Operation completed successfully"
+  }
+}''';
+
+      messagesFile.writeAsStringSync(content);
+
+      return 'Language file created successfully at $messagesPath';
+    } catch (e) {
+      return 'Error creating language file: $e';
     }
   }
 

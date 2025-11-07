@@ -13,6 +13,8 @@ dependencies:
     path: ../dartian_http
   dartian_router:
     path: ../dartian_router
+  dartian_i18n:
+    path: ../dartian_i18n
 
 dev_dependencies:
   test: ^1.24.0

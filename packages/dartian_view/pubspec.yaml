@@ -10,6 +10,8 @@ dependencies:
   mustache_template: ^2.0.0
   dartian_core:
     path: ../dartian_core
+  dartian_i18n:
+    path: ../dartian_i18n
 
 dev_dependencies:
   test: ^1.24.0

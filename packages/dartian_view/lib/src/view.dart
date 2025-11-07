@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:mustache_template/mustache.dart';
 import 'package:shelf/shelf.dart' as shelf;
+import 'package:dartian_i18n/dartian_i18n.dart';
 
 /// View class for rendering mustache templates
 class View {
@@ -21,8 +22,13 @@ class View {
     final templateContent = _readTemplate(templatePath);
     final template = Template(templateContent, name: templatePath);
 
-    // Prepare data
+    // Prepare data with i18n helpers
     final viewData = Map<String, dynamic>.from(data);
+
+    // Add i18n helpers to template data
+    viewData['__'] = (String key, [Map<String, dynamic>? params]) {
+      return i18n.trans(key, params: params);
+    };
 
     // Render the main template
     final rendered = template.renderString(viewData);
@@ -33,6 +39,7 @@ class View {
       final layoutTemplate = Template(layoutContent, name: layout!);
       final layoutData = Map<String, dynamic>.from(data);
       layoutData['content'] = rendered;
+      layoutData['__'] = viewData['__'];
       return layoutTemplate.renderString(layoutData);
     }
 

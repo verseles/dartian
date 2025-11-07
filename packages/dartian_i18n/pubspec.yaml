@@ -1,0 +1,14 @@
+name: dartian_i18n
+version: 0.0.1
+description: Dartian i18n
+publish_to: none
+
+environment:
+  sdk: ^3.9.4
+
+dependencies:
+  dartian_core:
+    path: ../dartian_core
+
+dev_dependencies:
+  test: ^1.24.0

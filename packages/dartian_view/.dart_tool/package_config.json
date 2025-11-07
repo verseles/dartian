@@ -68,6 +68,12 @@
       "languageVersion": "3.9"
     },
     {
+      "name": "dartian_i18n",
+      "rootUri": "../../dartian_i18n",
+      "packageUri": "lib/",
+      "languageVersion": "3.9"
+    },
+    {
       "name": "file",
       "rootUri": "file:///home/helio/.pub-cache/hosted/pub.dev/file-7.0.1",
       "packageUri": "lib/",

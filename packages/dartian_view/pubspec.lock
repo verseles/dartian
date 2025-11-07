@@ -88,6 +88,13 @@ packages:
       relative: true
     source: path
     version: "0.0.1"
+  dartian_i18n:
+    dependency: "direct main"
+    description:
+      path: "../dartian_i18n"
+      relative: true
+    source: path
+    version: "0.0.1"
   file:
     dependency: transitive
     description:
