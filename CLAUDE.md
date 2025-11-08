@@ -285,3 +285,4 @@ GitHub Actions workflow on main branch:
 ## License
 
 AGPLv3 with commercial dual-licensing option
+- No brave-search use sleep de um minuto entre as buscas para evitar erros de rate limiting
