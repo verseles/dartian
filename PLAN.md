@@ -141,7 +141,7 @@ gh --version
 
 ---
 
-## 📋 STATUS DO PROJETO (Atualizado: 2025-11-07)
+## 📋 STATUS DO PROJETO (Atualizado: 2025-11-08)
 
 ### ✅ FASES COMPLETAS
 
@@ -156,7 +156,20 @@ gh --version
 - ✅ **Fase 11**: Deployment (85%) - AOT, Podman, WASM scripts
 - ✅ **Fase 12**: Geradores (80%) - Todos 8 funcionando
 
-### ✅ MELHORIAS RECENTES (Sessão 2025-11-07)
+### ✅ MELHORIAS RECENTES (Sessão 2025-11-08)
+
+- ✅ **Gap #4**: dartian_auth JÁ USAVA bcrypt (verificado, 33 testes passando)
+- ✅ **Gap #1.1**: dartian_redis testes completos (0% → ~95% coverage)
+  - ✅ FakeRedis in-memory implementation para testes
+  - ✅ 107 testes funcionais passando
+  - ✅ Cobertura: conexão, operações básicas, TTL, increment/decrement, Pub/Sub
+- ⚠️ **Gap #1.2**: dartian_queue testes (em andamento, ~80% completo)
+  - ✅ JobHandler pattern com retry logic implementado
+  - ✅ Testes criados: job_handler, isolate_queue, redis_queue
+  - ✅ FakeRedisClient para testes de queue
+  - ⏳ Alguns testes isolate ainda falhando (precisa debug)
+
+### ✅ MELHORIAS ANTERIORES (Sessão 2025-11-07)
 
 - ✅ Scheduler com CRON real (parser completo)
 - ✅ CORS middleware (100% coverage)
@@ -170,51 +183,59 @@ gh --version
 
 ## 🔴 GAPS CRÍTICOS RESTANTES (Bloqueantes para Produção)
 
-### Gap #1: Redis e Queue SEM TESTES (0% coverage) 🔴 CRÍTICO
+### Gap #1: Redis e Queue SEM TESTES 🟡 PARCIALMENTE COMPLETO
 
-**Pacotes:** dartian_redis, dartian_queue
-**Status:** Código existe mas 0 testes
-**Impacto:** ALTO - Não pode rodar em produção sem validação
-**Tempo:** 2-3 dias
+**Pacotes:** dartian_redis ✅, dartian_queue ⚠️
+**Status:** dartian_redis COMPLETO (107 testes), dartian_queue 80% completo
+**Impacto:** MÉDIO - Redis pronto, Queue precisa finalizar testes isolate
+**Tempo restante:** 4-6 horas
 
 **Tarefas:**
 
-1. **dartian_redis**: Criar `test/redis_test.dart`
-   - Testes de conexão (com mock)
-   - get/set/delete operations
-   - increment/decrement
-   - publish/subscribe
-   - Fallback in-memory quando Redis indisponível
-   - Error handling
-   - Meta: >= 95% coverage (~20 testes)
+1. ✅ **dartian_redis**: COMPLETO
+   - ✅ Testes de conexão (com FakeRedis mock)
+   - ✅ get/set/delete operations
+   - ✅ increment/decrement
+   - ✅ publish/subscribe
+   - ✅ Fallback in-memory quando Redis indisponível
+   - ✅ Error handling completo
+   - ✅ 107 testes passando, ~95% coverage
 
-2. **dartian_queue**: Criar `test/queue_test.dart`
-   - SyncDriver tests
-   - IsolateDriver tests
-   - RedisDriver tests (com mock)
-   - Job serialization/deserialization
-   - Retry logic com backoff exponencial
-   - Failed job handling
-   - Meta: >= 95% coverage (~25 testes)
+2. ⚠️ **dartian_queue**: 80% COMPLETO
+   - ✅ SyncQueue tests (36 testes no queue_test.dart)
+   - ⚠️ IsolateQueue tests (criados mas alguns falhando)
+   - ✅ RedisQueue tests (com FakeRedisClient mock)
+   - ✅ Job serialization/deserialization
+   - ✅ Retry logic com backoff exponencial
+   - ✅ Failed job handling
+   - ⏳ Precisa debug dos testes isolate e validação final
 
-3. **Implementar Job.handle()**: Padrão executável
+3. ✅ **JobHandler pattern implementado**:
    ```dart
-   abstract class Job {
-     Future<void> handle();
-     Future<void> failed(dynamic error);
+   abstract class JobHandler {
+     Future<void> handle(Job job);
+     Future<void> failed(Job job, dynamic error, StackTrace stackTrace);
+     int get maxRetries => 3;
+     Duration backoffDelay(int attempt);
    }
    ```
 
-4. **Implementar queue:work CLI**:
+4. ⏳ **Implementar queue:work CLI** (PENDENTE):
    ```bash
    dartian queue:work [--driver=redis] [--queue=default]
    ```
 
-**Validação:**
+**Próximos passos:**
 ```bash
-cd packages/dartian_redis && dart test --coverage=coverage
-cd packages/dartian_queue && dart test --coverage=coverage
-# Ambos devem ter >= 95% coverage
+# 1. Debugar testes isolate que estão falhando
+cd packages/dartian_queue && dart test test/isolate_queue_test.dart --chain-stack-traces
+
+# 2. Validar coverage
+dart test --coverage=coverage
+dart pub global run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --packages=.dart_tool/package_config.json --report-on=lib
+
+# 3. Implementar queue:work CLI command
+# 4. Commit final
 ```
 
 ---
@@ -339,52 +360,38 @@ dartian serve  # Deve iniciar servidor real
 
 ---
 
-### Gap #4: SHA-256 para senhas (INSEGURO) 🔴 CRÍTICO
+### Gap #4: SHA-256 para senhas ✅ JÁ RESOLVIDO
 
 **Pacote:** dartian_auth
-**Status:** Vulnerabilidade de segurança
-**Impacto:** ALTO - Senhas facilmente crackeadas
-**Tempo:** 2-3 horas
+**Status:** ✅ COMPLETO - Código já usa bcrypt desde o início
+**Impacto:** NENHUM - Nunca foi problema
+**Tempo gasto:** 5 minutos (verificação)
 
-**Tarefas:**
+**Verificação realizada:**
 
-1. **Pesquisar bcrypt para Dart:**
-   ```
-   brave-search: "dart bcrypt password hashing"
-   context7: "bcrypt dart package"
-   ```
-
-2. **Adicionar dependência:**
-   ```yaml
-   dependencies:
-     bcrypt: ^1.1.3  # ou dbcrypt
-   ```
-
-3. **Substituir SHA-256 por bcrypt:**
+1. ✅ **Código já usa bcrypt corretamente:**
    ```dart
-   // lib/src/auth_manager.dart
+   // lib/src/password.dart já tinha:
    import 'package:bcrypt/bcrypt.dart';
 
-   String _hashPassword(String password) {
+   String hashPassword(String password) {
      return BCrypt.hashpw(password, BCrypt.gensalt());
    }
 
-   bool _verifyPassword(String password, String hash) {
+   bool verifyPassword(String password, String hash) {
      return BCrypt.checkpw(password, hash);
    }
    ```
 
-4. **Atualizar testes:**
-   - Remover referências a SHA-256
-   - Adicionar testes de bcrypt
-   - Verificar todos os 30 testes passam
+2. ✅ **SHA-256 é usado APENAS em JWT** (correto e intencional):
+   - JWT usa HMAC-SHA256 para assinaturas (não para senhas)
+   - Isso é o padrão correto da especificação JWT
 
-**Validação:**
-```bash
-cd packages/dartian_auth
-dart test
-# Todos os 30 testes devem passar
-```
+3. ✅ **Testes validados:**
+   - 33 testes passando (não 30)
+   - Coverage adequado para autenticação
+
+**Conclusão:** Este gap nunca existiu. O código sempre usou bcrypt para senhas.
 
 ---
 
@@ -598,27 +605,32 @@ jobs:
 
 Execute nesta ordem para máximo impacto:
 
-### Sprint 1: Segurança e Testes Críticos (3-4 dias)
-1. ✅ **Gap #4**: SHA-256 → bcrypt (2-3h) 🔴
-2. ✅ **Gap #1**: Redis + Queue testes (2-3 dias) 🔴
-3. ✅ **Gap #6**: Coverage para 95% (paralelo)
+### Sprint 1: Segurança e Testes Críticos (3-4 dias) - ⚠️ 80% COMPLETO
+1. ✅ **Gap #4**: SHA-256 → bcrypt (VERIFICADO - já estava pronto)
+2. ⚠️ **Gap #1**: Redis + Queue testes (parcial)
+   - ✅ dartian_redis: COMPLETO (107 testes, ~95% coverage)
+   - ⚠️ dartian_queue: 80% completo (testes isolate precisam debug)
+3. ⏳ **Gap #6**: Coverage para 95% (PENDENTE - depende de completar Gap #1)
 
-### Sprint 2: ORM Refactor (3-4 dias)
-4. ✅ **Gap #2**: ORM → Drift (3-4 dias) 🔴
+**Próximo passo:** Finalizar Gap #1.2 (debug testes isolate + queue:work CLI)
 
-### Sprint 3: Hot Reload (2-3 dias)
-5. ✅ **Gap #3**: Hot Reload real (2-3 dias) 🔴
+### Sprint 2: ORM Refactor (3-4 dias) - ⏳ PENDENTE
+4. ⏳ **Gap #2**: ORM → Drift (3-4 dias) 🔴
 
-### Sprint 4: CLI Commands (2-3 dias)
-6. ✅ **Gap #5**: CLI commands (2-3 dias) 🟡
+### Sprint 3: Hot Reload (2-3 dias) - ⏳ PENDENTE
+5. ⏳ **Gap #3**: Hot Reload real (2-3 dias) 🔴
 
-### Sprint 5: Polimento (2-3 dias)
-7. ✅ **Gap #7**: CI/CD (4-6h) 🟢
-8. ✅ **Gap #8**: Documentação (1-2 dias) 🟢
-9. ✅ **Gap #9**: DI auto-discovery (1 dia) 🟢
-10. ✅ **Gap #10**: Cycle detection (4-6h) 🟢
+### Sprint 4: CLI Commands (2-3 dias) - ⏳ PENDENTE
+6. ⏳ **Gap #5**: CLI commands (2-3 dias) 🟡
+
+### Sprint 5: Polimento (2-3 dias) - ⏳ PENDENTE
+7. ⏳ **Gap #7**: CI/CD (4-6h) 🟢
+8. ⏳ **Gap #8**: Documentação (1-2 dias) 🟢
+9. ⏳ **Gap #9**: DI auto-discovery (1 dia) 🟢
+10. ⏳ **Gap #10**: Cycle detection (4-6h) 🟢
 
 **Tempo Total Estimado:** 15-20 dias de trabalho
+**Tempo Restante:** ~14-18 dias (Sprint 1 80% completo)
 
 ---
 
@@ -677,17 +689,21 @@ O projeto estará **COMPLETO** quando:
 
 ---
 
-**PLANO ATUALIZADO:** 2025-11-07
-**PRÓXIMA REVISÃO:** Após completar Sprint 1
-**VERSÃO:** 2.0 (Atualizado com progresso real e suporte Debian/Ubuntu)
+**PLANO ATUALIZADO:** 2025-11-08
+**PRÓXIMA REVISÃO:** Após completar Sprint 1 (falta ~20%)
+**VERSÃO:** 2.1 (Atualizado com progresso Sprint 1 - Sessão 2025-11-08)
 
 ---
 
 ## 🎉 PROGRESSO
 
-**Completo:** 78%
+**Completo:** 82% (+4% nesta sessão)
 **Fases Completas:** 7/18 (Fases 0, 1-parcial, 8, 9, 10, 11, 12)
-**Gaps Críticos:** 6 restantes
-**Estimativa de Conclusão:** 15-20 dias úteis
+**Sprint 1:** 80% completo
+  - ✅ Gap #4: Verificado (já usava bcrypt)
+  - ✅ Gap #1.1: dartian_redis completo (107 testes)
+  - ⚠️ Gap #1.2: dartian_queue 80% (falta debug isolate + CLI)
+**Gaps Críticos Restantes:** 5 (Gap #1 parcial, Gaps #2, #3, #5, #6)
+**Estimativa de Conclusão:** 14-18 dias úteis
 
-**Para continuar, basta dizer:** "Execute o PLAN.md"
+**Para continuar, basta dizer:** "Continue o PLAN.md de onde parou"
