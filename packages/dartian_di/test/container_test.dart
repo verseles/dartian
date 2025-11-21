@@ -78,11 +78,11 @@ void main() {
       expect(second, equals('Second'));
     });
 
-    test('resets container', () {
+    test('resets container', () async {
       final container = DIContainer();
       container.registerSingleton<String>(() => 'Hello', instanceName: 'test8a');
       expect(container.isRegistered<String>(instanceName: 'test8a'), isTrue);
-      container.reset();
+      await container.reset();
       // Reset clears all registrations
       expect(container.isRegistered<String>(instanceName: 'test8a'), isFalse);
     });
@@ -121,6 +121,15 @@ void main() {
       await provider.boot(container);
       expect(provider.booted, isTrue);
     });
+
+    test('default boot implementation does nothing', () async {
+      final provider = MinimalServiceProvider();
+      final container = DIContainer();
+      provider.register(container);
+      // Should not throw - default boot() implementation is empty
+      await provider.boot(container);
+      expect(container.isRegistered<String>(instanceName: 'minimal'), isTrue);
+    });
   });
 
   group('DIModule', () {
@@ -143,6 +152,13 @@ void main() {
       module.register(container);
       expect(container.get<String>(instanceName: 'moduleTest1'), equals('String from module'));
       expect(container.get<int>(instanceName: 'moduleTest2'), equals(100));
+    });
+
+    test('default providers() returns empty list', () {
+      final module = TestModule();
+      final providers = module.providers();
+      expect(providers, isEmpty);
+      expect(providers, isA<List<ServiceProvider>>());
     });
   });
 }
@@ -173,4 +189,20 @@ class TestServiceProvider extends ServiceProvider {
   Future<void> boot(DIContainer container) async {
     booted = true;
   }
+}
+
+class MinimalServiceProvider extends ServiceProvider {
+  @override
+  void register(DIContainer container) {
+    container.registerSingleton<String>(() => 'Minimal Service', instanceName: 'minimal');
+  }
+  // Deliberately not overriding boot() to test default implementation
+}
+
+class TestModule extends DIModule {
+  @override
+  void register(DIContainer container) {
+    container.registerSingleton<String>(() => 'Test Module', instanceName: 'testModule');
+  }
+  // Deliberately not overriding providers() to test default implementation
 }

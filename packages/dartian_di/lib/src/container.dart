@@ -60,8 +60,8 @@ class DIContainer {
   }
 
   /// Reset the container (unregister all services)
-  void reset() {
-    _getIt.reset();
+  Future<void> reset() {
+    return _getIt.reset();
   }
 
   /// Check if GetIt is ready (for async singletons)
