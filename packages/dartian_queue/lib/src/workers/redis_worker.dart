@@ -6,8 +6,9 @@ import 'package:dartian_redis/dartian_redis.dart';
 
 /// Redis-based queue implementation
 class RedisQueue implements Queue {
-  final RedisClient _redis;
+  final IRedisClient _redis;
   final String _prefix;
+  static int _jobCounter = 0;
 
   RedisQueue(this._redis, {String prefix = 'queue:'}) : _prefix = prefix;
 
@@ -16,7 +17,9 @@ class RedisQueue implements Queue {
 
   @override
   Future<String> push(String queue, String payload) async {
-    final jobId = DateTime.now().millisecondsSinceEpoch.toString();
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
+    final counter = _jobCounter++;
+    final jobId = '${timestamp}_$counter';
     final job = Job(
       id: jobId,
       queue: queue,
@@ -61,19 +64,18 @@ class RedisQueue implements Queue {
 
 /// Redis queue worker
 class RedisQueueWorker implements QueueWorker {
-  final RedisClient _redis;
-  bool _isRunning = false;
+  final IRedisClient _redis;
 
   RedisQueueWorker(this._redis);
 
   @override
   Future<void> start() async {
-    _isRunning = true;
+    // Redis worker started
   }
 
   @override
   Future<void> stop() async {
-    _isRunning = false;
+    // Redis worker stopped
   }
 
   @override

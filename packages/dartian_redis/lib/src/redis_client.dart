@@ -1,4 +1,5 @@
 import 'package:redis/redis.dart';
+import 'i_redis_client.dart';
 
 /// Redis connection manager for Dartian
 class RedisManager {
@@ -14,7 +15,7 @@ class RedisManager {
 }
 
 /// Redis client wrapper
-class RedisClient {
+class RedisClient implements IRedisClient {
   final String _host;
   final int _port;
   final String? _password;
