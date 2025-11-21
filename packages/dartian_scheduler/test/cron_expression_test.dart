@@ -80,6 +80,16 @@ void main() {
         expect(() => CronExpression.parse('10-5 * * * *'), throwsArgumentError);
         expect(() => CronExpression.parse('60-65 * * * *'), throwsArgumentError);
       });
+
+      test('should throw on invalid single value', () {
+        expect(() => CronExpression.parse('abc * * * *'), throwsArgumentError);
+        expect(() => CronExpression.parse('* xyz * * *'), throwsArgumentError);
+      });
+
+      test('should throw on invalid range format', () {
+        expect(() => CronExpression.parse('1-2-3 * * * *'), throwsArgumentError);
+        expect(() => CronExpression.parse('a-b * * * *'), throwsArgumentError);
+      });
     });
 
     group('matches', () {
@@ -175,11 +185,26 @@ void main() {
         expect(description, contains('09:00'));
       });
 
+      test('should describe every minute', () {
+        final cron = CronExpression.parse('* * * * *');
+        final description = cron.describe();
+
+        expect(description, contains('every minute'));
+        expect(description, contains('every hour'));
+      });
+
       test('should describe every 5 minutes', () {
         final cron = CronExpression.parse('*/5 * * * *');
         final description = cron.describe();
 
         expect(description, contains('minutes'));
+      });
+
+      test('should describe multiple hours', () {
+        final cron = CronExpression.parse('0 9,12,15,18,21 * * *');
+        final description = cron.describe();
+
+        expect(description, contains('during hours'));
       });
 
       test('should describe specific days of week', () {
@@ -189,11 +214,39 @@ void main() {
         expect(description, contains('Monday'));
       });
 
+      test('should describe single day of week', () {
+        final cron = CronExpression.parse('0 9 * * 1'); // Monday
+        final description = cron.describe();
+
+        expect(description, contains('on Monday'));
+      });
+
       test('should describe monthly schedule', () {
         final cron = CronExpression.parse('0 0 1 * *');
         final description = cron.describe();
 
         expect(description, contains('day 1'));
+      });
+
+      test('should describe multiple days of month', () {
+        final cron = CronExpression.parse('0 0 1,15,25,28 * *');
+        final description = cron.describe();
+
+        expect(description, contains('on days'));
+      });
+
+      test('should describe specific month', () {
+        final cron = CronExpression.parse('0 0 1 6 *'); // June 1st
+        final description = cron.describe();
+
+        expect(description, contains('in Jun'));
+      });
+
+      test('should describe multiple months', () {
+        final cron = CronExpression.parse('0 0 1 6,7,8 *'); // Summer months
+        final description = cron.describe();
+
+        expect(description, contains('in Jun'));
       });
     });
 
