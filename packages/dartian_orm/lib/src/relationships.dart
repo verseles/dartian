@@ -12,7 +12,7 @@ import 'package:drift/drift.dart';
 ///   );
 /// }
 /// ```
-class HasMany<TModel> {
+abstract class HasMany<TModel> {
   final DatabaseConnectionUser database;
   final TableInfo table;
   final String foreignKey;
@@ -28,15 +28,12 @@ class HasMany<TModel> {
   /// Get all related models
   Future<List<TModel>> get() async {
     final query = database.select(table)
-      ..where((tbl) => _buildForeignKeyCondition(tbl));
+      ..where((tbl) => buildForeignKeyCondition(tbl));
     return (await query.get()).cast<TModel>();
   }
 
   /// Build the foreign key condition
-  Expression<bool> _buildForeignKeyCondition(dynamic tbl) {
-    throw UnimplementedError(
-        'HasMany requires table-specific implementation');
-  }
+  Expression<bool> buildForeignKeyCondition(dynamic tbl);
 }
 
 /// Represents a many-to-one relationship
@@ -50,7 +47,7 @@ class HasMany<TModel> {
 ///   );
 /// }
 /// ```
-class BelongsTo<TModel> {
+abstract class BelongsTo<TModel> {
   final DatabaseConnectionUser database;
   final TableInfo table;
   final dynamic foreignKey;
@@ -66,17 +63,14 @@ class BelongsTo<TModel> {
     if (foreignKey == null) return null;
 
     final query = database.select(table)
-      ..where((tbl) => _buildPrimaryKeyCondition(tbl))
+      ..where((tbl) => buildPrimaryKeyCondition(tbl))
       ..limit(1);
     final results = await query.get();
     return results.isEmpty ? null : results.first as TModel;
   }
 
   /// Build the primary key condition
-  Expression<bool> _buildPrimaryKeyCondition(dynamic tbl) {
-    throw UnimplementedError(
-        'BelongsTo requires table-specific implementation');
-  }
+  Expression<bool> buildPrimaryKeyCondition(dynamic tbl);
 }
 
 /// Represents a one-to-one relationship
@@ -91,7 +85,7 @@ class BelongsTo<TModel> {
 ///   );
 /// }
 /// ```
-class HasOne<TModel> {
+abstract class HasOne<TModel> {
   final DatabaseConnectionUser database;
   final TableInfo table;
   final String foreignKey;
@@ -107,17 +101,14 @@ class HasOne<TModel> {
   /// Get the related model
   Future<TModel?> get() async {
     final query = database.select(table)
-      ..where((tbl) => _buildForeignKeyCondition(tbl))
+      ..where((tbl) => buildForeignKeyCondition(tbl))
       ..limit(1);
     final results = await query.get();
     return results.isEmpty ? null : results.first as TModel;
   }
 
   /// Build the foreign key condition
-  Expression<bool> _buildForeignKeyCondition(dynamic tbl) {
-    throw UnimplementedError(
-        'HasOne requires table-specific implementation');
-  }
+  Expression<bool> buildForeignKeyCondition(dynamic tbl);
 }
 
 /// Represents a many-to-many relationship
@@ -134,7 +125,7 @@ class HasOne<TModel> {
 ///   );
 /// }
 /// ```
-class BelongsToMany<TModel> {
+abstract class BelongsToMany<TModel> {
   final DatabaseConnectionUser database;
   final TableInfo relatedTable;
   final TableInfo pivotTable;
@@ -156,22 +147,22 @@ class BelongsToMany<TModel> {
     // This requires a JOIN query which is more complex in Drift
     // For now, we'll fetch pivot records and then fetch related records
     final pivotQuery = database.select(pivotTable)
-      ..where((tbl) => _buildPivotCondition(tbl));
+      ..where((tbl) => buildPivotCondition(tbl));
     final pivotResults = await pivotQuery.get();
 
     if (pivotResults.isEmpty) return [];
 
     final relatedIds =
-        pivotResults.map((r) => _extractRelatedId(r)).toList();
+        pivotResults.map((r) => extractRelatedId(r)).toList();
     final relatedQuery = database.select(relatedTable)
-      ..where((tbl) => _buildRelatedIdsCondition(tbl, relatedIds));
+      ..where((tbl) => buildRelatedIdsCondition(tbl, relatedIds));
 
     return (await relatedQuery.get()).cast<TModel>();
   }
 
   /// Attach a related model (create pivot record)
   Future<void> attach(dynamic relatedId) async {
-    final companion = _buildPivotCompanion(localKey, relatedId);
+    final companion = buildPivotCompanion(localKey, relatedId);
     await database.into(pivotTable).insert(companion);
   }
 
@@ -179,7 +170,7 @@ class BelongsToMany<TModel> {
   Future<void> detach(dynamic relatedId) async {
     await (database.delete(pivotTable)
           ..where((tbl) =>
-              _buildPivotDeleteCondition(tbl, localKey, relatedId)))
+              buildPivotDeleteCondition(tbl, localKey, relatedId)))
         .go();
   }
 
@@ -187,7 +178,7 @@ class BelongsToMany<TModel> {
   Future<void> sync(List<dynamic> relatedIds) async {
     // Delete all existing pivot records
     await (database.delete(pivotTable)
-          ..where((tbl) => _buildPivotCondition(tbl)))
+          ..where((tbl) => buildPivotCondition(tbl)))
         .go();
 
     // Insert new pivot records
@@ -197,34 +188,19 @@ class BelongsToMany<TModel> {
   }
 
   /// Build the pivot table condition for local key
-  Expression<bool> _buildPivotCondition(dynamic tbl) {
-    throw UnimplementedError(
-        'BelongsToMany requires table-specific implementation');
-  }
+  Expression<bool> buildPivotCondition(dynamic tbl);
 
   /// Build condition for related IDs
-  Expression<bool> _buildRelatedIdsCondition(
-      dynamic tbl, List<dynamic> ids) {
-    throw UnimplementedError(
-        'BelongsToMany requires table-specific implementation');
-  }
+  Expression<bool> buildRelatedIdsCondition(
+      dynamic tbl, List<dynamic> ids);
 
   /// Extract related ID from pivot record
-  dynamic _extractRelatedId(dynamic record) {
-    throw UnimplementedError(
-        'BelongsToMany requires table-specific implementation');
-  }
+  dynamic extractRelatedId(dynamic record);
 
   /// Build pivot companion for insert
-  UpdateCompanion _buildPivotCompanion(dynamic localId, dynamic relatedId) {
-    throw UnimplementedError(
-        'BelongsToMany requires table-specific implementation');
-  }
+  UpdateCompanion buildPivotCompanion(dynamic localId, dynamic relatedId);
 
   /// Build pivot delete condition
-  Expression<bool> _buildPivotDeleteCondition(
-      dynamic tbl, dynamic localId, dynamic relatedId) {
-    throw UnimplementedError(
-        'BelongsToMany requires table-specific implementation');
-  }
+  Expression<bool> buildPivotDeleteCondition(
+      dynamic tbl, dynamic localId, dynamic relatedId);
 }

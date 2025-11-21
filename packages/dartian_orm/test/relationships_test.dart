@@ -13,7 +13,7 @@ class UserPostsRelation extends HasMany<Post> {
   });
 
   @override
-  Expression<bool> _buildForeignKeyCondition(dynamic tbl) {
+  Expression<bool> buildForeignKeyCondition(dynamic tbl) {
     return (tbl as Posts).userId.equals(localKey as int);
   }
 }
@@ -27,7 +27,7 @@ class PostUserRelation extends BelongsTo<User> {
   });
 
   @override
-  Expression<bool> _buildPrimaryKeyCondition(dynamic tbl) {
+  Expression<bool> buildPrimaryKeyCondition(dynamic tbl) {
     return (tbl as Users).id.equals(foreignKey as int);
   }
 }
@@ -42,7 +42,7 @@ class UserProfileRelation extends HasOne<Profile> {
   });
 
   @override
-  Expression<bool> _buildForeignKeyCondition(dynamic tbl) {
+  Expression<bool> buildForeignKeyCondition(dynamic tbl) {
     return (tbl as Profiles).userId.equals(localKey as int);
   }
 }
@@ -59,22 +59,22 @@ class UserRolesRelation extends BelongsToMany<Role> {
   });
 
   @override
-  Expression<bool> _buildPivotCondition(dynamic tbl) {
+  Expression<bool> buildPivotCondition(dynamic tbl) {
     return (tbl as UserRoles).userId.equals(localKey as int);
   }
 
   @override
-  Expression<bool> _buildRelatedIdsCondition(dynamic tbl, List ids) {
+  Expression<bool> buildRelatedIdsCondition(dynamic tbl, List ids) {
     return (tbl as Roles).id.isIn(ids.cast<int>());
   }
 
   @override
-  dynamic _extractRelatedId(dynamic record) {
+  dynamic extractRelatedId(dynamic record) {
     return (record as UserRole).roleId;
   }
 
   @override
-  UpdateCompanion _buildPivotCompanion(dynamic localId, dynamic relatedId) {
+  UpdateCompanion buildPivotCompanion(dynamic localId, dynamic relatedId) {
     return UserRolesCompanion.insert(
       userId: localId as int,
       roleId: relatedId as int,
@@ -82,7 +82,7 @@ class UserRolesRelation extends BelongsToMany<Role> {
   }
 
   @override
-  Expression<bool> _buildPivotDeleteCondition(
+  Expression<bool> buildPivotDeleteCondition(
       dynamic tbl, dynamic localId, dynamic relatedId) {
     final t = tbl as UserRoles;
     return t.userId.equals(localId as int) & t.roleId.equals(relatedId as int);
