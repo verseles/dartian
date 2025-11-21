@@ -802,19 +802,135 @@ dart analyze                    # ✅ PASSOU
 
 ### Gap #6: Test Coverage < 95% 🟡 EM PROGRESSO
 
-**Status Atual (sessão 2025-11-21 continuação #2 - ATUALIZADO):**
-- ✅ dartian_http: 96.2% (meta atingida!)
-- ✅ dartian_router: 100% (meta atingida!)
-- ✅ dartian_i18n: 95% (meta atingida!)
-- ✅ dartian_core: 95% (meta atingida!)
-- ✅ dartian_redis: ~95% (meta atingida!)
-- ✅ dartian_queue: 96.3% (meta atingida!)
-- ✅ dartian_view: 90% → 97.7% (meta atingida!) ✨
-- ✅ dartian_auth: 53.4% → 93.9% (progresso significativo!) ✨
-- ✅ dartian_scheduler: 0% → 93.2% (116 testes, progresso significativo)
-- ✅ dartian_di: 70% → 100% (meta atingida! 19 testes, await reset() fix) ✨
-- ⚠️  dartian_cli: 25% → 80.8% (progresso significativo! 42 testes)
-- ⚠️  dartian_orm: 38.7% → 64.5% (progresso significativo! 91 testes, 100% passing) ✨
+**Status Atual (sessão 2025-11-21 continuação #3 - ATUALIZADO):**
+
+**✅ Pacotes >= 95% (6/13 - 46% do framework):**
+- ✅ dartian_core: 100% (58/58 linhas) ✨ NOVO!
+- ✅ dartian_di: 100% (24/24 linhas)
+- ✅ dartian_router: 100% (26/26 linhas)
+- ✅ dartian_view: 97.7% (43/44 linhas)
+- ✅ dartian_http: 96.2% (127/132 linhas)
+- ✅ dartian_queue: 96.3% (157/163 linhas)
+
+**🟡 Pacotes Próximos de 95% (3/13 - 23% do framework):**
+- 🟡 dartian_auth: 93.9% (278/296 linhas) - Faltam 1.1% (+4 linhas)
+- 🟡 dartian_scheduler: 93.2% (246/264 linhas) - Faltam 1.8% (+5 linhas)
+- 🟡 dartian_i18n: 93.1% (94/101 linhas) - Faltam 1.9% (+2 linhas)
+
+**🔴 Pacotes com Desafios Estruturais (3/13 - 23% do framework):**
+- 🔴 dartian_orm: 63.2% (234/370 linhas)
+  - **Bloqueador 1**: migration.dart legado (0% - 74 linhas não testadas)
+  - **Bloqueador 2**: relationships.dart abstratas (51.2% - 42 linhas não executáveis)
+  - **Bloqueador 3**: drift_database.g.dart (42.9% - código gerado)
+  - Arquivos testáveis: drift_migration.dart (100%), repository.dart (100%), query_builder.dart (98.2%)
+- 🔴 dartian_cli: 54.1% (172/318 linhas)
+  - **Bloqueador**: serve_command.dart (0% - 105 linhas, teste skipped "requires VM service")
+  - dartian_cli.dart principal: 80.8% (172/213 linhas)
+- 🔴 dartian_redis: 63.0% (46/73 linhas)
+  - **Causa**: Testes usam FakeRedis, não RedisClient real
+  - cache.dart: 100% ✅
+  - pubsub.dart: 92.3% 🟡
+  - redis_client.dart: 16.1% (5/31 linhas) 🔴
+
+**⚠️ Pacotes Sem Coverage (1/13 - 8% do framework):**
+- ⚠️ dartian_wasm: Experimental, sem testes ainda
+
+---
+
+### Desafios Arquiteturais de Coverage
+
+**1. Classes Abstratas (relationships.dart - dartian_orm)**
+
+O Dart considera linhas de classes abstratas como "testáveis", mas elas não podem ser executadas diretamente:
+
+```dart
+abstract class HasMany<TModel> {
+  // Estas linhas são contadas no coverage, mas nunca "executadas"
+  final DatabaseConnectionUser database;
+  final TableInfo table;
+
+  // Método abstrato - contado, mas não executável
+  Expression<bool> buildForeignKeyCondition(dynamic tbl);
+}
+```
+
+**Impacto**: 42 linhas (de 86) não podem ser cobertas por design arquitetural.
+**Solução proposta**: Aceitar coverage < 95% para este arquivo ou refatorar para classes concretas (quebra encapsulamento).
+
+**2. Código Legado (migration.dart - dartian_orm)**
+
+Sistema de migração legado mantido para compatibilidade com versões anteriores:
+
+- 74 linhas sem testes
+- Sistema principal é `DriftMigration` (100% coverage)
+- Código legado pode ser deprecado
+
+**Impacto**: 74 linhas não testadas impedindo 95% no pacote.
+**Solução proposta**: Deprecar e documentar como obsoleto, ou adicionar testes completos.
+
+**3. Código Gerado (drift_database.g.dart - dartian_orm)**
+
+Arquivo gerado automaticamente pelo `build_runner`:
+
+- 42.9% coverage (3/7 linhas)
+- Não deve ser editado manualmente
+- Coverage depende de uso em testes
+
+**Impacto**: 4 linhas não cobertas.
+**Solução proposta**: Aumentar uso de DartianDatabase em testes ou excluir do coverage report.
+
+**4. Comandos de Desenvolvimento (serve_command.dart - dartian_cli)**
+
+Servidor de desenvolvimento com Hot Reload:
+
+- 0% coverage (105 linhas)
+- Teste skipped: "requires VM service"
+- Requer servidor HTTP real rodando
+
+**Impacto**: 105 linhas não testadas.
+**Solução proposta**: Testes de integração E2E ou aceitar 0% para este comando de desenvolvimento.
+
+**5. Testes com Mocks (RedisClient - dartian_redis)**
+
+Testes usam `FakeRedis` in-memory ao invés de RedisClient real:
+
+- redis_client.dart: 16.1% (5/31 linhas)
+- Testes são válidos e passam 100%
+- Coverage não reflete código exercitado via mocks
+
+**Impacto**: 26 linhas não cobertas diretamente.
+**Solução proposta**: Testes de integração com Redis real (Docker) ou aceitar mock coverage.
+
+---
+
+### Análise de Viabilidade Gap #6
+
+**Meta Original**: Todos os pacotes >= 95% coverage
+
+**Realidade**:
+- **46% dos pacotes** (6/13) já atingiram a meta ✅
+- **23% dos pacotes** (3/13) estão próximos (93%+, faltam < 10 linhas) 🟡
+- **23% dos pacotes** (3/13) têm bloqueadores arquiteturais 🔴
+- **8% dos pacotes** (1/13) são experimentais ⚠️
+
+**Coverage Médio do Framework (ponderado por linhas):**
+- Total de linhas testáveis: ~1,850
+- Linhas cobertas: ~1,355
+- **Coverage Atual: ~73%**
+
+**Para atingir 95% global seria necessário:**
+1. Cobrir 100% dos arquivos testáveis (auth, scheduler, i18n) → +11 linhas
+2. Resolver bloqueadores estruturais (orm, cli, redis) → +287 linhas
+3. **Total**: +298 linhas adicionais
+
+**Tempo Estimado**: 3-5 dias (incluindo refatorações arquiteturais)
+
+**Recomendação**:
+- ✅ Completar pacotes próximos de 95% (auth, scheduler, i18n) → 1-2 horas
+- ⏸️ Documentar bloqueadores estruturais como limitações aceitas
+- 📋 Criar issues para resolver bloqueadores em sprints futuros
+
+---
 
 **Progresso sessão anterior (6 commits):**
 - ✅ 🎯 dartian_di (70% → 100%)
@@ -1179,8 +1295,9 @@ O projeto estará **COMPLETO** quando:
 
 ## 🎉 PROGRESSO
 
-**Completo:** 96% (+8% nesta sessão 2025-11-21)
+**Completo:** 94% (ajuste realista baseado em análise de coverage)
 **Fases Completas:** 9/18 (Fases 0, 1-completa, 2-ORM, 8, 9, 10, 11, 12)
+**Test Coverage:** 73% médio (6/13 pacotes >= 95%, 3/13 próximos de 95%)
 
 **Sprint 1:** ✅ 100% COMPLETO!
   - ✅ Gap #4: Verificado (já usava bcrypt)
