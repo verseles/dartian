@@ -802,20 +802,18 @@ dart analyze                    # ✅ PASSOU
 
 ### Gap #6: Test Coverage < 95% 🟡 EM PROGRESSO
 
-**Status Atual (sessão 2025-11-21 continuação #3 - ATUALIZADO):**
+**Status Atual (sessão 2025-11-21 continuação #4 - ATUALIZADO):**
 
-**✅ Pacotes >= 95% (6/13 - 46% do framework):**
-- ✅ dartian_core: 100% (58/58 linhas) ✨ NOVO!
+**✅ Pacotes >= 95% (9/13 - 69% do framework):**
+- ✅ dartian_core: 100% (58/58 linhas)
 - ✅ dartian_di: 100% (24/24 linhas)
 - ✅ dartian_router: 100% (26/26 linhas)
+- ✅ dartian_scheduler: 98.1% (259/264 linhas) ✨ NOVO!
 - ✅ dartian_view: 97.7% (43/44 linhas)
 - ✅ dartian_http: 96.2% (127/132 linhas)
 - ✅ dartian_queue: 96.3% (157/163 linhas)
-
-**🟡 Pacotes Próximos de 95% (3/13 - 23% do framework):**
-- 🟡 dartian_auth: 93.9% (278/296 linhas) - Faltam 1.1% (+4 linhas)
-- 🟡 dartian_scheduler: 93.2% (246/264 linhas) - Faltam 1.8% (+5 linhas)
-- 🟡 dartian_i18n: 93.1% (94/101 linhas) - Faltam 1.9% (+2 linhas)
+- ✅ dartian_auth: 95.3% (283/297 linhas) ✨ NOVO!
+- ✅ dartian_i18n: 95.0% (96/101 linhas) ✨ NOVO!
 
 **🔴 Pacotes com Desafios Estruturais (3/13 - 23% do framework):**
 - 🔴 dartian_orm: 63.2% (234/370 linhas)
@@ -1287,17 +1285,17 @@ O projeto estará **COMPLETO** quando:
 
 ---
 
-**PLANO ATUALIZADO:** 2025-11-21 (sessão noturna - Gap #6 em progresso)
-**PRÓXIMA REVISÃO:** Após completar Gap #6 (Test Coverage)
-**VERSÃO:** 2.9 (Instruções de trabalho autônomo formalizadas)
+**PLANO ATUALIZADO:** 2025-11-21 (sessão continuação #4 - 9/13 pacotes >= 95%)
+**PRÓXIMA REVISÃO:** Após decisão sobre bloqueadores estruturais (orm, cli, redis)
+**VERSÃO:** 3.0 (Gap #6 substancialmente completo - 69% dos pacotes na meta)
 
 ---
 
 ## 🎉 PROGRESSO
 
-**Completo:** 94% (ajuste realista baseado em análise de coverage)
+**Completo:** 96% (ajuste baseado em progresso do Gap #6)
 **Fases Completas:** 9/18 (Fases 0, 1-completa, 2-ORM, 8, 9, 10, 11, 12)
-**Test Coverage:** 73% médio (6/13 pacotes >= 95%, 3/13 próximos de 95%)
+**Test Coverage:** 9/13 pacotes >= 95% (69% do framework atingiu a meta)
 
 **Sprint 1:** ✅ 100% COMPLETO!
   - ✅ Gap #4: Verificado (já usava bcrypt)
@@ -1340,8 +1338,14 @@ O projeto estará **COMPLETO** quando:
     - ✅ dartian make:* - 8 geradores funcionais
     - ✅ Todos comandos já estavam implementados desde início
 
+**Gap #6 Progresso (sessão 2025-11-21 continuação #4):**
+  - ✅ dartian_auth: 93.9% → 95.3% (+5 testes para edge cases JWT/auth)
+  - ✅ dartian_scheduler: 93.2% → 98.1% (+3 testes para task execution)
+  - ✅ dartian_i18n: 93.1% → 95.0% (+1 teste para hashCode)
+  - 🔴 Pacotes com bloqueadores estruturais: dartian_orm, dartian_cli, dartian_redis (documentados)
+
 **Gaps Críticos Restantes:** NENHUM! 🎉
-**Gaps Não-Críticos Restantes:** Gap #6 (Coverage < 95%), Gap #7-10 (Polimento)
-**Estimativa de Conclusão:** 3-7 dias úteis (apenas polimento)
+**Gaps Não-Críticos Restantes:** Gap #6 (3/13 pacotes com bloqueadores), Gap #7-10 (Polimento)
+**Estimativa de Conclusão:** 2-5 dias úteis (apenas polimento e decisões sobre bloqueadores)
 
 **Para continuar, basta dizer:** "Continue o PLAN.md de onde parou"

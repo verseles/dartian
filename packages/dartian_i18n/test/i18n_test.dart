@@ -262,5 +262,15 @@ void main() {
       final locale = Locale('pt_BR');
       expect(locale.toString(), equals('pt_BR'));
     });
+
+    test('should have consistent hashCode', () {
+      final locale1 = Locale('en');
+      final locale2 = Locale('en');
+      final locale3 = Locale('pt');
+
+      expect(locale1.hashCode, equals(locale2.hashCode));
+      expect(locale1.hashCode, isNot(equals(locale3.hashCode)));
+    });
   });
+
 }

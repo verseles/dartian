@@ -213,6 +213,17 @@ void main() {
       expect(result.user!['username'], equals('testuser'));
     });
 
+    test('should reject registration with empty username', () async {
+      final result = await authManager.register(
+        username: '',
+        email: 'test@example.com',
+        password: 'password123',
+      );
+
+      expect(result.success, isFalse);
+      expect(result.message, contains('Username is required'));
+    });
+
     test('should reject registration with invalid email', () async {
       final result = await authManager.register(
         username: 'testuser',
@@ -341,6 +352,20 @@ void main() {
       expect(result.data!['reset_token'], isNotNull);
     });
 
+    test('should reject password reset token for invalid email', () async {
+      final result = await authManager.generatePasswordResetToken('invalidemail');
+
+      expect(result.success, isFalse);
+      expect(result.message, contains('Valid email is required'));
+    });
+
+    test('should reject refresh with invalid token', () async {
+      final result = await authManager.refreshToken('invalid-token');
+
+      expect(result.success, isFalse);
+      expect(result.message, contains('Invalid token'));
+    });
+
     test('should reset password', () async {
       final result = await authManager.resetPassword(
         email: 'test@example.com',
@@ -350,6 +375,17 @@ void main() {
 
       expect(result.success, isTrue);
       expect(result.message, equals('Password reset successful'));
+    });
+
+    test('should reject reset password with weak password', () async {
+      final result = await authManager.resetPassword(
+        email: 'test@example.com',
+        resetToken: 'reset123',
+        newPassword: 'short',
+      );
+
+      expect(result.success, isFalse);
+      expect(result.message, contains('New password must be at least 8 characters'));
     });
   });
 

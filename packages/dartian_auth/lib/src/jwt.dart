@@ -89,7 +89,9 @@ class JWT {
       final exp = payload['exp'] as int?;
       if (exp != null) {
         final expiry = DateTime.fromMillisecondsSinceEpoch(exp * 1000);
-        if (DateTime.now().isAfter(expiry)) {
+        // Use isAfter OR equals for edge case when expiry equals now
+        final now = DateTime.now();
+        if (now.isAfter(expiry) || now.millisecondsSinceEpoch >= expiry.millisecondsSinceEpoch) {
           return null;
         }
       }
