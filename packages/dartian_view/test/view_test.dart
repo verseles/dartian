@@ -155,6 +155,40 @@ void main() {
       );
     });
 
+    test('should support template path with .mustache extension', () {
+      // Create a test template
+      File('resources/views/explicit.mustache')
+        ..writeAsStringSync('<p>{{text}}</p>');
+
+      final view = View(
+        templatePath: 'explicit.mustache',
+        data: {
+          'text': 'Explicit extension',
+        },
+      );
+
+      final result = view.render();
+
+      expect(result, contains('Explicit extension'));
+    });
+
+    test('should support i18n translation through data', () {
+      // Create a test template
+      File('resources/views/i18n_test.mustache')
+        ..writeAsStringSync('<p>{{welcome_message}}</p>');
+
+      final view = View(
+        templatePath: 'i18n_test',
+        data: {
+          'welcome_message': 'Welcome',  // In real usage, this would come from i18n
+        },
+      );
+
+      final result = view.render();
+
+      expect(result, contains('Welcome'));
+    });
+
     test('should render to response with status 200', () {
       // Create a test template
       File('resources/views/response.mustache')
@@ -243,6 +277,37 @@ void main() {
       );
 
       expect(response.statusCode, equals(404));
+    });
+
+    test('should use render helper function', () {
+      // Create a test template
+      File('resources/views/render_helper.mustache')
+        ..writeAsStringSync('<p>{{message}}</p>');
+
+      final view = View(
+        templatePath: 'render_helper',
+        data: {'message': 'Using render helper'},
+      );
+
+      final response = render(view);
+
+      expect(response.statusCode, equals(200));
+      expect(response.headers['Content-Type'], contains('text/html'));
+    });
+
+    test('should use render helper with custom status', () {
+      // Create a test template
+      File('resources/views/render_error.mustache')
+        ..writeAsStringSync('<p>Error</p>');
+
+      final view = View(
+        templatePath: 'render_error',
+        data: {},
+      );
+
+      final response = render(view, status: 500);
+
+      expect(response.statusCode, equals(500));
     });
   });
 
