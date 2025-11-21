@@ -1059,22 +1059,93 @@ O projeto estará **COMPLETO** quando:
 
 ---
 
-## 📝 NOTAS IMPORTANTES
+## 📝 INSTRUÇÕES DE TRABALHO AUTÔNOMO
+
+### 🎯 Fluxo de Trabalho Principal
+
+**IMPORTANTE:** Quando o usuário pedir para "continuar o PLAN.md de forma autônoma":
+
+1. **Trabalhe até esgotar os créditos da API** (renovam a cada 5 horas)
+2. **Commit após cada etapa concluída do todo-list**
+3. **Push após concluir um gap completo** (etapa maior)
+4. **Atualize o PLAN.md após cada etapa** - crucial para continuidade entre sessões
+5. **Continue avançando automaticamente** - não espere aprovação entre tarefas
+6. **Garanta segurança/qualidade** antes de avançar
+
+### 📋 Gerenciamento de Tarefas
+
+- **Use TodoWrite proativamente** para planejar e rastrear progresso
+- **Marque tarefas como completed IMEDIATAMENTE** após conclusão
+- **Apenas UMA tarefa in_progress por vez**
+- **Adapte o todo dinamicamente** conforme surgem novas demandas
+
+### 💾 Commits e Versionamento
 
 - **Branch:** Trabalhe sempre na `main` (sem feature branches)
-- **Commits:** Frequentes, após cada validação passar
-- **Podman:** NUNCA use docker/docker-compose
-- **CI:** Monitor com `gh run view` após cada push
-- **Notificações:** Use `play_notification` ao completar CADA etapa
-- **Autonomia:** Liberdade total para adaptar conforme necessário
-- **Pesquisa:** Sempre genérico → específico
-- **Validação:** NUNCA commite sem `dart test` e `dart analyze` passarem
+- **Frequência:** Commit após cada etapa concluída (granular)
+- **Push:** Apenas após concluir gap completo (agregado)
+- **Mensagem:** Use conventional commits (`feat:`, `test:`, `fix:`, `docs:`)
+- **Co-autores:** NUNCA adicione co-autores (nem Claude)
+- **Validação obrigatória:** `dart test` + `dart analyze` devem passar ANTES do commit
+
+### 🔍 Estratégia de Pesquisa e Solução de Problemas
+
+1. **Erros:** SEMPRE pesquise na internet (brave-search) antes de tentar solução
+2. **Abordagem:** Genérico → Específico
+   - ❌ "laravel code coverage pcov null postgres docker compose error"
+   - ✅ "laravel code coverage common errors"
+3. **Ferramentas disponíveis:**
+   - `brave-search` ou `WebSearch`: Pesquisa web (intervalo de 60s entre buscas)
+   - `WebFetch`: Download de documentação oficial
+   - `context7`: Busca em documentação específica de bibliotecas
+4. **Limite de tentativas:** Se 3 abordagens falharem, brainstorm alternativas
+
+### 🐳 Containers e Ambiente
+
+- **CRUCIAL:** Use `podman` e `podman-compose` (NUNCA docker/docker-compose)
+- **Verificação:** Sempre consulte `docker-compose.yml` e `Makefile` antes de iniciar tarefa
+- **Sistema:** Arch Linux com `paru` como package manager
+
+### 🔔 Notificações e Comunicação
+
+- **Ao finalizar tarefas:** Chame `mcp__notifications__play_notification` ANTES da última ação
+- **Ao precisar de atenção:** Use a notificação para chamar o usuário
+- **Progresso:** Mantenha todo-list atualizado para visibilidade
+
+### ✅ Validação de Código
+
+- **TypeScript:** Se projeto usa TS, rode `tsc` antes de concluir/avançar
+- **ESLint:** Verifique erros de lint igualmente
+- **Testes:** `dart test` obrigatório
+- **Análise estática:** `dart analyze` obrigatório
+- **CI/CD:** Monitore com `gh run view` após push
+
+### 🔄 Continuidade Entre Sessões
+
+**Quando créditos esgotarem:**
+1. Todo trabalho em staging será descartado
+2. PLAN.md atualizado é essencial para retomar
+3. Commits frequentes preservam progresso
+4. Aprendizados relevantes devem estar documentados no PLAN
+
+### 🚀 Autonomia e Adaptação
+
+- **Liberdade total** para adaptar arquitetura conforme necessário
+- **Antes de mudanças grandes:** Brainstorm alternativas, pesar prós/contras
+- **Documente decisões** em mensagens de commit
+- **Priorize simplicidade** - evite over-engineering
+
+### 📦 Comandos Especiais
+
+- **"auto" ao final da frase:** Após fazer a tarefa com sucesso, faça commit resumido e push, depois chame notificação
+- **`gh` disponível:** CLI do GitHub autenticado
+- **repomix-output.xml:** Atualizado no início de cada sessão (se existir)
 
 ---
 
 **PLANO ATUALIZADO:** 2025-11-21 (sessão noturna - Gap #6 em progresso)
 **PRÓXIMA REVISÃO:** Após completar Gap #6 (Test Coverage)
-**VERSÃO:** 2.8 (Sprints 1, 2, 3, 4 COMPLETOS + Gap #6 parcial - 3 packages melhorados)
+**VERSÃO:** 2.9 (Instruções de trabalho autônomo formalizadas)
 
 ---
 
