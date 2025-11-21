@@ -1,0 +1,9 @@
+{
+  "elements": {},
+  "imports": [
+    "package:drift/drift.dart",
+    "package:test/test.dart",
+    "package:dartian_orm/dartian_orm.dart",
+    "asset:dartian_orm/test/test_database.dart"
+  ]
+}
