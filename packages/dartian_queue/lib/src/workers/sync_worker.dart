@@ -40,16 +40,14 @@ class SyncQueue implements Queue {
 
 /// Synchronous queue worker
 class SyncQueueWorker implements QueueWorker {
-  bool _isRunning = false;
-
   @override
   Future<void> start() async {
-    _isRunning = true;
+    // Sync worker started
   }
 
   @override
   Future<void> stop() async {
-    _isRunning = false;
+    // Sync worker stopped
   }
 
   @override

@@ -1,8 +1,9 @@
 import 'dart:async';
+import 'package:dartian_redis/dartian_redis.dart';
 
 /// Fake Redis client for testing queue operations
-/// Duck-typed to match RedisClient interface
-class FakeRedisClient {
+/// Implements IRedisClient interface
+class FakeRedisClient implements IRedisClient {
   final Map<String, String> _storage = {};
   final Map<String, List<String>> _lists = {};
   bool _isConnected = false;
