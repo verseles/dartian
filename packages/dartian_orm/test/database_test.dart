@@ -130,5 +130,46 @@ void main() {
       expect(results, isNotEmpty);
       expect(results.first['name'], 'O\'Brien');
     });
+
+    test('should query with LIMIT only', () {
+      // Insert multiple test records
+      for (var i = 1; i <= 5; i++) {
+        db.execute(
+          'INSERT INTO users (name, email) VALUES (?, ?)',
+          ['User$i', 'user$i@example.com'],
+        );
+      }
+
+      // Query with limit only
+      final results = db.query(
+        'SELECT * FROM users',
+        [],
+        limit: 3,
+      );
+
+      expect(results.length, 3);
+    });
+
+    test('should query with LIMIT and OFFSET', () {
+      // Insert multiple test records
+      for (var i = 1; i <= 5; i++) {
+        db.execute(
+          'INSERT INTO users (name, email) VALUES (?, ?)',
+          ['Paged$i', 'paged$i@example.com'],
+        );
+      }
+
+      // Query with limit and offset
+      final results = db.query(
+        'SELECT * FROM users WHERE name LIKE ?',
+        ['Paged%'],
+        limit: 2,
+        offset: 2,
+      );
+
+      expect(results.length, 2);
+      // With OFFSET 2, we skip first 2 results
+      expect(results.first['name'], 'Paged3');
+    });
   });
 }

@@ -209,6 +209,28 @@ void main() {
         final remaining = db.query('SELECT * FROM products WHERE category = ?', ['Furniture']);
         expect(remaining, isEmpty);
       });
+
+      test('should delete with multiple WHERE conditions', () {
+        // Insert another product to test multiple conditions
+        db.execute(
+          'INSERT INTO products (name, price, category) VALUES (?, ?, ?)',
+          ['Headphones', 149.99, 'Electronics'],
+        );
+
+        final result = queryBuilder
+            .delete()
+            .where('category = ?', ['Electronics'])
+            .where('price > ?', [100.0])
+            .execute();
+
+        // Should delete Laptop (999.99) and Headphones (149.99)
+        expect(result, equals(2));
+
+        // Verify only Mouse (29.99) remains in Electronics
+        final remaining = db.query('SELECT * FROM products WHERE category = ?', ['Electronics']);
+        expect(remaining.length, equals(1));
+        expect(remaining.first['name'], 'Mouse');
+      });
     });
   });
 }
