@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import 'package:dartian_orm/dartian_orm.dart';
+import 'package:dartian_orm/dartian_orm.dart' hide isNull, isNotNull;
 
 class User {
   final int? id;

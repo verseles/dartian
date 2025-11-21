@@ -1,0 +1,7 @@
+{
+  "elements": {},
+  "imports": [
+    "package:sqlite3/sqlite3.dart",
+    "package:path/path.dart"
+  ]
+}
