@@ -1,0 +1,7 @@
+{
+  "elements": {},
+  "imports": [
+    "package:test/test.dart",
+    "package:dartian_orm/dartian_orm.dart"
+  ]
+}

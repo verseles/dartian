@@ -1,0 +1,14 @@
+{
+  "elements": {},
+  "imports": [
+    "package:dartian_orm/src/database.dart",
+    "package:dartian_orm/src/repository.dart",
+    "package:dartian_orm/src/query_builder.dart",
+    "package:dartian_orm/src/drift_database.dart",
+    "package:dartian_orm/src/model.dart",
+    "package:dartian_orm/src/relationships.dart",
+    "package:dartian_orm/src/migration.dart",
+    "package:dartian_orm/src/drift_migration.dart",
+    "package:drift/drift.dart"
+  ]
+}
