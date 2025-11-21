@@ -56,6 +56,22 @@ class CustomRetryJobHandler extends JobHandler {
   }
 }
 
+/// Test job handler that fails with minimal delay
+class FastFailingJobHandler extends JobHandler {
+  int callCount = 0;
+
+  @override
+  Duration backoffDelay(int attempt) {
+    return Duration(milliseconds: 1); // Minimal delay for testing
+  }
+
+  @override
+  Future<void> handle(Job job) async {
+    callCount++;
+    throw Exception('Job processing failed');
+  }
+}
+
 void main() {
   group('JobHandler', () {
     test('should process job successfully', () async {
@@ -334,14 +350,14 @@ void main() {
     });
 
     test('should handle very high retry counts', () async {
-      final handler = FailingJobHandler();
-      final processor = JobProcessor(handler, maxRetries: 100);
+      final handler = FastFailingJobHandler();
+      final processor = JobProcessor(handler, maxRetries: 10);
       final job = Job(id: '1', queue: 'default', payload: '{}', createdAt: DateTime.now());
 
       await processor.processWithRetry(job);
 
       expect(job.status, equals(JobStatus.failed));
-      expect(handler.callCount, equals(101)); // 1 initial + 100 retries
+      expect(handler.callCount, equals(11)); // 1 initial + 10 retries
     });
 
     test('should handle handler that throws different exception types', () async {

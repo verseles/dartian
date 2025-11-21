@@ -268,7 +268,7 @@ void main() {
       manager = QueueManager(queue, worker);
     });
 
-    tearDown() async {
+    tearDown(() async {
       await manager.stop();
       await redis.close();
     });

@@ -1,12 +1,16 @@
 import 'dart:async';
 
 /// Fake Redis client for testing queue operations
+/// Duck-typed to match RedisClient interface
 class FakeRedisClient {
   final Map<String, String> _storage = {};
   final Map<String, List<String>> _lists = {};
   bool _isConnected = false;
 
-  FakeRedisClient(String host, {int port = 6379});
+  final String _host;
+  final int _port;
+
+  FakeRedisClient(this._host, {int port = 6379}) : _port = port;
 
   Future<void> connect() async {
     _isConnected = true;
@@ -41,8 +45,21 @@ class FakeRedisClient {
     return removed;
   }
 
-  /// Access to the underlying fake Redis client for list operations
-  FakeRedisLowLevelClient get client => FakeRedisLowLevelClient(this);
+  dynamic get client => FakeRedisLowLevelClient(this);
+
+  // Other RedisClient methods for compatibility
+  Future<bool> exists(String key) async => _storage.containsKey(key) || _lists.containsKey(key);
+
+  Future<void> expire(String key, Duration ttl) async {
+    // No-op for fake client
+  }
+
+  Future<int> ttl(String key) async {
+    // Return -1 (no expiration) for fake client
+    return -1;
+  }
+
+  Future<dynamic> sendCommand(List command) async => _handleListCommand(command[0].toString(), command.skip(1).toList());
 
   /// Internal method to handle list operations
   Future<dynamic> _handleListCommand(String command, List<dynamic> args) async {
