@@ -141,7 +141,7 @@ gh --version
 
 ---
 
-## 📋 STATUS DO PROJETO (Atualizado: 2025-11-08)
+## 📋 STATUS DO PROJETO (Atualizado: 2025-11-20)
 
 ### ✅ FASES COMPLETAS
 
@@ -156,18 +156,22 @@ gh --version
 - ✅ **Fase 11**: Deployment (85%) - AOT, Podman, WASM scripts
 - ✅ **Fase 12**: Geradores (80%) - Todos 8 funcionando
 
-### ✅ MELHORIAS RECENTES (Sessão 2025-11-08)
+### ✅ MELHORIAS RECENTES (Sessão 2025-11-20)
+
+- ✅ **Gap #1.2**: dartian_queue testes QUASE COMPLETO (~95%)
+  - ✅ **IsolateQueueWorker bugs corrigidos**: Comunicação entre isolates funcionando
+  - ✅ **74+ testes passando**: isolate_queue, job_handler, queue
+  - ✅ **FastFailingJobHandler**: Delay mínimo para testes rápidos
+  - ✅ **FakeRedisClient**: Duck-typing compatível com RedisClient
+  - ⚠️ Redis queue tests com warning (não bloqueante)
+
+### ✅ MELHORIAS ANTERIORES (Sessão 2025-11-08)
 
 - ✅ **Gap #4**: dartian_auth JÁ USAVA bcrypt (verificado, 33 testes passando)
 - ✅ **Gap #1.1**: dartian_redis testes completos (0% → ~95% coverage)
   - ✅ FakeRedis in-memory implementation para testes
   - ✅ 107 testes funcionais passando
   - ✅ Cobertura: conexão, operações básicas, TTL, increment/decrement, Pub/Sub
-- ⚠️ **Gap #1.2**: dartian_queue testes (em andamento, ~80% completo)
-  - ✅ JobHandler pattern com retry logic implementado
-  - ✅ Testes criados: job_handler, isolate_queue, redis_queue
-  - ✅ FakeRedisClient para testes de queue
-  - ⏳ Alguns testes isolate ainda falhando (precisa debug)
 
 ### ✅ MELHORIAS ANTERIORES (Sessão 2025-11-07)
 
@@ -183,12 +187,12 @@ gh --version
 
 ## 🔴 GAPS CRÍTICOS RESTANTES (Bloqueantes para Produção)
 
-### Gap #1: Redis e Queue SEM TESTES 🟡 PARCIALMENTE COMPLETO
+### Gap #1: Redis e Queue SEM TESTES ✅ QUASE COMPLETO
 
-**Pacotes:** dartian_redis ✅, dartian_queue ⚠️
-**Status:** dartian_redis COMPLETO (107 testes), dartian_queue 80% completo
-**Impacto:** MÉDIO - Redis pronto, Queue precisa finalizar testes isolate
-**Tempo restante:** 4-6 horas
+**Pacotes:** dartian_redis ✅, dartian_queue ✅
+**Status:** dartian_redis COMPLETO (107 testes), dartian_queue 95% completo (74+ testes)
+**Impacto:** BAIXO - Apenas queue:work CLI e coverage validation restantes
+**Tempo restante:** 2-3 horas
 
 **Tarefas:**
 
@@ -201,14 +205,16 @@ gh --version
    - ✅ Error handling completo
    - ✅ 107 testes passando, ~95% coverage
 
-2. ⚠️ **dartian_queue**: 80% COMPLETO
-   - ✅ SyncQueue tests (36 testes no queue_test.dart)
-   - ⚠️ IsolateQueue tests (criados mas alguns falhando)
-   - ✅ RedisQueue tests (com FakeRedisClient mock)
+2. ✅ **dartian_queue**: 95% COMPLETO
+   - ✅ SyncQueue tests (36 testes passando)
+   - ✅ IsolateQueue tests (9 testes passando)
+   - ✅ IsolateQueueWorker tests (8 testes passando)
+   - ✅ JobHandler tests (20+ testes passando)
+   - ⚠️ RedisQueue tests (1 warning não-bloqueante)
    - ✅ Job serialization/deserialization
    - ✅ Retry logic com backoff exponencial
    - ✅ Failed job handling
-   - ⏳ Precisa debug dos testes isolate e validação final
+   - ✅ 74+ testes totais passando
 
 3. ✅ **JobHandler pattern implementado**:
    ```dart
@@ -227,15 +233,15 @@ gh --version
 
 **Próximos passos:**
 ```bash
-# 1. Debugar testes isolate que estão falhando
-cd packages/dartian_queue && dart test test/isolate_queue_test.dart --chain-stack-traces
+# 1. ✅ COMPLETO - Testes isolate corrigidos (74+ passando)
 
-# 2. Validar coverage
+# 2. ⏳ Validar coverage >= 95%
+cd packages/dartian_queue
 dart test --coverage=coverage
 dart pub global run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --packages=.dart_tool/package_config.json --report-on=lib
 
-# 3. Implementar queue:work CLI command
-# 4. Commit final
+# 3. ⏳ Implementar queue:work CLI command
+# 4. ⏳ Commit final após validar coverage
 ```
 
 ---
@@ -605,14 +611,16 @@ jobs:
 
 Execute nesta ordem para máximo impacto:
 
-### Sprint 1: Segurança e Testes Críticos (3-4 dias) - ⚠️ 80% COMPLETO
+### Sprint 1: Segurança e Testes Críticos (3-4 dias) - ✅ 95% COMPLETO
 1. ✅ **Gap #4**: SHA-256 → bcrypt (VERIFICADO - já estava pronto)
-2. ⚠️ **Gap #1**: Redis + Queue testes (parcial)
+2. ✅ **Gap #1**: Redis + Queue testes (QUASE COMPLETO)
    - ✅ dartian_redis: COMPLETO (107 testes, ~95% coverage)
-   - ⚠️ dartian_queue: 80% completo (testes isolate precisam debug)
-3. ⏳ **Gap #6**: Coverage para 95% (PENDENTE - depende de completar Gap #1)
+   - ✅ dartian_queue: 95% completo (74+ testes passando, isolate bugs corrigidos)
+3. ⏳ **Gap #6**: Coverage para 95% (EM ANDAMENTO)
 
-**Próximo passo:** Finalizar Gap #1.2 (debug testes isolate + queue:work CLI)
+**Próximos passos:**
+- Validar coverage >= 95% em dartian_queue
+- Implementar queue:work CLI command
 
 ### Sprint 2: ORM Refactor (3-4 dias) - ⏳ PENDENTE
 4. ⏳ **Gap #2**: ORM → Drift (3-4 dias) 🔴
@@ -689,21 +697,22 @@ O projeto estará **COMPLETO** quando:
 
 ---
 
-**PLANO ATUALIZADO:** 2025-11-08
-**PRÓXIMA REVISÃO:** Após completar Sprint 1 (falta ~20%)
-**VERSÃO:** 2.1 (Atualizado com progresso Sprint 1 - Sessão 2025-11-08)
+**PLANO ATUALIZADO:** 2025-11-20
+**PRÓXIMA REVISÃO:** Após completar Sprint 1 (falta ~5%)
+**VERSÃO:** 2.2 (Atualizado com progresso Gap #1.2 - Sessão 2025-11-20)
 
 ---
 
 ## 🎉 PROGRESSO
 
-**Completo:** 82% (+4% nesta sessão)
+**Completo:** 85% (+3% nesta sessão)
 **Fases Completas:** 7/18 (Fases 0, 1-parcial, 8, 9, 10, 11, 12)
-**Sprint 1:** 80% completo
+**Sprint 1:** 95% completo
   - ✅ Gap #4: Verificado (já usava bcrypt)
   - ✅ Gap #1.1: dartian_redis completo (107 testes)
-  - ⚠️ Gap #1.2: dartian_queue 80% (falta debug isolate + CLI)
-**Gaps Críticos Restantes:** 5 (Gap #1 parcial, Gaps #2, #3, #5, #6)
-**Estimativa de Conclusão:** 14-18 dias úteis
+  - ✅ Gap #1.2: dartian_queue 95% completo (74+ testes, isolate bugs corrigidos)
+  - ⏳ Falta: coverage validation + queue:work CLI
+**Gaps Críticos Restantes:** 4 principais (Gaps #2, #3, #5, #6)
+**Estimativa de Conclusão:** 12-16 dias úteis
 
 **Para continuar, basta dizer:** "Continue o PLAN.md de onde parou"
