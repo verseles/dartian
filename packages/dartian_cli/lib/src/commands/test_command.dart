@@ -100,8 +100,15 @@ class TestCommand {
     final result = await Process.run(
       'dart',
       ['test', ...testArgs],
-      runInStdio: true,
     );
+
+    // Print output
+    if (result.stdout.toString().isNotEmpty) {
+      print(result.stdout);
+    }
+    if (result.stderr.toString().isNotEmpty) {
+      print(result.stderr);
+    }
 
     // Check result
     if (result.exitCode != 0) {

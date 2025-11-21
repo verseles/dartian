@@ -1,7 +1,11 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:watcher/watcher.dart';
+
 import 'package:args/args.dart';
+import 'package:dartian_http/dartian_http.dart';
+import 'package:hotreloader/hotreloader.dart';
+import 'package:shelf/shelf.dart';
+import 'package:watcher/watcher.dart';
 
 class ServeCommand {
   static const defaultHost = 'localhost';
@@ -14,7 +18,8 @@ class ServeCommand {
     'resources',
   ];
 
-  Process? _serverProcess;
+  HttpServer? _server;
+  HotReloader? _hotReloader;
   final List<DirectoryWatcher> _watchers = [];
   final List<StreamSubscription> _subscriptions = [];
   bool _isReloading = false;
@@ -67,10 +72,48 @@ class ServeCommand {
 
   Future<void> _startServer(String host, int port) async {
     try {
-      // For now, we'll create a simple placeholder server
-      // In a real implementation, this would start the actual HTTP server
+      // Initialize HotReloader for automatic code reload
+      _hotReloader = await HotReloader.create(
+        debounceInterval: const Duration(milliseconds: _reloadDebounceMs),
+        onAfterReload: (ctx) {
+          print('✅ Hot reload completed successfully');
+          print('');
+        },
+      );
+
+      // Create HTTP kernel with basic handler
+      final kernel = HttpKernel();
+
+      // Add a simple logging middleware
+      kernel.use((Handler handler) {
+        return (Request request) async {
+          final startTime = DateTime.now();
+          final response = await handler(request);
+          final duration = DateTime.now().difference(startTime);
+
+          print('[${startTime.toIso8601String()}] ${request.method} ${request.requestedUri.path} - ${response.statusCode} (${duration.inMilliseconds}ms)');
+
+          return response;
+        };
+      });
+
+      // Set default handler (returns welcome page for all routes)
+      // In a real app, this would load routes from routes/ directory
+      kernel.setHandler((Request request) {
+        return Response.ok(
+          '<h1>Dartian Development Server</h1> '
+          '<p>Server is running at http://$host:$port</p> '
+          '<p>Add your routes in the <code>routes/</code> directory.</p>',
+          headers: {'Content-Type': 'text/html'},
+        );
+      });
+
+      // Start the server
+      _server = await kernel.listen(host, port);
+
       print('✅ Server started successfully');
       print('💡 Ready for connections');
+      print('🔥 Hot reload enabled');
       print('');
     } catch (e) {
       print('❌ Error starting server: $e');
@@ -91,7 +134,7 @@ class ServeCommand {
         _watchers.add(watcher);
 
         final subscription = watcher.events.listen(
-          (event) => _handleFileChange(event),
+          _handleFileChange,
           onError: (error) {
             print('⚠️  Watcher error in $dirPath: $error');
           },
@@ -149,11 +192,16 @@ class ServeCommand {
       print('📝 File $eventType: $relativePath');
       print('🔄 Reloading server...');
 
-      // In a real implementation, this would use Dart VM service to hot reload
-      // For now, we'll simulate a reload
-      await Future.delayed(const Duration(milliseconds: 100));
+      // Trigger hot reload via HotReloader
+      if (_hotReloader != null) {
+        final startTime = DateTime.now();
+        await _hotReloader!.reloadCode();
+        final duration = DateTime.now().difference(startTime);
+        print('✅ Hot reload completed in ${duration.inMilliseconds}ms');
+      } else {
+        print('⚠️  HotReloader not initialized, skipping reload');
+      }
 
-      print('✅ Hot reload completed in ${DateTime.now().millisecondsSinceEpoch % 1000}ms');
       print('');
     } catch (e) {
       print('❌ Reload failed: $e');
@@ -185,10 +233,16 @@ class ServeCommand {
     _subscriptions.clear();
     _watchers.clear();
 
-    // Kill server process if running
-    if (_serverProcess != null) {
-      _serverProcess!.kill();
-      _serverProcess = null;
+    // Stop hot reloader
+    if (_hotReloader != null) {
+      await _hotReloader!.stop();
+      _hotReloader = null;
+    }
+
+    // Stop HTTP server
+    if (_server != null) {
+      await _server!.close(force: true);
+      _server = null;
     }
 
     print('✅ Cleanup completed');
