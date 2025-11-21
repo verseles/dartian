@@ -814,24 +814,50 @@ dart analyze                    # ✅ PASSOU
 - ✅ dartian_scheduler: 0% → 93.2% (116 testes, progresso significativo)
 - ✅ dartian_di: 70% → 100% (meta atingida! 19 testes, await reset() fix) ✨
 - ⚠️  dartian_cli: 25% → 80.8% (progresso significativo! 42 testes)
-- ⚠️  dartian_orm: 38.7% → 66.3% (progresso significativo! 88 testes) ✨
+- ⚠️  dartian_orm: 38.7% → 64.5% (progresso significativo! 91 testes, 100% passing) ✨
 
 **Progresso sessão anterior (6 commits):**
 - ✅ 🎯 dartian_di (70% → 100%)
 - ✅ 🎯 dartian_orm migrations (testes corrigidos, 54 → 88 testes)
 - ✅ 🎯 dartian_cli (25% → 80.8%, 42 testes)
 
-**Progresso nesta sessão (3 commits - 2025-11-21 continuação #2):**
-- ✅ 🎯 dartian_orm (38.7% → 66.3%):
+**Progresso nesta sessão (4 commits - 2025-11-21 continuação #3):**
+- ✅ 🎯 dartian_orm (38.7% → 64.5%):
   - model.dart: 0% → 87.8% (+11 testes ModelRepository e extensions)
   - drift_migration.dart: 76.2% → 100% (+3 testes: renameColumn, dropColumn)
   - drift_database.dart: 16% → 68% (+11 testes config, sqlite, memory, postgres)
-  - relationships.dart: 0% → 63.3% (testes parciais criados)
-  - 54 testes → 88 testes (+34 testes)
-  - Coverage total: 38.7% → 66.3% (+27.6%)
+  - relationships.dart: 0% → 53.3% (bugs corrigidos, arquitetura abstrata implementada) ✨
+    - **Fix crítico**: Transformadas classes concretas em abstratas (HasMany, BelongsTo, HasOne, BelongsToMany)
+    - **Fix crítico**: Métodos privados (_build*) renomeados para públicos (build*) para permitir sobrescrita
+    - **Resultado**: 80/91 testes falhando → 91/91 testes passando! 🎉
+  - 54 testes → 91 testes (+37 testes)
+  - Coverage total: 38.7% → 64.5% (+25.8%)
   - Scripts de análise: calculate_coverage.dart, analyze_coverage.dart
+  - Commit: e2f1ad0 "fix: Corrigir relationships abstratas"
 
-**Tempo:** 2-3 dias para atingir 95% nos packages restantes
+**Análise de Coverage por Arquivo (dartian_orm 64.5%):**
+```
+==========================================
+DARTIAN_ORM COVERAGE BY FILE
+==========================================
+🔴 migration.dart                   0.0%  (0/74)    - Sistema legado (mantido para compatibilidade)
+🔴 drift_database.g.dart           42.9%  (3/7)     - Código gerado
+🔴 relationships.dart              53.3%  (32/60)   - Arquitetura corrigida, precisa mais testes
+🔴 drift_database.dart             68.0%  (17/25)   - Config PostgreSQL não testada
+🟡 model.dart                      87.8%  (36/41)   - Quase na meta!
+🟡 database.dart                   93.1%  (27/29)   - Quase na meta!
+✅ query_builder.dart              98.2%  (56/57)
+✅ repository.dart                100.0%  (30/30)
+✅ drift_migration.dart           100.0%  (21/21)
+==========================================
+```
+
+**Próximos Passos (para atingir 95%):**
+- **Foco imediato**: Adicionar testes para relationships.dart (28 linhas) e drift_database.dart (8 linhas)
+- **Decisão técnica**: migration.dart legado (74 linhas sem testes) impede atingir 95% sem testes dedicados
+- **Alternativa**: Deprecar migration.dart legado e documentar como obsoleto (sistema principal é DriftMigration com 100% coverage)
+
+**Tempo:** 1-2 dias para atingir 95% (com testes de migration legado) ou 4-6 horas (focando apenas novo sistema)
 
 **Tarefas:**
 
