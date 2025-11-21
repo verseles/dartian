@@ -62,12 +62,14 @@ void main() {
       expect(migration.version, 2);
     });
 
-    test('migration down throws by default if not implemented', () {
+    test('migration down throws by default if not implemented', () async {
       final migration = TestMigrationV2();
+      final db = TestDatabaseV1();
       expect(
-        () async => await migration.down(null as Migrator, null as QueryExecutor),
+        migration.down(db.createMigrator(), db.executor),
         throwsUnimplementedError,
       );
+      await db.close();
     });
   });
 
@@ -83,17 +85,20 @@ void main() {
   });
 
   group('MigrationOperations', () {
+    late TestDatabaseV1 db;
     late QueryExecutor executor;
     late MigrationOperations ops;
 
-    setUp(() {
-      executor = NativeDatabase.memory();
-      final db = TestDatabaseV1();
+    setUp(() async {
+      db = TestDatabaseV1();
+      executor = db.executor;
       ops = MigrationOperations(db.createMigrator(), executor);
+      // Force database to open by executing a simple query
+      await db.customSelect('SELECT 1').get();
     });
 
     tearDown(() async {
-      await executor.close();
+      await db.close();
     });
 
     test('executes raw SQL', () async {
