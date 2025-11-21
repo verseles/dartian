@@ -802,7 +802,7 @@ dart analyze                    # ✅ PASSOU
 
 ### Gap #6: Test Coverage < 95% 🟡 EM PROGRESSO
 
-**Status Atual (sessão 2025-11-21 continuação - ATUALIZADO):**
+**Status Atual (sessão 2025-11-21 continuação #2 - ATUALIZADO):**
 - ✅ dartian_http: 96.2% (meta atingida!)
 - ✅ dartian_router: 100% (meta atingida!)
 - ✅ dartian_i18n: 95% (meta atingida!)
@@ -814,28 +814,22 @@ dart analyze                    # ✅ PASSOU
 - ✅ dartian_scheduler: 0% → 93.2% (116 testes, progresso significativo)
 - ✅ dartian_di: 70% → 100% (meta atingida! 19 testes, await reset() fix) ✨
 - ⚠️  dartian_cli: 25% → 80.8% (progresso significativo! 42 testes)
-- ⚠️  dartian_orm: 85% → 38.7% (migrations corrigidas, 54 testes passando)
+- ⚠️  dartian_orm: 38.7% → 66.3% (progresso significativo! 88 testes) ✨
 
-**Progresso nesta sessão (6 commits):**
-- ✅ 🎯 dartian_di (70% → 100%):
-  - Corrigir teste falhando "resets container" (await reset() necessário no GetIt)
-  - Adicionar teste para ServiceProvider.boot() padrão
-  - Adicionar teste para DIModule.providers() padrão
-  - 19 testes passando, 100% coverage (24/24 linhas)
+**Progresso sessão anterior (6 commits):**
+- ✅ 🎯 dartian_di (70% → 100%)
+- ✅ 🎯 dartian_orm migrations (testes corrigidos, 54 → 88 testes)
+- ✅ 🎯 dartian_cli (25% → 80.8%, 42 testes)
 
-- ✅ 🎯 dartian_orm migrations (85% → 38.7% total, testes corrigidos):
-  - Corrigir teste "migration down throws" (usar db válido, não null)
-  - Corrigir setUp de MigrationOperations (forçar abertura do database)
-  - 54 testes passando (antes: alguns falhavam)
-  - Faltam testes para: model.dart (0%), relationships.dart (0%), migration.dart (0%)
-
-- ✅ 🎯 dartian_cli (25% → 80.8% dartian_cli.dart):
-  - Criados 22 testes em dartian_cli_test.dart
-  - Testar routing de comandos (version, help, serve, new, etc.)
-  - Testar make subcommands (controller, model, migration, etc.)
-  - 42 testes passando (1 skipped)
-  - dartian_cli.dart: 172/213 linhas (80.8%)
-  - serve_command.dart: 0% (requer IO real, difícil testar)
+**Progresso nesta sessão (3 commits - 2025-11-21 continuação #2):**
+- ✅ 🎯 dartian_orm (38.7% → 66.3%):
+  - model.dart: 0% → 87.8% (+11 testes ModelRepository e extensions)
+  - drift_migration.dart: 76.2% → 100% (+3 testes: renameColumn, dropColumn)
+  - drift_database.dart: 16% → 68% (+11 testes config, sqlite, memory, postgres)
+  - relationships.dart: 0% → 63.3% (testes parciais criados)
+  - 54 testes → 88 testes (+34 testes)
+  - Coverage total: 38.7% → 66.3% (+27.6%)
+  - Scripts de análise: calculate_coverage.dart, analyze_coverage.dart
 
 **Tempo:** 2-3 dias para atingir 95% nos packages restantes
 
