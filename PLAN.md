@@ -800,23 +800,27 @@ dart analyze                    # ✅ PASSOU
 
 ---
 
-### Gap #6: Test Coverage < 95% 🟡 IMPORTANTE
+### Gap #6: Test Coverage < 95% 🟡 EM PROGRESSO
 
-**Status Atual (após melhorias):**
+**Status Atual (sessão 2025-11-21 continuação):**
 - ✅ dartian_http: 96.2% (meta atingida!)
 - ✅ dartian_router: 100% (meta atingida!)
 - ✅ dartian_i18n: 95% (meta atingida!)
 - ✅ dartian_core: 95% (meta atingida!)
-- ⚠️  dartian_cli: 21% → precisa 95%
-- ⚠️  dartian_di: 70% → precisa 95%
-- ⚠️  dartian_orm: 60% → precisa 95%
-- ❌ dartian_redis: 0% → precisa 95%
-- ❌ dartian_queue: 0% → precisa 95%
-- ⚠️  dartian_scheduler: 0% → precisa 95%
-- ⚠️  dartian_auth: 80% → precisa 95%
-- ⚠️  dartian_view: 90% → precisa 95%
+- ✅ dartian_redis: ~95% (meta atingida!)
+- ✅ dartian_queue: 96.3% (meta atingida!)
+- ✅ dartian_view: 90% → 97.7% (meta atingida!) ✨
+- ⚠️  dartian_scheduler: 0% → 89.4% (108 testes, progresso significativo)
+- ⚠️  dartian_cli: 25% → precisa 95%
+- ⚠️  dartian_di: 70% → precisa 95% (1 teste falhando)
+- ⚠️  dartian_orm: 85% → precisa 95% (testes falhando em migrations)
+- ⚠️  dartian_auth: 53% → precisa 95% (auth_middleware e guard sem testes)
 
-**Tempo:** 3-4 dias para atingir 95% em todos
+**Progresso nesta sessão:**
+- 🎯 dartian_scheduler: Criados 108 testes (scheduler, cron_expression, real_cron_scheduler, task, schedule_manager)
+- 🎯 dartian_view: Adicionados 4 testes (template paths, render helper), coverage 90% → 97.7%
+
+**Tempo:** 2-3 dias para atingir 95% nos packages restantes
 
 **Tarefas:**
 
@@ -1059,9 +1063,9 @@ O projeto estará **COMPLETO** quando:
 
 ---
 
-**PLANO ATUALIZADO:** 2025-11-21 (sessão noturna - continuação)
+**PLANO ATUALIZADO:** 2025-11-21 (sessão noturna - Gap #6 em progresso)
 **PRÓXIMA REVISÃO:** Após completar Gap #6 (Test Coverage)
-**VERSÃO:** 2.6 (Sprints 1, 2, 3 e 4 COMPLETOS - Sessão 2025-11-21)
+**VERSÃO:** 2.7 (Sprints 1, 2, 3, 4 COMPLETOS + Gap #6 parcial - Sessão 2025-11-21)
 
 ---
 
