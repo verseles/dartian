@@ -105,6 +105,34 @@ dartian build exe                        # Build AOT executable
 dartian build aot-snapshot               # Build AOT snapshot
 ```
 
+### PLAN.md Automation Scripts
+
+```bash
+# Setup Dart SDK (for restricted environments)
+./scripts/setup-dart.sh
+
+# Execute a complete gap workflow
+./scripts/execute-gap.sh dartian_orm
+
+# Validate gap completion before marking as done
+./scripts/validate-gap-complete.sh dartian_orm 2
+
+# Use gap completion template
+cat .claude/templates/gap-completion-template.md
+```
+
+**Gap Execution Workflow:**
+1. Run `./scripts/execute-gap.sh <package>` to:
+   - Install dependencies
+   - Run code generation (if needed)
+   - Run static analysis
+   - Run tests
+   - Check coverage
+2. Fix any issues found
+3. Run `./scripts/validate-gap-complete.sh <package> <gap_num>` to verify
+4. Use `.claude/templates/gap-completion-template.md` to update PLAN.md
+5. Commit and push changes
+
 ### Testing & Quality
 ```bash
 # Run tests for all packages

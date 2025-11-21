@@ -295,6 +295,71 @@ dart run <script> # onde script usa Directory.list()
 # Use echo $((expression)) ou crie script Dart simples
 ```
 
+**5. Drift ORM Import Conflicts (Gap #2 - 2025-11-21)**
+
+Drift exporta `isNull` e `isNotNull` que conflitam com matchers de teste:
+
+```dart
+// ✅ CORRETO - Use hide clause em testes
+import 'package:drift/drift.dart' hide isNull, isNotNull;
+import 'package:dartian_orm/dartian_orm.dart' hide isNull, isNotNull;
+```
+
+**6. Code Generation com Drift (Gap #2 - 2025-11-21)**
+
+Drift requer build_runner para gerar arquivos `.g.dart`:
+
+```bash
+# Sempre execute antes dos testes
+dart run build_runner build --delete-conflicting-outputs
+dart test
+```
+
+**Solução**: Scripts de automação em `scripts/execute-gap.sh` fazem isso automaticamente.
+
+---
+
+## 🤖 AUTOMAÇÃO DO PLANO
+
+### Scripts Disponíveis
+
+**1. Setup Dart SDK** (`scripts/setup-dart.sh`)
+- Detecta e instala Dart SDK em ambientes restritos
+- Instala coverage tool automaticamente
+- Configura PATH corretamente
+
+**2. Executar Gap** (`scripts/execute-gap.sh <package>`)
+- Workflow completo: dependencies → codegen → analyze → test → coverage
+- Exemplo: `./scripts/execute-gap.sh dartian_orm`
+
+**3. Validar Gap Completo** (`scripts/validate-gap-complete.sh <package> <gap_num>`)
+- Checklist automático de 7 verificações
+- Valida tests, analyze, formatting, dependencies, coverage, PLAN.md, commits
+- Exemplo: `./scripts/validate-gap-complete.sh dartian_orm 2`
+
+**4. Template de Conclusão** (`.claude/templates/gap-completion-template.md`)
+- Template padronizado para atualizar PLAN.md
+- Inclui checklist de validação
+- Formato consistente para documentação
+
+### Workflow Recomendado
+
+```bash
+# 1. Executar gap completo
+./scripts/execute-gap.sh dartian_orm
+
+# 2. Validar conclusão
+./scripts/validate-gap-complete.sh dartian_orm 2
+
+# 3. Usar template para atualizar PLAN.md
+cat .claude/templates/gap-completion-template.md
+
+# 4. Commit e push
+git add -A
+git commit -m "feat: Complete Gap #2 - Drift ORM"
+git push -u origin <branch>
+```
+
 ---
 
 ## ✅ CHECKLIST DE VALIDAÇÃO (Antes de Marcar Gap como Completo)
