@@ -1,7 +1,6 @@
 {
   "elements": {},
   "imports": [
-    "package:drift/drift.dart",
     "package:dartian_orm/src/database.dart"
   ]
 }

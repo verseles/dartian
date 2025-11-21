@@ -155,6 +155,24 @@ void main() {
       expect(result.length, 2);
       expect(result.any((col) => col['name'] == 'name'), true);
     });
+
+    test('renames column', () async {
+      await ops.raw('CREATE TABLE users (id INTEGER PRIMARY KEY, old_name TEXT)');
+      await ops.renameColumn('users', 'old_name', 'new_name');
+
+      final result = await executor.runSelect('PRAGMA table_info(users)', []);
+      expect(result.any((col) => col['name'] == 'new_name'), true);
+      expect(result.any((col) => col['name'] == 'old_name'), false);
+    });
+
+    test('drops column', () async {
+      await ops.raw('CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT, email TEXT)');
+      await ops.dropColumn('users', 'email');
+
+      final result = await executor.runSelect('PRAGMA table_info(users)', []);
+      expect(result.length, 2);
+      expect(result.any((col) => col['name'] == 'email'), false);
+    });
   });
 
   group('TestDatabase', () {
