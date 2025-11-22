@@ -607,7 +607,8 @@ git push -u origin <branch>                  # ✅ Push bem-sucedido
      - `addColumn()`, `renameColumn()`, `dropColumn()`
      - `createIndex()`, `dropIndex()` (com suporte a unique)
      - `raw()` para SQL customizado
-   - ✅ Migration legada mantida para compatibilidade
+   - ✅ Sistema legado (Migration, MigrationRunner) **REMOVIDO** - consolidado em DriftMigration only
+   - ✅ CLI make:migration gera templates DriftMigration
 
 **Validação:**
 ```bash
@@ -861,15 +862,17 @@ abstract class HasMany<TModel> {
 **Impacto**: 42 linhas (de 86) não podem ser cobertas por design arquitetural.
 **Solução proposta**: Aceitar coverage < 95% para este arquivo ou refatorar para classes concretas (quebra encapsulamento).
 
-**2. Código Legado (migration.dart - dartian_orm)** ✅ RESOLVIDO
+**2. Código Legado (migration.dart - dartian_orm)** ✅ RESOLVIDO E REMOVIDO
 
-Sistema de migração legado agora com cobertura completa:
+Sistema de migração legado foi **completamente removido** (sessão 2025-11-21):
 
-- ✅ 74 linhas testadas (100% coverage) - **Sessão 2025-11-21 cont. #5**
-- Sistema legado mantido para compatibilidade
-- 24 novos testes adicionados em `legacy_migration_test.dart`
+- ✅ `migration.dart` (Migration, MigrationRunner) **DELETADO**
+- ✅ `legacy_migration_test.dart` **DELETADO**
+- ✅ Apenas `DriftMigration` e `DriftMigrationHelper` permanecem
+- ✅ CLI `make:migration` agora gera templates DriftMigration
+- ✅ 94 testes passando em dartian_orm, 44 em dartian_cli
 
-**Status**: ✅ **COMPLETO** - Bloqueador removido.
+**Status**: ✅ **COMPLETO** - Sistema consolidado em DriftMigration.
 
 **3. Código Gerado (drift_database.g.dart - dartian_orm)**
 
@@ -965,23 +968,24 @@ Testes usam `FakeRedis` in-memory ao invés de RedisClient real:
   - 115 testes → 118 testes (+3 testes)
   - **5 arquivos com 100% coverage** (migration, repository, drift_migration, query_builder, database)
 
-**Análise de Coverage por Arquivo (dartian_orm 84.1%):**
+**Análise de Coverage por Arquivo (dartian_orm - atualizado após remoção migration.dart):**
 ```
 ==========================================
-DARTIAN_ORM COVERAGE BY FILE
+DARTIAN_ORM COVERAGE BY FILE (Sessão 2025-11-21)
 ==========================================
-✅ migration.dart                 100.0%  (74/74)
 ✅ repository.dart                100.0%  (30/30)
 ✅ drift_migration.dart           100.0%  (21/21)
-✅ query_builder.dart             100.0%  (57/57)   - COMPLETO nesta sessão
-✅ database.dart                  100.0%  (29/29)   - COMPLETO nesta sessão
+✅ query_builder.dart             100.0%  (57/57)
+✅ database.dart                  100.0%  (29/29)
 🟡 model.dart                      87.8%  (36/41)
 🔴 drift_database.dart             68.0%  (17/25)   - Config PostgreSQL
 🔴 relationships.dart              51.2%  (44/86)   - Classes abstratas (design)
 🔴 drift_database.g.dart           42.9%  (3/7)     - Código gerado
 ==========================================
-TOTAL: 84.1% (311/370)
+TOTAL: ~80% (234/296) - Após remoção do sistema legado
 ==========================================
+Nota: migration.dart (74 linhas) foi removido por consolidação,
+não por falta de testes. O sistema agora usa apenas DriftMigration.
 ```
 
 **Bloqueadores Estruturais Aceitos:**
@@ -1307,9 +1311,9 @@ O projeto estará **COMPLETO** quando:
 
 ---
 
-**PLANO ATUALIZADO:** 2025-11-21 (sessão continuação #6 - dartian_orm 84.1%)
+**PLANO ATUALIZADO:** 2025-11-21 (sessão continuação #7 - remoção sistema migração legado)
 **PRÓXIMA REVISÃO:** Decidir próximo foco: dartian_cli, dartian_redis, ou aceitar bloqueadores
-**VERSÃO:** 3.2 (Gap #6 em progresso - 5 arquivos com 100% coverage em dartian_orm)
+**VERSÃO:** 3.3 (Migration consolidada em DriftMigration only)
 
 ---
 
@@ -1373,6 +1377,15 @@ O projeto estará **COMPLETO** quando:
     - **5 arquivos com 100% coverage** total
     - 118 testes passando
   - 🟡 Bloqueadores estruturais aceitos e documentados (54 linhas não testáveis por design)
+
+**Consolidação Migration (sessão 2025-11-21 continuação #7):**
+  - ✅ Removido migration.dart (sistema legado raw SQL)
+  - ✅ Removido legacy_migration_test.dart
+  - ✅ Atualizado dartian_cli make:migration para gerar DriftMigration
+  - ✅ Removidos arquivos de migração de teste obsoletos
+  - ✅ Apenas DriftMigration e DriftMigrationHelper permanecem
+  - ✅ 94 testes dartian_orm + 44 testes dartian_cli passando
+  - 📝 Commit: "refactor: Remove legacy raw SQL migration system, consolidate to DriftMigration only"
 
 **Gaps Críticos Restantes:** NENHUM! 🎉
 **Gaps Não-Críticos Restantes:** Gap #6 (3/13 pacotes com bloqueadores), Gap #7-10 (Polimento)
