@@ -5,18 +5,28 @@ import 'package:args/args.dart';
 class QueueWorkCommand {
   Future<void> run(List<String> arguments) async {
     final parser = ArgParser()
-      ..addOption('queue',
-          defaultsTo: 'default', help: 'The queue to process')
-      ..addOption('driver',
-          defaultsTo: 'sync',
-          allowed: ['sync', 'redis'],
-          help: 'Queue driver (sync or redis)')
-      ..addOption('sleep',
-          defaultsTo: '3', help: 'Seconds to sleep when no jobs are available')
-      ..addOption('max-jobs',
-          defaultsTo: '0', help: 'Maximum jobs to process (0 = unlimited)')
-      ..addOption('memory',
-          defaultsTo: '128', help: 'Memory limit in MB (0 = unlimited)')
+      ..addOption('queue', defaultsTo: 'default', help: 'The queue to process')
+      ..addOption(
+        'driver',
+        defaultsTo: 'sync',
+        allowed: ['sync', 'redis'],
+        help: 'Queue driver (sync or redis)',
+      )
+      ..addOption(
+        'sleep',
+        defaultsTo: '3',
+        help: 'Seconds to sleep when no jobs are available',
+      )
+      ..addOption(
+        'max-jobs',
+        defaultsTo: '0',
+        help: 'Maximum jobs to process (0 = unlimited)',
+      )
+      ..addOption(
+        'memory',
+        defaultsTo: '128',
+        help: 'Memory limit in MB (0 = unlimited)',
+      )
       ..addFlag('daemon', defaultsTo: true, help: 'Run as daemon')
       ..addFlag('once', defaultsTo: false, help: 'Process one job and exit');
 
@@ -45,7 +55,13 @@ class QueueWorkCommand {
     print('⏱️  Sleep: ${sleep}s');
     if (maxJobs > 0) print('🎯 Max Jobs: $maxJobs');
     if (memoryLimit > 0) print('💾 Memory Limit: ${memoryLimit}MB');
-    print('🔄 Mode: ${once ? "once" : daemon ? "daemon" : "single"}');
+    print(
+      '🔄 Mode: ${once
+          ? "once"
+          : daemon
+          ? "daemon"
+          : "single"}',
+    );
     print('━' * 50);
     print('');
 
@@ -91,7 +107,9 @@ class QueueWorkCommand {
       if (memoryLimit > 0) {
         final currentMemory = ProcessInfo.currentRss ~/ (1024 * 1024);
         if (currentMemory > memoryLimit) {
-          print('⚠️  Memory limit exceeded ($currentMemory MB > $memoryLimit MB)');
+          print(
+            '⚠️  Memory limit exceeded ($currentMemory MB > $memoryLimit MB)',
+          );
           print('🛑 Worker stopping due to memory limit');
           break;
         }

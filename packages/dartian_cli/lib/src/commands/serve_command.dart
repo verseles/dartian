@@ -11,12 +11,7 @@ class ServeCommand {
   static const defaultHost = 'localhost';
   static const defaultPort = 8000;
 
-  final List<String> _watchDirectories = [
-    'lib',
-    'app',
-    'routes',
-    'resources',
-  ];
+  final List<String> _watchDirectories = ['lib', 'app', 'routes', 'resources'];
 
   HttpServer? _server;
   HotReloader? _hotReloader;
@@ -28,10 +23,18 @@ class ServeCommand {
 
   Future<void> run(List<String> arguments) async {
     final parser = ArgParser()
-      ..addOption('host',
-          abbr: 'h', defaultsTo: defaultHost, help: 'The host to bind to')
-      ..addOption('port',
-          abbr: 'p', defaultsTo: '$defaultPort', help: 'The port to bind to');
+      ..addOption(
+        'host',
+        abbr: 'h',
+        defaultsTo: defaultHost,
+        help: 'The host to bind to',
+      )
+      ..addOption(
+        'port',
+        abbr: 'p',
+        defaultsTo: '$defaultPort',
+        help: 'The port to bind to',
+      );
 
     ArgResults args;
     try {
@@ -91,7 +94,9 @@ class ServeCommand {
           final response = await handler(request);
           final duration = DateTime.now().difference(startTime);
 
-          print('[${startTime.toIso8601String()}] ${request.method} ${request.requestedUri.path} - ${response.statusCode} (${duration.inMilliseconds}ms)');
+          print(
+            '[${startTime.toIso8601String()}] ${request.method} ${request.requestedUri.path} - ${response.statusCode} (${duration.inMilliseconds}ms)',
+          );
 
           return response;
         };

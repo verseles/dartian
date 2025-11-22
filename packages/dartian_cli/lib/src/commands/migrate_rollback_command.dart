@@ -4,16 +4,23 @@ import 'package:args/args.dart';
 class MigrateRollbackCommand {
   Future<void> run(List<String> arguments) async {
     final parser = ArgParser()
-      ..addOption('step',
-          abbr: 's',
-          defaultsTo: '1',
-          help: 'Number of batches to rollback')
-      ..addOption('database',
-          abbr: 'd',
-          defaultsTo: 'database/database.sqlite',
-          help: 'Database path')
-      ..addFlag('force',
-          help: 'Force rollback in production', negatable: false);
+      ..addOption(
+        'step',
+        abbr: 's',
+        defaultsTo: '1',
+        help: 'Number of batches to rollback',
+      )
+      ..addOption(
+        'database',
+        abbr: 'd',
+        defaultsTo: 'database/database.sqlite',
+        help: 'Database path',
+      )
+      ..addFlag(
+        'force',
+        help: 'Force rollback in production',
+        negatable: false,
+      );
 
     ArgResults args;
     try {
@@ -67,13 +74,14 @@ class MigrateRollbackCommand {
   }
 
   List<String> _loadMigrationFiles(Directory dir) {
-    final files = dir
-        .listSync()
-        .whereType<File>()
-        .where((file) => file.path.endsWith('.dart'))
-        .map((file) => file.path.split('/').last)
-        .toList()
-      ..sort((a, b) => b.compareTo(a)); // Reverse order for rollback
+    final files =
+        dir
+            .listSync()
+            .whereType<File>()
+            .where((file) => file.path.endsWith('.dart'))
+            .map((file) => file.path.split('/').last)
+            .toList()
+          ..sort((a, b) => b.compareTo(a)); // Reverse order for rollback
 
     return files;
   }
@@ -109,6 +117,8 @@ class MigrateRollbackCommand {
     print('   Rolled back ${migrationsToRollback.length} migration(s)');
     print('');
     print('💡 Note: This is a placeholder implementation');
-    print('💡 Real rollback requires loading and executing migration down() methods');
+    print(
+      '💡 Real rollback requires loading and executing migration down() methods',
+    );
   }
 }

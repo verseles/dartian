@@ -4,13 +4,18 @@ import 'package:args/args.dart';
 class BuildCommand {
   Future<void> run(List<String> arguments) async {
     final parser = ArgParser()
-      ..addOption('output',
-          abbr: 'o', help: 'Output directory (default: build/)')
-      ..addOption('optimization',
-          abbr: 'O',
-          defaultsTo: '2',
-          allowed: ['0', '1', '2', '3'],
-          help: 'Optimization level (0-3, default: 2)')
+      ..addOption(
+        'output',
+        abbr: 'o',
+        help: 'Output directory (default: build/)',
+      )
+      ..addOption(
+        'optimization',
+        abbr: 'O',
+        defaultsTo: '2',
+        allowed: ['0', '1', '2', '3'],
+        help: 'Optimization level (0-3, default: 2)',
+      )
       ..addFlag('verbose', abbr: 'v', help: 'Verbose output');
 
     ArgResults args;
@@ -90,18 +95,15 @@ class BuildCommand {
 
     try {
       // Run dart compile exe
-      final result = await Process.run(
-        'dart',
-        [
-          'compile',
-          'exe',
-          'lib/main.dart',
-          '-o',
-          '$outputDir/app',
-          '-O$optimization',
-          if (verbose) '--verbose',
-        ],
-      );
+      final result = await Process.run('dart', [
+        'compile',
+        'exe',
+        'lib/main.dart',
+        '-o',
+        '$outputDir/app',
+        '-O$optimization',
+        if (verbose) '--verbose',
+      ]);
 
       if (verbose) {
         print(result.stdout);
@@ -160,17 +162,14 @@ class BuildCommand {
 
     try {
       // Run dart compile aot-snapshot
-      final result = await Process.run(
-        'dart',
-        [
-          'compile',
-          'aot-snapshot',
-          'lib/main.dart',
-          '-o',
-          '$outputDir/app.aot',
-          if (verbose) '--verbose',
-        ],
-      );
+      final result = await Process.run('dart', [
+        'compile',
+        'aot-snapshot',
+        'lib/main.dart',
+        '-o',
+        '$outputDir/app.aot',
+        if (verbose) '--verbose',
+      ]);
 
       if (verbose) {
         print(result.stdout);
@@ -225,17 +224,14 @@ class BuildCommand {
 
     try {
       // Run dart compile wasm
-      final result = await Process.run(
-        'dart',
-        [
-          'compile',
-          'wasm',
-          'lib/main.dart',
-          '-o',
-          '$outputDir/app.wasm',
-          if (verbose) '--verbose',
-        ],
-      );
+      final result = await Process.run('dart', [
+        'compile',
+        'wasm',
+        'lib/main.dart',
+        '-o',
+        '$outputDir/app.wasm',
+        if (verbose) '--verbose',
+      ]);
 
       if (verbose) {
         print(result.stdout);
@@ -246,7 +242,9 @@ class BuildCommand {
         print(result.stderr);
         print('');
         print('💡 WASM support requires Dart SDK with WASM experimental flag');
-        print('💡 This is an experimental feature and may not be available yet');
+        print(
+          '💡 This is an experimental feature and may not be available yet',
+        );
         return;
       }
 

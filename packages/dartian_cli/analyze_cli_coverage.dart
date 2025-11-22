@@ -18,11 +18,12 @@ void main() {
       final parts = line.substring(3).split(',');
       final execCount = int.parse(parts[1]);
       final shortName = currentFile.split('lib/').last;
-      
+
       if (fileStats.containsKey(shortName)) {
         fileStats[shortName]!['total'] = fileStats[shortName]!['total']! + 1;
         if (execCount > 0) {
-          fileStats[shortName]!['covered'] = fileStats[shortName]!['covered']! + 1;
+          fileStats[shortName]!['covered'] =
+              fileStats[shortName]!['covered']! + 1;
         }
       }
     }
@@ -47,12 +48,18 @@ void main() {
     final covered = entry.value['covered']!;
     final total = entry.value['total']!;
     final pct = (covered / total) * 100;
-    
+
     totalLines += total;
     coveredLines += covered;
 
-    final emoji = pct >= 95 ? '✅' : pct >= 80 ? '🟡' : '🔴';
-    print('$emoji ${entry.key.padRight(35)} ${pct.toStringAsFixed(1).padLeft(5)}%  ($covered/$total)');
+    final emoji = pct >= 95
+        ? '✅'
+        : pct >= 80
+        ? '🟡'
+        : '🔴';
+    print(
+      '$emoji ${entry.key.padRight(35)} ${pct.toStringAsFixed(1).padLeft(5)}%  ($covered/$total)',
+    );
   }
 
   print('');

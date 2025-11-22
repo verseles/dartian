@@ -3,11 +3,7 @@ class TestModel {
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
-  TestModel({
-    this.id,
-    this.createdAt,
-    this.updatedAt,
-  });
+  TestModel({this.id, this.createdAt, this.updatedAt});
 
   /// The table associated with the model
   static String get tableName => 'test_models';

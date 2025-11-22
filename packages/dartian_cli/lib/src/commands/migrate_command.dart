@@ -4,14 +4,18 @@ import 'package:args/args.dart';
 class MigrateCommand {
   Future<void> run(List<String> arguments) async {
     final parser = ArgParser()
-      ..addFlag('status',
-          help: 'Show migration status', negatable: false)
-      ..addOption('database',
-          abbr: 'd',
-          defaultsTo: 'database/database.sqlite',
-          help: 'Database path')
-      ..addFlag('force',
-          help: 'Force migrations in production', negatable: false);
+      ..addFlag('status', help: 'Show migration status', negatable: false)
+      ..addOption(
+        'database',
+        abbr: 'd',
+        defaultsTo: 'database/database.sqlite',
+        help: 'Database path',
+      )
+      ..addFlag(
+        'force',
+        help: 'Force migrations in production',
+        negatable: false,
+      );
 
     ArgResults args;
     try {
@@ -62,18 +66,22 @@ class MigrateCommand {
   }
 
   List<String> _loadMigrationFiles(Directory dir) {
-    final files = dir
-        .listSync()
-        .whereType<File>()
-        .where((file) => file.path.endsWith('.dart'))
-        .map((file) => file.path.split('/').last)
-        .toList()
-      ..sort();
+    final files =
+        dir
+            .listSync()
+            .whereType<File>()
+            .where((file) => file.path.endsWith('.dart'))
+            .map((file) => file.path.split('/').last)
+            .toList()
+          ..sort();
 
     return files;
   }
 
-  Future<void> _showStatus(List<String> migrationFiles, String databasePath) async {
+  Future<void> _showStatus(
+    List<String> migrationFiles,
+    String databasePath,
+  ) async {
     print('📊 Migration Status:');
     print('');
 
@@ -108,7 +116,12 @@ class MigrateCommand {
     if (!dbExists) {
       print('📦 Creating database...');
       // Ensure directory exists
-      final dbDir = Directory(databasePath.split('/').sublist(0, databasePath.split('/').length - 1).join('/'));
+      final dbDir = Directory(
+        databasePath
+            .split('/')
+            .sublist(0, databasePath.split('/').length - 1)
+            .join('/'),
+      );
       if (!dbDir.existsSync()) {
         dbDir.createSync(recursive: true);
       }
@@ -133,6 +146,8 @@ class MigrateCommand {
     print('   Executed ${migrationFiles.length} migration(s)');
     print('');
     print('💡 Note: This is a placeholder implementation');
-    print('💡 Real migration execution requires loading and running migration classes');
+    print(
+      '💡 Real migration execution requires loading and running migration classes',
+    );
   }
 }

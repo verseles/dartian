@@ -128,7 +128,9 @@ class DartianCli {
       // Parse path to create subdirectories
       final parts = name.split('/');
       parts.last; // ignore unused variable
-      final subDir = parts.length > 1 ? parts.sublist(0, parts.length - 1) : null;
+      final subDir = parts.length > 1
+          ? parts.sublist(0, parts.length - 1)
+          : null;
 
       // Create subdirectory if needed
       if (subDir != null && subDir.isNotEmpty) {
@@ -254,7 +256,8 @@ class DartianCli {
       }
 
       // Generate boilerplate content
-      final content = '''import 'package:shelf/shelf.dart';
+      final content =
+          '''import 'package:shelf/shelf.dart';
 
 class $name {
   /// Handle incoming request
@@ -322,7 +325,8 @@ class $name {
       final tableName = _toSnakeCase(_pluralize(name));
 
       // Generate boilerplate content
-      final content = '''class $name {
+      final content =
+          '''class $name {
   final int? id;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -411,7 +415,8 @@ class $name {
 
       // Generate timestamp prefix
       final now = DateTime.now();
-      final timestamp = '${now.year}_${now.month.toString().padLeft(2, '0')}_${now.day.toString().padLeft(2, '0')}_${now.hour.toString().padLeft(2, '0')}${now.minute.toString().padLeft(2, '0')}${now.second.toString().padLeft(2, '0')}';
+      final timestamp =
+          '${now.year}_${now.month.toString().padLeft(2, '0')}_${now.day.toString().padLeft(2, '0')}_${now.hour.toString().padLeft(2, '0')}${now.minute.toString().padLeft(2, '0')}${now.second.toString().padLeft(2, '0')}';
 
       // Convert name to class name (e.g., create_users_table -> CreateUsersTable)
       final className = _toClassName(name);
@@ -429,7 +434,8 @@ class $name {
       }
 
       // Generate boilerplate content using DriftMigration
-      final content = '''import 'package:drift/drift.dart';
+      final content =
+          '''import 'package:drift/drift.dart';
 import 'package:dartian_orm/dartian_orm.dart';
 
 class $className extends DriftMigration {
@@ -491,7 +497,8 @@ class $className extends DriftMigration {
       }
 
       // Generate boilerplate content
-      final content = '''class $name {
+      final content =
+          '''class $name {
   final Map<String, dynamic> data;
 
   $name(this.data);
@@ -583,7 +590,8 @@ class $className extends DriftMigration {
       }
 
       // Generate boilerplate content
-      final content = '''import 'package:dartian_di/dartian_di.dart';
+      final content =
+          '''import 'package:dartian_di/dartian_di.dart';
 
 class $name extends ServiceProvider {
   @override
@@ -644,7 +652,8 @@ class $name extends ServiceProvider {
       final className = _toClassName(testName.replaceAll('_test', ''));
 
       // Generate boilerplate content
-      final content = '''import 'package:test/test.dart';
+      final content =
+          '''import 'package:test/test.dart';
 
 void main() {
   group('$className', () {
@@ -679,7 +688,10 @@ void main() {
   // Helper methods
   static String _toSnakeCase(String input) {
     return input
-        .replaceAllMapped(RegExp(r'[A-Z]'), (match) => '_${match.group(0)!.toLowerCase()}')
+        .replaceAllMapped(
+          RegExp(r'[A-Z]'),
+          (match) => '_${match.group(0)!.toLowerCase()}',
+        )
         .replaceFirst(RegExp(r'^_'), '');
   }
 
@@ -687,7 +699,10 @@ void main() {
     // Simple pluralization rules
     if (input.endsWith('y')) {
       return '${input.substring(0, input.length - 1)}ies';
-    } else if (input.endsWith('s') || input.endsWith('x') || input.endsWith('ch') || input.endsWith('sh')) {
+    } else if (input.endsWith('s') ||
+        input.endsWith('x') ||
+        input.endsWith('ch') ||
+        input.endsWith('sh')) {
       return '${input}es';
     }
     return '${input}s';

@@ -38,35 +38,44 @@ void main() {
       expect(() => command, returnsNormally);
     });
 
-    test('should start server on specified port', () async {
-      final command = ServeCommand();
+    test(
+      'should start server on specified port',
+      () async {
+        final command = ServeCommand();
 
-      // Start server in background with timeout
-      final serverFuture = command.run(['--host=localhost', '--port=9999']);
+        // Start server in background with timeout
+        final serverFuture = command.run(['--host=localhost', '--port=9999']);
 
-      // Wait for server to start
-      await Future.delayed(Duration(seconds: 2));
+        // Wait for server to start
+        await Future.delayed(Duration(seconds: 2));
 
-      // Try to connect to the server
-      try {
-        final client = HttpClient();
-        final request = await client.getUrl(Uri.parse('http://localhost:9999/'));
-        final response = await request.close();
+        // Try to connect to the server
+        try {
+          final client = HttpClient();
+          final request = await client.getUrl(
+            Uri.parse('http://localhost:9999/'),
+          );
+          final response = await request.close();
 
-        // Server should respond
-        expect(response.statusCode, equals(200));
+          // Server should respond
+          expect(response.statusCode, equals(200));
 
-        // Read response body
-        final body = await response.transform(SystemEncoding().decoder).join();
-        expect(body, contains('Dartian Development Server'));
+          // Read response body
+          final body = await response
+              .transform(SystemEncoding().decoder)
+              .join();
+          expect(body, contains('Dartian Development Server'));
 
-        client.close();
-      } catch (e) {
-        fail('Server should be running and accepting connections: $e');
-      }
+          client.close();
+        } catch (e) {
+          fail('Server should be running and accepting connections: $e');
+        }
 
-      // Cancel the server (it runs indefinitely)
-      // Note: In a real scenario, we'd need proper cleanup mechanism
-    }, timeout: Timeout(Duration(seconds: 10)), skip: 'Manual test - requires VM service');
+        // Cancel the server (it runs indefinitely)
+        // Note: In a real scenario, we'd need proper cleanup mechanism
+      },
+      timeout: Timeout(Duration(seconds: 10)),
+      skip: 'Manual test - requires VM service',
+    );
   });
 }

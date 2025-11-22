@@ -23,7 +23,10 @@ void main() {
     test('should create controller file', () {
       final result = DartianCli.run(['make', 'controller', 'TestController']);
       expect(result, contains('Controller created successfully'));
-      expect(File('app/Http/Controllers/TestController.dart').existsSync(), isTrue);
+      expect(
+        File('app/Http/Controllers/TestController.dart').existsSync(),
+        isTrue,
+      );
     });
 
     test('should fail if controller already exists', () {
@@ -85,13 +88,21 @@ void main() {
 
   group('make:migration command', () {
     test('should create migration file', () {
-      final result = DartianCli.run(['make', 'migration', 'create_users_table']);
+      final result = DartianCli.run([
+        'make',
+        'migration',
+        'create_users_table',
+      ]);
       expect(result, contains('Migration created successfully'));
     });
 
     test('should fail if migration already exists', () {
       DartianCli.run(['make', 'migration', 'create_users_table']);
-      final result = DartianCli.run(['make', 'migration', 'create_users_table']);
+      final result = DartianCli.run([
+        'make',
+        'migration',
+        'create_users_table',
+      ]);
       expect(result, contains('Error: Migration already exists'));
     });
 
@@ -105,7 +116,10 @@ void main() {
     test('should create request file', () {
       final result = DartianCli.run(['make', 'request', 'CreateUserRequest']);
       expect(result, contains('created successfully'));
-      expect(File('app/Http/Requests/CreateUserRequest.dart').existsSync(), isTrue);
+      expect(
+        File('app/Http/Requests/CreateUserRequest.dart').existsSync(),
+        isTrue,
+      );
     });
 
     test('should fail if request already exists', () {
@@ -125,7 +139,10 @@ void main() {
     test('should create provider file', () {
       final result = DartianCli.run(['make', 'provider', 'AppServiceProvider']);
       expect(result, contains('created successfully'));
-      expect(File('app/Providers/AppServiceProvider.dart').existsSync(), isTrue);
+      expect(
+        File('app/Providers/AppServiceProvider.dart').existsSync(),
+        isTrue,
+      );
     });
 
     test('should fail if provider already exists', () {

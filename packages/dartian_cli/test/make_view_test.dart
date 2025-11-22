@@ -56,8 +56,7 @@ void main() {
 
     test('should report error if template already exists', () {
       // Create template first
-      File('resources/views/existing.mustache')
-        ..createSync(recursive: true);
+      File('resources/views/existing.mustache')..createSync(recursive: true);
 
       final result = DartianCli.run(['make', 'view', 'existing']);
 

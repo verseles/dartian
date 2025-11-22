@@ -4,31 +4,29 @@ import 'package:args/args.dart';
 class TestCommand {
   Future<void> run(List<String> arguments) async {
     final parser = ArgParser()
-      ..addFlag('coverage',
-          help: 'Generate coverage report', negatable: false)
-      ..addOption('reporter',
-          abbr: 'r',
-          defaultsTo: 'compact',
-          allowed: ['compact', 'expanded', 'json', 'github'],
-          help: 'Test reporter format')
-      ..addOption('name',
-          abbr: 'n',
-          help: 'Filter tests by name pattern')
-      ..addOption('tags',
-          abbr: 't',
-          help: 'Run only tests with specified tags')
-      ..addOption('exclude-tags',
-          abbr: 'x',
-          help: 'Exclude tests with specified tags')
-      ..addFlag('verbose',
-          abbr: 'v',
-          help: 'Verbose output', negatable: false)
-      ..addFlag('fail-fast',
-          help: 'Stop after first failure', negatable: false)
-      ..addOption('concurrency',
-          abbr: 'j',
-          defaultsTo: '10',
-          help: 'Number of concurrent test suites');
+      ..addFlag('coverage', help: 'Generate coverage report', negatable: false)
+      ..addOption(
+        'reporter',
+        abbr: 'r',
+        defaultsTo: 'compact',
+        allowed: ['compact', 'expanded', 'json', 'github'],
+        help: 'Test reporter format',
+      )
+      ..addOption('name', abbr: 'n', help: 'Filter tests by name pattern')
+      ..addOption('tags', abbr: 't', help: 'Run only tests with specified tags')
+      ..addOption(
+        'exclude-tags',
+        abbr: 'x',
+        help: 'Exclude tests with specified tags',
+      )
+      ..addFlag('verbose', abbr: 'v', help: 'Verbose output', negatable: false)
+      ..addFlag('fail-fast', help: 'Stop after first failure', negatable: false)
+      ..addOption(
+        'concurrency',
+        abbr: 'j',
+        defaultsTo: '10',
+        help: 'Number of concurrent test suites',
+      );
 
     ArgResults args;
     try {
@@ -97,10 +95,7 @@ class TestCommand {
     print('');
 
     // Run dart test
-    final result = await Process.run(
-      'dart',
-      ['test', ...testArgs],
-    );
+    final result = await Process.run('dart', ['test', ...testArgs]);
 
     // Print output
     if (result.stdout.toString().isNotEmpty) {
@@ -124,29 +119,34 @@ class TestCommand {
       final coverageDir = Directory('coverage');
       if (coverageDir.existsSync()) {
         // Try to generate HTML report using coverage tool
-        final formatResult = await Process.run(
-          'dart',
-          ['pub', 'global', 'run', 'coverage:format_coverage',
-           '--lcov',
-           '--in=coverage',
-           '--out=coverage/lcov.info',
-           '--packages=.dart_tool/package_config.json',
-           '--report-on=lib'],
-        );
+        final formatResult = await Process.run('dart', [
+          'pub',
+          'global',
+          'run',
+          'coverage:format_coverage',
+          '--lcov',
+          '--in=coverage',
+          '--out=coverage/lcov.info',
+          '--packages=.dart_tool/package_config.json',
+          '--report-on=lib',
+        ]);
 
         if (formatResult.exitCode == 0) {
           print('✅ Coverage report generated: coverage/lcov.info');
 
           // Try to generate HTML report
-          final htmlResult = await Process.run(
-            'genhtml',
-            ['-o', 'coverage/html', 'coverage/lcov.info'],
-          );
+          final htmlResult = await Process.run('genhtml', [
+            '-o',
+            'coverage/html',
+            'coverage/lcov.info',
+          ]);
 
           if (htmlResult.exitCode == 0) {
             print('✅ HTML report generated: coverage/html/index.html');
           } else {
-            print('💡 Install lcov to generate HTML reports: sudo apt install lcov');
+            print(
+              '💡 Install lcov to generate HTML reports: sudo apt install lcov',
+            );
           }
         } else {
           print('💡 Install coverage tool: dart pub global activate coverage');

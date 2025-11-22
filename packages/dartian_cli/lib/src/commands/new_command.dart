@@ -13,7 +13,9 @@ class NewCommand {
     // Validate project name
     if (!_isValidProjectName(projectName)) {
       print('Error: Invalid project name "$projectName"');
-      print('Project name must start with a letter and contain only letters, numbers, and underscores');
+      print(
+        'Project name must start with a letter and contain only letters, numbers, and underscores',
+      );
       return;
     }
 
@@ -353,7 +355,8 @@ Thumbs.db
   }
 
   Future<void> _generateReadme(String projectName) async {
-    final content = '''# $projectName
+    final content =
+        '''# $projectName
 
 A web application built with Dartian framework.
 
@@ -476,7 +479,9 @@ class HomeController {
 }
 ''';
 
-    await File('$projectName/app/Http/Controllers/HomeController.dart').writeAsString(content);
+    await File(
+      '$projectName/app/Http/Controllers/HomeController.dart',
+    ).writeAsString(content);
     print('  ✓ app/Http/Controllers/HomeController.dart');
   }
 
@@ -542,7 +547,9 @@ class HomeController {
 </html>
 ''';
 
-    await File('$projectName/resources/views/welcome.mustache').writeAsString(content);
+    await File(
+      '$projectName/resources/views/welcome.mustache',
+    ).writeAsString(content);
     print('  ✓ resources/views/welcome.mustache');
   }
 
