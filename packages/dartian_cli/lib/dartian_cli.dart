@@ -416,6 +416,9 @@ class $name {
       // Convert name to class name (e.g., create_users_table -> CreateUsersTable)
       final className = _toClassName(name);
 
+      // Generate version number from timestamp (use seconds since epoch modulo for uniqueness)
+      final version = now.millisecondsSinceEpoch ~/ 1000;
+
       // Generate migration file
       final migrationPath = 'database/migrations/${timestamp}_$name.dart';
       final migrationFile = File(migrationPath);
@@ -425,26 +428,30 @@ class $name {
         return 'Error: Migration already exists at $migrationPath';
       }
 
-      // Generate boilerplate content
-      final content = '''import 'package:dartian_orm/dartian_orm.dart';
+      // Generate boilerplate content using DriftMigration
+      final content = '''import 'package:drift/drift.dart';
+import 'package:dartian_orm/dartian_orm.dart';
 
-class $className extends Migration {
+class $className extends DriftMigration {
   @override
-  Future<void> up() async {
+  int get version => $version;
+
+  @override
+  Future<void> up(Migrator m, QueryExecutor executor) async {
+    final ops = MigrationOperations(m, executor);
     // Run the migrations
     // Example:
-    // await schema.create('table_name', (table) {
-    //   table.id();
-    //   table.string('name');
-    //   table.timestamps();
-    // });
+    // await ops.raw('CREATE TABLE table_name (id INTEGER PRIMARY KEY, name TEXT)');
+    // await ops.createIndex('idx_name', 'table_name', ['name']);
   }
 
   @override
-  Future<void> down() async {
+  Future<void> down(Migrator m, QueryExecutor executor) async {
+    final ops = MigrationOperations(m, executor);
     // Reverse the migrations
     // Example:
-    // await schema.dropIfExists('table_name');
+    // await ops.raw('DROP TABLE IF EXISTS table_name');
+    // await ops.dropIndex('idx_name');
   }
 }
 ''';

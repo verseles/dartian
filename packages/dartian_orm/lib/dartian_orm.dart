@@ -2,7 +2,7 @@
 /// Provides database connectivity and ORM functionality using Drift
 library dartian_orm;
 
-// Legacy SQLite3-based implementation (deprecated)
+// Legacy SQLite3-based implementation (for backward compatibility)
 export 'src/database.dart';
 export 'src/repository.dart';
 export 'src/query_builder.dart';
@@ -11,7 +11,6 @@ export 'src/query_builder.dart';
 export 'src/drift_database.dart';
 export 'src/model.dart';
 export 'src/relationships.dart';
-export 'src/migration.dart';
 export 'src/drift_migration.dart';
 
 // Re-export Drift for convenience
