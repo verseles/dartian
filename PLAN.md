@@ -1233,15 +1233,66 @@ class PrimaryDatabase { }
 
 ---
 
-### Gap #10: Cycle Detection em DI
+### Gap #10: Cycle Detection em DI ✅ COMPLETO
 
 **Pacote:** dartian_di
-**Tempo:** 4-6 horas
+**Status:** ✅ COMPLETO (sessão 2025-11-22)
+**Tempo gasto:** ~1 hora
 
-**Tarefas:**
-- Detectar dependências circulares
-- Lançar exception clara
-- Adicionar testes
+**Implementação realizada:**
+
+1. ✅ **CircularDependencyException** - Exception clara com mensagem legível:
+   ```dart
+   // Mensagem: "Circular dependency detected: A → B → C → A"
+   throw CircularDependencyException([ServiceA, ServiceB, ServiceC]);
+   ```
+
+2. ✅ **Grafo de dependências** no container:
+   - `_dependencyGraph` - Map<Type, Set<Type>> rastreia dependências
+   - `registerDependencies<T>(deps)` - Registra deps e valida ciclos
+   - `detectCycle<T>(dep)` - Verifica se adicionar dep criaria ciclo
+   - `dependencyGraph` - Getter para debug/visualização
+
+3. ✅ **Métodos com validação automática**:
+   - `registerSingletonWithDeps<T>(factory, dependsOn: [...])`
+   - `registerFactoryWithDeps<T>(factory, dependsOn: [...])`
+   - `registerLazySingletonWithDeps<T>(factory, dependsOn: [...])`
+
+4. ✅ **21 novos testes** (`test/cycle_detection_test.dart`):
+   - Self-dependency (A → A)
+   - Two-service cycle (A → B → A)
+   - Three-service cycle (A → B → C → A)
+   - Complex graph cycles
+   - DAG validation (diamond pattern)
+   - Exception message quality
+
+**Uso:**
+```dart
+final container = DIContainer();
+
+// Registro com dependências explícitas
+container.registerSingletonWithDeps<ServiceA>(
+  () => ServiceA(),
+  dependsOn: [], // Sem dependências
+);
+
+container.registerSingletonWithDeps<ServiceB>(
+  () => ServiceB(container.get<ServiceA>()),
+  dependsOn: [ServiceA],
+);
+
+// Isso lançaria CircularDependencyException:
+// container.registerSingletonWithDeps<ServiceA>(
+//   () => ServiceA(container.get<ServiceB>()),
+//   dependsOn: [ServiceB], // Ciclo: A → B → A
+// );
+```
+
+**Aprendizado #13: Algoritmo DFS para Cycle Detection**
+- Use DFS com "recursion stack" para detectar ciclos em grafos direcionados
+- Mantenha `visited` (todos visitados) e `recursionStack` (caminho atual) separados
+- O ciclo existe quando encontramos um nó que já está no `recursionStack`
+- Para reportar o ciclo, reconstrua o caminho do nó duplicado até o fim
 
 ---
 
@@ -1282,11 +1333,11 @@ Execute nesta ordem para máximo impacto:
 5. ✅ **Gap #7**: CI/CD (30 min) 🟢 COMPLETO
 6. ⏳ **Gap #8**: Documentação (1-2 dias) 🟢
 7. ✅ **Gap #9**: DI auto-discovery (~2h) 🟢 COMPLETO
-8. ⏳ **Gap #10**: Cycle detection (4-6h) 🟢
+8. ✅ **Gap #10**: Cycle detection (~1h) 🟢 COMPLETO
 
 **Tempo Total Estimado:** 15-20 dias de trabalho
-**Tempo Completo:** ~10-11 dias (Sprints 1, 2, 3 e 4: 100% completos)
-**Tempo Restante:** ~3-7 dias úteis (Sprint 5 - apenas polimento)
+**Tempo Completo:** ~10-12 dias (Sprints 1, 2, 3 e 4: 100% completos + Sprint 5: 75%)
+**Tempo Restante:** ~1-2 dias úteis (Gap #8 - Documentação)
 
 ---
 
@@ -1451,15 +1502,15 @@ A próxima sessão deve poder continuar sem precisar redescobrir informações.
 
 ---
 
-**PLANO ATUALIZADO:** 2025-11-22 (Gap #7 CI/CD completo + Lições CI/CD documentadas)
-**PRÓXIMA REVISÃO:** Gap #8 (Documentação) ou Gap #9/10 (DI melhorias)
-**VERSÃO:** 3.5 (CI/CD Pipeline verde + documentação de aprendizados)
+**PLANO ATUALIZADO:** 2025-11-22 (Gap #9 e #10 DI completos)
+**PRÓXIMA REVISÃO:** Gap #8 (Documentação - último gap restante!)
+**VERSÃO:** 3.6 (DI auto-discovery + cycle detection completos)
 
 ---
 
 ## 🎉 PROGRESSO
 
-**Completo:** 96% (ajuste baseado em progresso do Gap #6)
+**Completo:** 98% (Gap #8 Documentação é o único restante)
 **Fases Completas:** 9/18 (Fases 0, 1-completa, 2-ORM, 8, 9, 10, 11, 12)
 **Test Coverage:** 9/13 pacotes >= 95% (69% do framework atingiu a meta)
 
@@ -1549,14 +1600,22 @@ A próxima sessão deve poder continuar sem precisar redescobrir informações.
 
 **Gap #7 CI/CD (sessão 2025-11-22):**
   - ✅ Workflow CI/CD criado (.github/workflows/ci.yml)
-  - ✅ Matrix testing: Dart 3.0.0 e stable
-  - ✅ 3 jobs: test, analyze, format
+  - ✅ Matrix testing: Dart 3.9.4 e stable
+  - ✅ 4 jobs: test (2 versões), analyze, format
   - ✅ Testa todos os 12 pacotes
   - ✅ dartian_orm com build_runner integration
   - 📝 Commit: `cb0dbf5` - "ci: Add GitHub Actions workflow for CI/CD"
 
+**Gap #9 + #10 DI (sessão 2025-11-22):**
+  - ✅ Anotações: @Singleton, @Service, @LazySingleton, @Named, @Module, @Provides
+  - ✅ Code generation com source_gen e build_runner
+  - ✅ Cycle detection com DFS algorithm
+  - ✅ CircularDependencyException com mensagens claras
+  - ✅ 62 testes no dartian_di (19 originais + 22 annotations + 21 cycle)
+  - 📝 Commits: `51c4697` (Gap #9), pendente (Gap #10)
+
 **Gaps Críticos Restantes:** NENHUM! 🎉
-**Gaps Não-Críticos Restantes:** Gap #6 (bloqueadores aceitos), Gap #8-10 (Polimento)
-**Estimativa de Conclusão:** 2-4 dias úteis (apenas documentação e melhorias DI)
+**Gaps Não-Críticos Restantes:** Gap #6 (bloqueadores aceitos), Gap #8 (Documentação)
+**Estimativa de Conclusão:** 1-2 dias úteis (apenas documentação README/CONTRIBUTING)
 
 **Para continuar, basta dizer:** "Continue o PLAN.md de onde parou"
