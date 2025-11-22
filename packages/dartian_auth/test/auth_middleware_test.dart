@@ -142,11 +142,10 @@ void main() {
       final jwt = JWT.create(
         {'id': '123'},
         secret: testSecret,
-        expiresIn: const Duration(milliseconds: 1),
+        expiresIn: const Duration(seconds: -2), // Create already-expired token
       );
 
-      // Wait for token to expire
-      await Future.delayed(const Duration(milliseconds: 10));
+      // No need to wait - token is already expired
 
       final middleware = authMiddleware.middleware;
       final handler = middleware(createTestHandler(checkAuth: true));

@@ -346,9 +346,29 @@ await hotReloader.stop();
 - Debounce é essencial para evitar múltiplos reloads em salvamentos rápidos
 - `HttpClient.close()` retorna `void`, não `Future` (não usar `await`)
 
-**8. Process.run API Mudanças (2025-11-21)**
+**9. JWT Expiration Timing em Testes (2025-11-21)**
 
-O parâmetro `runInStdio` não existe em `Process.run`:
+JWT usa segundos (não millisegundos) para `exp` claim. Testes com durações em millisegundos podem falhar por precisão:
+
+```dart
+// ❌ ERRADO - Pode não expirar devido a arredondamento em segundos
+final jwt = JWT.create(
+  {'id': '123'},
+  secret: secret,
+  expiresIn: const Duration(milliseconds: -1), // Pode arredondar para mesmo segundo
+);
+
+// ✅ CORRETO - Use segundos negativos para garantir expiração
+final jwt = JWT.create(
+  {'id': '123'},
+  secret: secret,
+  expiresIn: const Duration(seconds: -2), // Garantidamente no passado
+);
+```
+
+**Causa**: O JWT `exp` é calculado como `(now.add(expiresIn).millisecondsSinceEpoch / 1000).round()`, então -1ms pode resultar no mesmo segundo.
+
+**10. Process.run API Mudanças (2025-11-21)**
 
 ```dart
 // ❌ ERRADO - Parâmetro inexistente

@@ -98,7 +98,7 @@ void main() {
         final jwt = JWT.create(
           {'id': '123'},
           secret: testSecret,
-          expiresIn: const Duration(milliseconds: -1), // Negative duration creates already expired token
+          expiresIn: const Duration(seconds: -2), // Negative duration creates already expired token
         );
 
         final middleware = guard.middleware();
@@ -194,7 +194,7 @@ void main() {
         final jwt = JWT.create(
           {'id': '123'},
           secret: testSecret,
-          expiresIn: const Duration(milliseconds: -1),
+          expiresIn: const Duration(seconds: -2),
         );
 
         final request = Request(
