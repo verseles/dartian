@@ -1,1 +1,0 @@
-{"valid_import":true,"imports":[{"uri":"package:drift/drift.dart","transitive":false},{"uri":"package:drift/native.dart","transitive":false},{"uri":"package:drift_postgres/drift_postgres.dart","transitive":false},{"uri":"package:postgres/postgres.dart","transitive":false}],"elements":[{"kind":"database","name":"DartianDatabase","dart_name":"DartianDatabase"}]}

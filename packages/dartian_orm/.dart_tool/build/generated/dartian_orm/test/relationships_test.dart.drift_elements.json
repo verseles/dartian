@@ -1,1 +1,0 @@
-{"valid_import":true,"imports":[{"uri":"package:drift/drift.dart","transitive":false},{"uri":"package:test/test.dart","transitive":false},{"uri":"package:dartian_orm/dartian_orm.dart","transitive":false},{"uri":"asset:dartian_orm/test/test_database.dart","transitive":false}],"elements":[]}

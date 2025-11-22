@@ -1,6 +1,0 @@
-{
-  "elements": {},
-  "imports": [
-    "package:dartian_orm/src/database.dart"
-  ]
-}
