@@ -4,42 +4,31 @@ This document outlines the recommended next steps for the Dartian framework afte
 
 ## Immediate Priority
 
-### 1. Publish to pub.dev
+### 1. ~~Publish to pub.dev~~ ✅ DONE
 
-Publish packages to pub.dev for wider adoption. Order matters due to dependencies:
+All packages published to pub.dev v1.0.0:
 
+| Package | pub.dev |
+|---------|---------|
+| dartian_core | https://pub.dev/packages/dartian_core |
+| dartian_di | https://pub.dev/packages/dartian_di |
+| dartian_router | https://pub.dev/packages/dartian_router |
+| dartian_i18n | https://pub.dev/packages/dartian_i18n |
+| dartian_redis | https://pub.dev/packages/dartian_redis |
+| dartian_orm | https://pub.dev/packages/dartian_orm |
+| dartian_view | https://pub.dev/packages/dartian_view |
+| dartian_http | https://pub.dev/packages/dartian_http |
+| dartian_queue | https://pub.dev/packages/dartian_queue |
+| dartian_scheduler | https://pub.dev/packages/dartian_scheduler |
+| dartian_auth | https://pub.dev/packages/dartian_auth |
+| dartian_console | https://pub.dev/packages/dartian_console |
+
+**Pending:** Umbrella package `dartian` (rate limited, publish tomorrow):
 ```bash
-# 1. Core (no internal deps)
-cd packages/dartian_core && dart pub publish
-
-# 2. Packages depending only on core
-cd packages/dartian_di && dart pub publish
-cd packages/dartian_i18n && dart pub publish
-cd packages/dartian_view && dart pub publish
-
-# 3. Router and HTTP
-cd packages/dartian_router && dart pub publish
-cd packages/dartian_http && dart pub publish
-
-# 4. Data layer
-cd packages/dartian_redis && dart pub publish
-cd packages/dartian_orm && dart pub publish
-
-# 5. Background processing
-cd packages/dartian_queue && dart pub publish
-cd packages/dartian_scheduler && dart pub publish
-
-# 6. Auth (depends on multiple packages)
-cd packages/dartian_auth && dart pub publish
-
-# 7. CLI (last, depends on everything)
-cd packages/dartian_cli && dart pub publish
+cd packages/dartian && dart pub publish
 ```
 
-**Before publishing:**
-- Update each `pubspec.yaml` with proper description, homepage, repository
-- Add `LICENSE` file to each package
-- Ensure all packages have meaningful README.md
+**Note:** CLI was renamed from `dartian_cli` to `dartian_console` due to pub.dev name similarity conflict with `dartian_di`
 
 ### 2. Real-World Validation Project
 
@@ -223,9 +212,11 @@ This will reveal:
 - [x] CONTRIBUTING.md
 - [x] Example project
 - [x] GitHub release
+- [x] Published 12 packages to pub.dev
 
 ### v1.1.0 (Next)
-- [ ] Publish to pub.dev
+- [x] Publish to pub.dev
+- [ ] Publish umbrella package `dartian`
 - [ ] Validation project
 - [ ] API documentation (dartdoc)
 - [ ] Getting Started guide

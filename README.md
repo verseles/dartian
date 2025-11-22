@@ -3,6 +3,7 @@
 A Laravel-inspired web framework for Dart, designed for high-performance production deployments.
 
 [![CI](https://github.com/verseles/dartian/actions/workflows/ci.yml/badge.svg)](https://github.com/verseles/dartian/actions/workflows/ci.yml)
+[![pub package](https://img.shields.io/pub/v/dartian_core.svg)](https://pub.dev/packages/dartian_core)
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 
 ## Features
@@ -23,16 +24,24 @@ A Laravel-inspired web framework for Dart, designed for high-performance product
 
 ### Installation
 
+**Option 1: Single import (umbrella package)**
+```yaml
+dependencies:
+  dartian: ^1.0.0  # Coming soon - use individual packages for now
+```
+
+**Option 2: Individual packages**
+```yaml
+dependencies:
+  dartian_http: ^1.0.0
+  dartian_router: ^1.0.0
+  dartian_di: ^1.0.0
+  # Add others as needed
+```
+
+**CLI Tool:**
 ```bash
-# Clone the repository
-git clone https://github.com/verseles/dartian.git
-cd dartian
-
-# Install CLI globally
-cd packages/dartian_cli
-dart pub global activate -s path .
-
-# Create a new project
+dart pub global activate dartian_console
 dartian new my_app
 cd my_app
 ```
@@ -223,20 +232,22 @@ void main() {
 
 ## Packages
 
-| Package | Description |
-|---------|-------------|
-| `dartian_cli` | Command-line interface with code generators |
-| `dartian_core` | Core utilities and telemetry |
-| `dartian_http` | HTTP kernel with Shelf integration |
-| `dartian_router` | Fluent routing DSL |
-| `dartian_di` | Dependency injection with auto-discovery |
-| `dartian_orm` | Drift-based ORM |
-| `dartian_redis` | Redis client with pub/sub and locks |
-| `dartian_queue` | Job queue system |
-| `dartian_scheduler` | Task scheduling |
-| `dartian_view` | Mustache template engine |
-| `dartian_i18n` | Internationalization |
-| `dartian_auth` | Authentication (session + JWT) |
+All packages are available on [pub.dev](https://pub.dev/publishers/verseles.com/packages):
+
+| Package | Version | Description |
+|---------|---------|-------------|
+| [dartian_core](https://pub.dev/packages/dartian_core) | [![pub](https://img.shields.io/pub/v/dartian_core.svg)](https://pub.dev/packages/dartian_core) | Core utilities and telemetry |
+| [dartian_http](https://pub.dev/packages/dartian_http) | [![pub](https://img.shields.io/pub/v/dartian_http.svg)](https://pub.dev/packages/dartian_http) | HTTP kernel with Shelf integration |
+| [dartian_router](https://pub.dev/packages/dartian_router) | [![pub](https://img.shields.io/pub/v/dartian_router.svg)](https://pub.dev/packages/dartian_router) | Fluent routing DSL |
+| [dartian_di](https://pub.dev/packages/dartian_di) | [![pub](https://img.shields.io/pub/v/dartian_di.svg)](https://pub.dev/packages/dartian_di) | Dependency injection with auto-discovery |
+| [dartian_orm](https://pub.dev/packages/dartian_orm) | [![pub](https://img.shields.io/pub/v/dartian_orm.svg)](https://pub.dev/packages/dartian_orm) | Drift-based ORM |
+| [dartian_redis](https://pub.dev/packages/dartian_redis) | [![pub](https://img.shields.io/pub/v/dartian_redis.svg)](https://pub.dev/packages/dartian_redis) | Redis client with pub/sub and locks |
+| [dartian_queue](https://pub.dev/packages/dartian_queue) | [![pub](https://img.shields.io/pub/v/dartian_queue.svg)](https://pub.dev/packages/dartian_queue) | Job queue system |
+| [dartian_scheduler](https://pub.dev/packages/dartian_scheduler) | [![pub](https://img.shields.io/pub/v/dartian_scheduler.svg)](https://pub.dev/packages/dartian_scheduler) | Task scheduling |
+| [dartian_view](https://pub.dev/packages/dartian_view) | [![pub](https://img.shields.io/pub/v/dartian_view.svg)](https://pub.dev/packages/dartian_view) | Mustache template engine |
+| [dartian_i18n](https://pub.dev/packages/dartian_i18n) | [![pub](https://img.shields.io/pub/v/dartian_i18n.svg)](https://pub.dev/packages/dartian_i18n) | Internationalization |
+| [dartian_auth](https://pub.dev/packages/dartian_auth) | [![pub](https://img.shields.io/pub/v/dartian_auth.svg)](https://pub.dev/packages/dartian_auth) | Authentication (session + JWT) |
+| [dartian_console](https://pub.dev/packages/dartian_console) | [![pub](https://img.shields.io/pub/v/dartian_console.svg)](https://pub.dev/packages/dartian_console) | CLI with code generators |
 
 ## CLI Commands
 
@@ -297,7 +308,8 @@ Dartian follows a modular monorepo architecture:
 ```
 dartian/
 ├── packages/
-│   ├── dartian_cli/         # CLI tool
+│   ├── dartian/             # Umbrella package (re-exports all)
+│   ├── dartian_console/     # CLI tool
 │   ├── dartian_core/        # Core utilities
 │   ├── dartian_http/        # HTTP layer
 │   ├── dartian_router/      # Routing
