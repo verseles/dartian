@@ -17,7 +17,7 @@ dependencies:
   dartian_core: ^1.0.0
   dartian_http: ^1.0.0
   dartian_router: ^1.0.0
-  dartian_di: ^1.0.0
+  dartian_di: ^1.1.0
   dartian_orm: ^1.0.0
   dartian_redis: ^1.0.0
   dartian_queue: ^1.0.0

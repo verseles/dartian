@@ -169,8 +169,8 @@ ${registrations.map((r) => '  $r(container);').join('\n')}
   }
 
   dynamic _getAnnotation(ClassElement element, Type annotationType) {
-    for (final metadata in element.metadata) {
-      final value = metadata.computeConstantValue();
+    for (final annotation in element.metadata.annotations) {
+      final value = annotation.computeConstantValue();
       if (value?.type?.element?.name == annotationType.toString()) {
         return value;
       }
