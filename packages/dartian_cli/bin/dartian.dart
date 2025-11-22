@@ -1,4 +1,4 @@
-import 'package:dartian_console/dartian_cli.dart';
+import 'package:dartian_console/dartian_console.dart';
 import 'package:dartian_console/src/commands/serve_command.dart';
 import 'package:dartian_console/src/commands/new_command.dart';
 import 'package:dartian_console/src/commands/queue_work_command.dart';

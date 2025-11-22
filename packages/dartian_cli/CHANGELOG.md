@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.1
+
+- Fix: Corrected import path in bin/dartian.dart after package rename
+
 ## 1.0.0
 
 - Initial release
