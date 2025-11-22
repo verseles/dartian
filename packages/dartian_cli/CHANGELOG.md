@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.2
+
+- Fix: Add lib/ and bin/ directories to project structure in `dartian new`
+- Update: Use pub.dev packages instead of git dependencies in generated pubspec.yaml
+
 ## 1.0.1
 
 - Fix: Corrected import path in bin/dartian.dart after package rename

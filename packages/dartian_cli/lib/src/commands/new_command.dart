@@ -62,6 +62,8 @@ class NewCommand {
 
   Future<void> _createProjectStructure(String projectName) async {
     final directories = [
+      '$projectName/lib',
+      '$projectName/bin',
       '$projectName/app/Http/Controllers',
       '$projectName/app/Http/Middleware',
       '$projectName/app/Http/Requests',
@@ -130,58 +132,21 @@ environment:
   sdk: ^3.9.4
 
 dependencies:
-  dartian_core:
-    git:
-      url: https://github.com/verseles/dartian.git
-      path: packages/dartian_core
-  dartian_http:
-    git:
-      url: https://github.com/verseles/dartian.git
-      path: packages/dartian_http
-  dartian_router:
-    git:
-      url: https://github.com/verseles/dartian.git
-      path: packages/dartian_router
-  dartian_di:
-    git:
-      url: https://github.com/verseles/dartian.git
-      path: packages/dartian_di
-  dartian_orm:
-    git:
-      url: https://github.com/verseles/dartian.git
-      path: packages/dartian_orm
-  dartian_redis:
-    git:
-      url: https://github.com/verseles/dartian.git
-      path: packages/dartian_redis
-  dartian_queue:
-    git:
-      url: https://github.com/verseles/dartian.git
-      path: packages/dartian_queue
-  dartian_scheduler:
-    git:
-      url: https://github.com/verseles/dartian.git
-      path: packages/dartian_scheduler
-  dartian_view:
-    git:
-      url: https://github.com/verseles/dartian.git
-      path: packages/dartian_view
-  dartian_i18n:
-    git:
-      url: https://github.com/verseles/dartian.git
-      path: packages/dartian_i18n
-  dartian_auth:
-    git:
-      url: https://github.com/verseles/dartian.git
-      path: packages/dartian_auth
+  dartian_core: ^1.0.0
+  dartian_http: ^1.0.0
+  dartian_router: ^1.0.0
+  dartian_di: ^1.0.0
+  dartian_orm: ^1.0.0
+  dartian_redis: ^1.0.0
+  dartian_queue: ^1.0.0
+  dartian_scheduler: ^1.0.0
+  dartian_view: ^1.0.0
+  dartian_i18n: ^1.0.0
+  dartian_auth: ^1.0.0
   shelf: ^1.4.1
 
 dev_dependencies:
   test: ^1.24.0
-  dartian_cli:
-    git:
-      url: https://github.com/verseles/dartian.git
-      path: packages/dartian_cli
 ''';
 
     await File('$projectName/pubspec.yaml').writeAsString(content);

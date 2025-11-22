@@ -1,6 +1,6 @@
 name: dartian_console
 description: Command-line interface for Dartian framework with code generators and dev server
-version: 1.0.1
+version: 1.0.2
 homepage: https://github.com/verseles/dartian
 repository: https://github.com/verseles/dartian/tree/main/packages/dartian_cli
 issue_tracker: https://github.com/verseles/dartian/issues

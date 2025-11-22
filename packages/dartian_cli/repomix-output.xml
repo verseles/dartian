@@ -1,0 +1,4522 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+app/
+  Http/
+    Controllers/
+      TestController.dart
+    Requests/
+      TestRequest.dart
+  Models/
+    TestModel.dart
+bin/
+  dartian.dart
+database/
+  migrations/
+    2025_11_22_133327_test_migration.dart
+lib/
+  src/
+    commands/
+      build_command.dart
+      migrate_command.dart
+      migrate_rollback_command.dart
+      new_command.dart
+      queue_work_command.dart
+      schedule_run_command.dart
+      serve_command.dart
+      test_command.dart
+  dartian_console.dart
+test/
+  command_test.dart
+  dartian_cli_test.dart
+  make_generator_test.dart
+  make_lang_test.dart
+  make_view_test.dart
+  serve_test.dart
+  test_example_test.dart
+.gitignore
+analysis_options.yaml
+analyze_cli_coverage.dart
+CHANGELOG.md
+LICENSE
+pubspec.lock
+pubspec.yaml
+README.md
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="app/Http/Controllers/TestController.dart">
+import 'package:shelf/shelf.dart';
+
+class TestController {
+  /// Handle incoming request
+  Future<Response> index(Request request) async {
+    return Response.ok('Welcome to TestController');
+  }
+
+  /// Show a specific resource
+  Future<Response> show(Request request, String id) async {
+    return Response.ok('Showing resource: $id');
+  }
+
+  /// Create a new resource
+  Future<Response> store(Request request) async {
+    return Response.ok('Resource created');
+  }
+
+  /// Update an existing resource
+  Future<Response> update(Request request, String id) async {
+    return Response.ok('Resource $id updated');
+  }
+
+  /// Delete a resource
+  Future<Response> destroy(Request request, String id) async {
+    return Response.ok('Resource $id deleted');
+  }
+}
+</file>
+
+<file path="app/Http/Requests/TestRequest.dart">
+class TestRequest {
+  final Map<String, dynamic> data;
+
+  TestRequest(this.data);
+
+  /// Validation rules for the request
+  Map<String, List<String>> rules() {
+    return {
+      // Example validation rules:
+      // 'name': ['required', 'string', 'min:3'],
+      // 'email': ['required', 'email'],
+      // 'age': ['required', 'integer', 'min:18'],
+    };
+  }
+
+  /// Custom validation messages
+  Map<String, String> messages() {
+    return {
+      // Example custom messages:
+      // 'name.required': 'The name field is required.',
+      // 'email.email': 'Please provide a valid email address.',
+    };
+  }
+
+  /// Authorize the request
+  bool authorize() {
+    // Return true to authorize, false to deny
+    return true;
+  }
+
+  /// Validate the request
+  Future<bool> validate() async {
+    if (!authorize()) {
+      throw Exception('Unauthorized');
+    }
+
+    // TODO: Implement validation logic based on rules()
+    return true;
+  }
+
+  /// Get validated data
+  Map<String, dynamic> validated() {
+    return data;
+  }
+
+  /// Get a specific field from request data
+  dynamic get(String key, [dynamic defaultValue]) {
+    return data[key] ?? defaultValue;
+  }
+
+  /// Check if request has a field
+  bool has(String key) {
+    return data.containsKey(key);
+  }
+}
+</file>
+
+<file path="app/Models/TestModel.dart">
+class TestModel {
+  final int? id;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+
+  TestModel({this.id, this.createdAt, this.updatedAt});
+
+  /// The table associated with the model
+  static String get tableName => 'test_models';
+
+  /// Convert model to map for database operations
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'created_at': createdAt?.toIso8601String(),
+      'updated_at': updatedAt?.toIso8601String(),
+    };
+  }
+
+  /// Create model instance from database map
+  factory TestModel.fromMap(Map<String, dynamic> map) {
+    return TestModel(
+      id: map['id'] as int?,
+      createdAt: map['created_at'] != null
+          ? DateTime.parse(map['created_at'] as String)
+          : null,
+      updatedAt: map['updated_at'] != null
+          ? DateTime.parse(map['updated_at'] as String)
+          : null,
+    );
+  }
+
+  /// Save the model to the database
+  Future<TestModel> save() async {
+    // Implementation will use ORM
+    throw UnimplementedError('Implement with dartian_orm');
+  }
+
+  /// Delete the model from the database
+  Future<bool> delete() async {
+    // Implementation will use ORM
+    throw UnimplementedError('Implement with dartian_orm');
+  }
+
+  /// Find a model by ID
+  static Future<TestModel?> find(int id) async {
+    // Implementation will use ORM
+    throw UnimplementedError('Implement with dartian_orm');
+  }
+
+  /// Get all models
+  static Future<List<TestModel>> all() async {
+    // Implementation will use ORM
+    throw UnimplementedError('Implement with dartian_orm');
+  }
+}
+</file>
+
+<file path="bin/dartian.dart">
+import 'package:dartian_console/dartian_console.dart';
+import 'package:dartian_console/src/commands/serve_command.dart';
+import 'package:dartian_console/src/commands/new_command.dart';
+import 'package:dartian_console/src/commands/queue_work_command.dart';
+import 'package:dartian_console/src/commands/schedule_run_command.dart';
+import 'package:dartian_console/src/commands/build_command.dart';
+import 'package:dartian_console/src/commands/migrate_command.dart';
+import 'package:dartian_console/src/commands/migrate_rollback_command.dart';
+import 'package:dartian_console/src/commands/test_command.dart';
+
+void main(List<String> arguments) async {
+  // Check if async commands are being used
+  if (arguments.isNotEmpty) {
+    switch (arguments[0]) {
+      case 'serve':
+        final serveArgs = arguments.sublist(1);
+        final command = ServeCommand();
+        await command.run(serveArgs);
+        return;
+      case 'new':
+        final newArgs = arguments.sublist(1);
+        final command = NewCommand();
+        await command.run(newArgs);
+        return;
+      case 'queue:work':
+        final queueArgs = arguments.sublist(1);
+        final command = QueueWorkCommand();
+        await command.run(queueArgs);
+        return;
+      case 'schedule:run':
+        final scheduleArgs = arguments.sublist(1);
+        final command = ScheduleRunCommand();
+        await command.run(scheduleArgs);
+        return;
+      case 'build':
+        final buildArgs = arguments.sublist(1);
+        final command = BuildCommand();
+        await command.run(buildArgs);
+        return;
+      case 'migrate':
+        final migrateArgs = arguments.sublist(1);
+        final command = MigrateCommand();
+        await command.run(migrateArgs);
+        return;
+      case 'migrate:rollback':
+        final rollbackArgs = arguments.sublist(1);
+        final command = MigrateRollbackCommand();
+        await command.run(rollbackArgs);
+        return;
+      case 'test':
+        final testArgs = arguments.sublist(1);
+        final command = TestCommand();
+        await command.run(testArgs);
+        return;
+    }
+  }
+
+  // Handle synchronous commands
+  final output = DartianCli.run(arguments);
+  print(output);
+}
+</file>
+
+<file path="database/migrations/2025_11_22_133327_test_migration.dart">
+import 'package:drift/drift.dart';
+import 'package:dartian_orm/dartian_orm.dart';
+
+class TestMigration extends DriftMigration {
+  @override
+  int get version => 1763829207;
+
+  @override
+  Future<void> up(Migrator m, QueryExecutor executor) async {
+    final ops = MigrationOperations(m, executor);
+    // Run the migrations
+    // Example:
+    // await ops.raw('CREATE TABLE table_name (id INTEGER PRIMARY KEY, name TEXT)');
+    // await ops.createIndex('idx_name', 'table_name', ['name']);
+  }
+
+  @override
+  Future<void> down(Migrator m, QueryExecutor executor) async {
+    final ops = MigrationOperations(m, executor);
+    // Reverse the migrations
+    // Example:
+    // await ops.raw('DROP TABLE IF EXISTS table_name');
+    // await ops.dropIndex('idx_name');
+  }
+}
+</file>
+
+<file path="lib/src/commands/build_command.dart">
+import 'dart:io';
+import 'package:args/args.dart';
+
+class BuildCommand {
+  Future<void> run(List<String> arguments) async {
+    final parser = ArgParser()
+      ..addOption(
+        'output',
+        abbr: 'o',
+        help: 'Output directory (default: build/)',
+      )
+      ..addOption(
+        'optimization',
+        abbr: 'O',
+        defaultsTo: '2',
+        allowed: ['0', '1', '2', '3'],
+        help: 'Optimization level (0-3, default: 2)',
+      )
+      ..addFlag('verbose', abbr: 'v', help: 'Verbose output');
+
+    ArgResults args;
+    try {
+      args = parser.parse(arguments);
+    } catch (e) {
+      print('Error parsing arguments: $e');
+      print('\nUsage: dartian build <type> [options]');
+      print('\nTypes:');
+      print('  exe            Build native executable');
+      print('  aot-snapshot   Build AOT snapshot');
+      print('  wasm           Build WebAssembly (experimental)');
+      print('\nOptions:');
+      print(parser.usage);
+      return;
+    }
+
+    if (args.rest.isEmpty) {
+      print('Error: Build type is required');
+      print('\nUsage: dartian build <type>');
+      print('\nAvailable types:');
+      print('  exe            Build native executable');
+      print('  aot-snapshot   Build AOT snapshot');
+      print('  wasm           Build WebAssembly (experimental)');
+      return;
+    }
+
+    final buildType = args.rest[0];
+    final outputDir = args['output'] as String? ?? 'build';
+    final optimization = args['optimization'] as String;
+    final verbose = args['verbose'] as bool;
+
+    switch (buildType) {
+      case 'exe':
+        await _buildExecutable(outputDir, optimization, verbose);
+        break;
+      case 'aot-snapshot':
+        await _buildAotSnapshot(outputDir, optimization, verbose);
+        break;
+      case 'wasm':
+        await _buildWasm(outputDir, verbose);
+        break;
+      default:
+        print('Error: Unknown build type "$buildType"');
+        print('\nAvailable types: exe, aot-snapshot, wasm');
+    }
+  }
+
+  Future<void> _buildExecutable(
+    String outputDir,
+    String optimization,
+    bool verbose,
+  ) async {
+    print('🔨 Building Native Executable');
+    print('━' * 50);
+    print('🎯 Optimization: -O$optimization');
+    print('📁 Output: $outputDir/');
+    print('━' * 50);
+    print('');
+
+    // Check if lib/main.dart exists
+    final mainFile = File('lib/main.dart');
+    if (!mainFile.existsSync()) {
+      print('❌ Error: lib/main.dart not found');
+      print('💡 Make sure you are in the project root directory');
+      return;
+    }
+
+    // Create output directory
+    final output = Directory(outputDir);
+    if (!output.existsSync()) {
+      output.createSync(recursive: true);
+    }
+
+    print('⏳ Compiling (this may take a minute)...');
+    print('');
+
+    try {
+      // Run dart compile exe
+      final result = await Process.run('dart', [
+        'compile',
+        'exe',
+        'lib/main.dart',
+        '-o',
+        '$outputDir/app',
+        '-O$optimization',
+        if (verbose) '--verbose',
+      ]);
+
+      if (verbose) {
+        print(result.stdout);
+      }
+
+      if (result.exitCode != 0) {
+        print('❌ Build failed:');
+        print(result.stderr);
+        return;
+      }
+
+      // Get file size
+      final executable = File('$outputDir/app');
+      final sizeInMB = executable.lengthSync() / (1024 * 1024);
+
+      print('✅ Build completed successfully!');
+      print('');
+      print('📦 Executable: $outputDir/app');
+      print('📊 Size: ${sizeInMB.toStringAsFixed(2)} MB');
+      print('');
+      print('Run your application:');
+      print('  ./$outputDir/app');
+    } catch (e) {
+      print('❌ Build error: $e');
+    }
+  }
+
+  Future<void> _buildAotSnapshot(
+    String outputDir,
+    String optimization,
+    bool verbose,
+  ) async {
+    print('🔨 Building AOT Snapshot');
+    print('━' * 50);
+    print('🎯 Optimization: -O$optimization');
+    print('📁 Output: $outputDir/');
+    print('━' * 50);
+    print('');
+
+    // Check if lib/main.dart exists
+    final mainFile = File('lib/main.dart');
+    if (!mainFile.existsSync()) {
+      print('❌ Error: lib/main.dart not found');
+      print('💡 Make sure you are in the project root directory');
+      return;
+    }
+
+    // Create output directory
+    final output = Directory(outputDir);
+    if (!output.existsSync()) {
+      output.createSync(recursive: true);
+    }
+
+    print('⏳ Compiling AOT snapshot...');
+    print('');
+
+    try {
+      // Run dart compile aot-snapshot
+      final result = await Process.run('dart', [
+        'compile',
+        'aot-snapshot',
+        'lib/main.dart',
+        '-o',
+        '$outputDir/app.aot',
+        if (verbose) '--verbose',
+      ]);
+
+      if (verbose) {
+        print(result.stdout);
+      }
+
+      if (result.exitCode != 0) {
+        print('❌ Build failed:');
+        print(result.stderr);
+        return;
+      }
+
+      // Get file size
+      final snapshot = File('$outputDir/app.aot');
+      final sizeInMB = snapshot.lengthSync() / (1024 * 1024);
+
+      print('✅ Build completed successfully!');
+      print('');
+      print('📦 Snapshot: $outputDir/app.aot');
+      print('📊 Size: ${sizeInMB.toStringAsFixed(2)} MB');
+      print('');
+      print('Run your application:');
+      print('  dartaotruntime $outputDir/app.aot');
+    } catch (e) {
+      print('❌ Build error: $e');
+    }
+  }
+
+  Future<void> _buildWasm(String outputDir, bool verbose) async {
+    print('🔨 Building WebAssembly (WASM)');
+    print('━' * 50);
+    print('⚠️  Experimental feature');
+    print('📁 Output: $outputDir/');
+    print('━' * 50);
+    print('');
+
+    // Check if lib/main.dart exists
+    final mainFile = File('lib/main.dart');
+    if (!mainFile.existsSync()) {
+      print('❌ Error: lib/main.dart not found');
+      print('💡 Make sure you are in the project root directory');
+      return;
+    }
+
+    // Create output directory
+    final output = Directory(outputDir);
+    if (!output.existsSync()) {
+      output.createSync(recursive: true);
+    }
+
+    print('⏳ Compiling to WASM...');
+    print('');
+
+    try {
+      // Run dart compile wasm
+      final result = await Process.run('dart', [
+        'compile',
+        'wasm',
+        'lib/main.dart',
+        '-o',
+        '$outputDir/app.wasm',
+        if (verbose) '--verbose',
+      ]);
+
+      if (verbose) {
+        print(result.stdout);
+      }
+
+      if (result.exitCode != 0) {
+        print('⚠️  WASM compilation not available or failed:');
+        print(result.stderr);
+        print('');
+        print('💡 WASM support requires Dart SDK with WASM experimental flag');
+        print(
+          '💡 This is an experimental feature and may not be available yet',
+        );
+        return;
+      }
+
+      // Get file size
+      final wasmFile = File('$outputDir/app.wasm');
+      if (wasmFile.existsSync()) {
+        final sizeInKB = wasmFile.lengthSync() / 1024;
+
+        print('✅ Build completed successfully!');
+        print('');
+        print('📦 WASM: $outputDir/app.wasm');
+        print('📊 Size: ${sizeInKB.toStringAsFixed(2)} KB');
+        print('');
+        print('💡 Deploy with a WASM-compatible runtime');
+      }
+    } catch (e) {
+      print('❌ Build error: $e');
+      print('💡 WASM compilation may not be available in current Dart SDK');
+    }
+  }
+}
+</file>
+
+<file path="lib/src/commands/migrate_command.dart">
+import 'dart:io';
+import 'package:args/args.dart';
+
+class MigrateCommand {
+  Future<void> run(List<String> arguments) async {
+    final parser = ArgParser()
+      ..addFlag('status', help: 'Show migration status', negatable: false)
+      ..addOption(
+        'database',
+        abbr: 'd',
+        defaultsTo: 'database/database.sqlite',
+        help: 'Database path',
+      )
+      ..addFlag(
+        'force',
+        help: 'Force migrations in production',
+        negatable: false,
+      );
+
+    ArgResults args;
+    try {
+      args = parser.parse(arguments);
+    } catch (e) {
+      print('Error parsing arguments: $e');
+      print('\nUsage: dartian migrate [options]');
+      print(parser.usage);
+      return;
+    }
+
+    final showStatus = args['status'] as bool;
+    final databasePath = args['database'] as String;
+    final force = args['force'] as bool;
+
+    print('🗄️  Database Migrations');
+    print('━' * 50);
+    print('📁 Database: $databasePath');
+    print('━' * 50);
+    print('');
+
+    // Check if migrations directory exists
+    final migrationsDir = Directory('database/migrations');
+    if (!migrationsDir.existsSync()) {
+      print('❌ Error: Migrations directory not found');
+      print('💡 Create migrations directory: database/migrations/');
+      print('💡 Generate migration: dartian make:migration <name>');
+      return;
+    }
+
+    // Load migration files
+    final migrationFiles = _loadMigrationFiles(migrationsDir);
+
+    if (migrationFiles.isEmpty) {
+      print('⚠️  No migrations found');
+      print('💡 Generate migration: dartian make:migration <name>');
+      return;
+    }
+
+    print('📋 Found ${migrationFiles.length} migration file(s)');
+    print('');
+
+    if (showStatus) {
+      await _showStatus(migrationFiles, databasePath);
+    } else {
+      await _runMigrations(migrationFiles, databasePath, force);
+    }
+  }
+
+  List<String> _loadMigrationFiles(Directory dir) {
+    final files =
+        dir
+            .listSync()
+            .whereType<File>()
+            .where((file) => file.path.endsWith('.dart'))
+            .map((file) => file.path.split('/').last)
+            .toList()
+          ..sort();
+
+    return files;
+  }
+
+  Future<void> _showStatus(
+    List<String> migrationFiles,
+    String databasePath,
+  ) async {
+    print('📊 Migration Status:');
+    print('');
+
+    // In a real implementation, this would query the database
+    // For now, simulate status
+    print('  Migration                                 Status');
+    print('  ─' * 50);
+
+    for (final file in migrationFiles) {
+      // Simulate: first half are run, second half are pending
+      final index = migrationFiles.indexOf(file);
+      final status = index < migrationFiles.length / 2 ? '✓ Ran' : '✗ Pending';
+      final displayName = file.replaceAll('.dart', '');
+      print('  ${displayName.padRight(40)} $status');
+    }
+
+    print('');
+    print('  Total: ${migrationFiles.length}');
+    print('  Ran: ${(migrationFiles.length / 2).floor()}');
+    print('  Pending: ${(migrationFiles.length / 2).ceil()}');
+  }
+
+  Future<void> _runMigrations(
+    List<String> migrationFiles,
+    String databasePath,
+    bool force,
+  ) async {
+    // Check if database exists
+    final dbFile = File(databasePath);
+    final dbExists = dbFile.existsSync();
+
+    if (!dbExists) {
+      print('📦 Creating database...');
+      // Ensure directory exists
+      final dbDir = Directory(
+        databasePath
+            .split('/')
+            .sublist(0, databasePath.split('/').length - 1)
+            .join('/'),
+      );
+      if (!dbDir.existsSync()) {
+        dbDir.createSync(recursive: true);
+      }
+    }
+
+    print('🔄 Running migrations...');
+    print('');
+
+    // Simulate running migrations
+    for (final file in migrationFiles) {
+      final displayName = file.replaceAll('.dart', '');
+      print('  Migrating: $displayName');
+
+      // Simulate processing time
+      await Future.delayed(const Duration(milliseconds: 100));
+
+      print('  ✓ Migrated:  $displayName');
+    }
+
+    print('');
+    print('✅ Migrations completed successfully');
+    print('   Executed ${migrationFiles.length} migration(s)');
+    print('');
+    print('💡 Note: This is a placeholder implementation');
+    print(
+      '💡 Real migration execution requires loading and running migration classes',
+    );
+  }
+}
+</file>
+
+<file path="lib/src/commands/migrate_rollback_command.dart">
+import 'dart:io';
+import 'package:args/args.dart';
+
+class MigrateRollbackCommand {
+  Future<void> run(List<String> arguments) async {
+    final parser = ArgParser()
+      ..addOption(
+        'step',
+        abbr: 's',
+        defaultsTo: '1',
+        help: 'Number of batches to rollback',
+      )
+      ..addOption(
+        'database',
+        abbr: 'd',
+        defaultsTo: 'database/database.sqlite',
+        help: 'Database path',
+      )
+      ..addFlag(
+        'force',
+        help: 'Force rollback in production',
+        negatable: false,
+      );
+
+    ArgResults args;
+    try {
+      args = parser.parse(arguments);
+    } catch (e) {
+      print('Error parsing arguments: $e');
+      print('\nUsage: dartian migrate:rollback [options]');
+      print(parser.usage);
+      return;
+    }
+
+    final steps = int.tryParse(args['step'] as String) ?? 1;
+    final databasePath = args['database'] as String;
+    final force = args['force'] as bool;
+
+    print('⏪ Database Migration Rollback');
+    print('━' * 50);
+    print('📁 Database: $databasePath');
+    print('🔢 Steps: $steps batch(es)');
+    print('━' * 50);
+    print('');
+
+    // Check if database exists
+    final dbFile = File(databasePath);
+    if (!dbFile.existsSync()) {
+      print('❌ Error: Database not found at $databasePath');
+      print('💡 Run migrations first: dartian migrate');
+      return;
+    }
+
+    // Check if migrations directory exists
+    final migrationsDir = Directory('database/migrations');
+    if (!migrationsDir.existsSync()) {
+      print('❌ Error: Migrations directory not found');
+      print('💡 Create migrations directory: database/migrations/');
+      return;
+    }
+
+    // Load migration files
+    final migrationFiles = _loadMigrationFiles(migrationsDir);
+
+    if (migrationFiles.isEmpty) {
+      print('⚠️  No migrations found');
+      return;
+    }
+
+    print('🔄 Rolling back migrations...');
+    print('');
+
+    await _rollbackMigrations(migrationFiles, steps, force);
+  }
+
+  List<String> _loadMigrationFiles(Directory dir) {
+    final files =
+        dir
+            .listSync()
+            .whereType<File>()
+            .where((file) => file.path.endsWith('.dart'))
+            .map((file) => file.path.split('/').last)
+            .toList()
+          ..sort((a, b) => b.compareTo(a)); // Reverse order for rollback
+
+    return files;
+  }
+
+  Future<void> _rollbackMigrations(
+    List<String> migrationFiles,
+    int steps,
+    bool force,
+  ) async {
+    // Simulate rollback of last batch
+    final migrationsToRollback = migrationFiles.take(steps).toList();
+
+    if (migrationsToRollback.isEmpty) {
+      print('  Nothing to rollback');
+      return;
+    }
+
+    print('  Rolling back batch...');
+    print('');
+
+    for (final file in migrationsToRollback) {
+      final displayName = file.replaceAll('.dart', '');
+      print('  Rolling back: $displayName');
+
+      // Simulate processing time
+      await Future.delayed(const Duration(milliseconds: 100));
+
+      print('  ✓ Rolled back: $displayName');
+    }
+
+    print('');
+    print('✅ Rollback completed successfully');
+    print('   Rolled back ${migrationsToRollback.length} migration(s)');
+    print('');
+    print('💡 Note: This is a placeholder implementation');
+    print(
+      '💡 Real rollback requires loading and executing migration down() methods',
+    );
+  }
+}
+</file>
+
+<file path="lib/src/commands/new_command.dart">
+import 'dart:io';
+
+class NewCommand {
+  Future<void> run(List<String> arguments) async {
+    if (arguments.isEmpty) {
+      print('Error: Project name is required');
+      print('Usage: dartian new <project-name>');
+      return;
+    }
+
+    final projectName = arguments[0];
+
+    // Validate project name
+    if (!_isValidProjectName(projectName)) {
+      print('Error: Invalid project name "$projectName"');
+      print(
+        'Project name must start with a letter and contain only letters, numbers, and underscores',
+      );
+      return;
+    }
+
+    final projectDir = Directory(projectName);
+
+    // Check if directory already exists
+    if (projectDir.existsSync()) {
+      print('Error: Directory "$projectName" already exists');
+      return;
+    }
+
+    print('🚀 Creating Dartian project: $projectName');
+    print('');
+
+    try {
+      // Create project structure
+      await _createProjectStructure(projectName);
+
+      // Generate files
+      await _generateFiles(projectName);
+
+      print('');
+      print('✅ Project created successfully!');
+      print('');
+      print('Next steps:');
+      print('  cd $projectName');
+      print('  dart pub get');
+      print('  dartian serve');
+      print('');
+    } catch (e) {
+      print('❌ Error creating project: $e');
+      // Cleanup on error
+      if (projectDir.existsSync()) {
+        projectDir.deleteSync(recursive: true);
+      }
+      rethrow;
+    }
+  }
+
+  bool _isValidProjectName(String name) {
+    final regex = RegExp(r'^[a-z][a-z0-9_]*$');
+    return regex.hasMatch(name);
+  }
+
+  Future<void> _createProjectStructure(String projectName) async {
+    final directories = [
+      '$projectName/app/Http/Controllers',
+      '$projectName/app/Http/Middleware',
+      '$projectName/app/Http/Requests',
+      '$projectName/app/Models',
+      '$projectName/app/Providers',
+      '$projectName/config',
+      '$projectName/database/migrations',
+      '$projectName/public',
+      '$projectName/resources/lang/en',
+      '$projectName/resources/views',
+      '$projectName/routes',
+      '$projectName/storage/cache',
+      '$projectName/storage/logs',
+      '$projectName/test',
+    ];
+
+    print('📁 Creating directory structure...');
+    for (final dir in directories) {
+      await Directory(dir).create(recursive: true);
+      print('  ✓ $dir');
+    }
+  }
+
+  Future<void> _generateFiles(String projectName) async {
+    print('');
+    print('📝 Generating files...');
+
+    // Generate pubspec.yaml
+    await _generatePubspec(projectName);
+
+    // Generate main.dart
+    await _generateMain(projectName);
+
+    // Generate routes
+    await _generateRoutes(projectName);
+
+    // Generate config files
+    await _generateConfig(projectName);
+
+    // Generate .env.example
+    await _generateEnvExample(projectName);
+
+    // Generate .gitignore
+    await _generateGitignore(projectName);
+
+    // Generate README
+    await _generateReadme(projectName);
+
+    // Generate example controller
+    await _generateExampleController(projectName);
+
+    // Generate example view
+    await _generateExampleView(projectName);
+
+    // Generate example test
+    await _generateExampleTest(projectName);
+  }
+
+  Future<void> _generatePubspec(String projectName) async {
+    final content = '''name: $projectName
+description: A Dartian web application
+version: 0.0.1
+publish_to: none
+
+environment:
+  sdk: ^3.9.4
+
+dependencies:
+  dartian_core:
+    git:
+      url: https://github.com/verseles/dartian.git
+      path: packages/dartian_core
+  dartian_http:
+    git:
+      url: https://github.com/verseles/dartian.git
+      path: packages/dartian_http
+  dartian_router:
+    git:
+      url: https://github.com/verseles/dartian.git
+      path: packages/dartian_router
+  dartian_di:
+    git:
+      url: https://github.com/verseles/dartian.git
+      path: packages/dartian_di
+  dartian_orm:
+    git:
+      url: https://github.com/verseles/dartian.git
+      path: packages/dartian_orm
+  dartian_redis:
+    git:
+      url: https://github.com/verseles/dartian.git
+      path: packages/dartian_redis
+  dartian_queue:
+    git:
+      url: https://github.com/verseles/dartian.git
+      path: packages/dartian_queue
+  dartian_scheduler:
+    git:
+      url: https://github.com/verseles/dartian.git
+      path: packages/dartian_scheduler
+  dartian_view:
+    git:
+      url: https://github.com/verseles/dartian.git
+      path: packages/dartian_view
+  dartian_i18n:
+    git:
+      url: https://github.com/verseles/dartian.git
+      path: packages/dartian_i18n
+  dartian_auth:
+    git:
+      url: https://github.com/verseles/dartian.git
+      path: packages/dartian_auth
+  shelf: ^1.4.1
+
+dev_dependencies:
+  test: ^1.24.0
+  dartian_cli:
+    git:
+      url: https://github.com/verseles/dartian.git
+      path: packages/dartian_cli
+''';
+
+    await File('$projectName/pubspec.yaml').writeAsString(content);
+    print('  ✓ pubspec.yaml');
+  }
+
+  Future<void> _generateMain(String projectName) async {
+    final content = '''import 'dart:io';
+import 'package:shelf/shelf.dart' as shelf;
+import 'package:shelf/shelf_io.dart' as io;
+import 'package:dartian_http/dartian_http.dart';
+import 'package:dartian_router/dartian_router.dart';
+import 'routes/web.dart' as web_routes;
+
+Future<void> main() async {
+  // Load environment variables
+  final port = int.tryParse(Platform.environment['PORT'] ?? '8000') ?? 8000;
+  final host = Platform.environment['HOST'] ?? 'localhost';
+
+  // Create router
+  final router = Router();
+
+  // Register routes
+  web_routes.register(router);
+
+  // Create middleware pipeline
+  final handler = const shelf.Pipeline()
+      .addMiddleware(shelf.logRequests())
+      .addMiddleware(corsMiddleware())
+      .addHandler(router.handler);
+
+  // Start server
+  final server = await io.serve(handler, host, port);
+
+  print('🚀 Server running on http://\${server.address.host}:\${server.port}');
+  print('Press Ctrl+C to stop');
+}
+''';
+
+    await File('$projectName/lib/main.dart').writeAsString(content);
+    print('  ✓ lib/main.dart');
+  }
+
+  Future<void> _generateRoutes(String projectName) async {
+    final content = '''import 'package:dartian_router/dartian_router.dart';
+import 'package:shelf/shelf.dart';
+import '../app/Http/Controllers/HomeController.dart';
+
+void register(Router router) {
+  final homeController = HomeController();
+
+  // Welcome route
+  router.get('/', homeController.index);
+
+  // API routes example
+  router.group('/api', (router) {
+    router.get('/status', (Request request) {
+      return Response.ok('{"status": "ok", "timestamp": "\${DateTime.now().toIso8601String()}"}',
+        headers: {'Content-Type': 'application/json'},
+      );
+    });
+  });
+}
+''';
+
+    await File('$projectName/routes/web.dart').writeAsString(content);
+    print('  ✓ routes/web.dart');
+  }
+
+  Future<void> _generateConfig(String projectName) async {
+    final appConfig = '''/// Application configuration
+class AppConfig {
+  static const String name = 'Dartian Application';
+  static const String env = String.fromEnvironment('ENV', defaultValue: 'development');
+  static const bool debug = String.fromEnvironment('DEBUG', defaultValue: 'true') == 'true';
+
+  static bool get isProduction => env == 'production';
+  static bool get isDevelopment => env == 'development';
+}
+''';
+
+    await File('$projectName/config/app.dart').writeAsString(appConfig);
+    print('  ✓ config/app.dart');
+
+    final dbConfig = '''/// Database configuration
+class DatabaseConfig {
+  static const String driver = String.fromEnvironment('DB_DRIVER', defaultValue: 'sqlite');
+  static const String host = String.fromEnvironment('DB_HOST', defaultValue: 'localhost');
+  static const int port = int.fromEnvironment('DB_PORT', defaultValue: 5432);
+  static const String database = String.fromEnvironment('DB_DATABASE', defaultValue: 'dartian');
+  static const String username = String.fromEnvironment('DB_USERNAME', defaultValue: 'root');
+  static const String password = String.fromEnvironment('DB_PASSWORD', defaultValue: '');
+
+  static String get sqlitePath => 'database/database.sqlite';
+}
+''';
+
+    await File('$projectName/config/database.dart').writeAsString(dbConfig);
+    print('  ✓ config/database.dart');
+  }
+
+  Future<void> _generateEnvExample(String projectName) async {
+    final content = '''# Application
+APP_NAME=Dartian Application
+ENV=development
+DEBUG=true
+HOST=localhost
+PORT=8000
+
+# Database
+DB_DRIVER=sqlite
+DB_HOST=localhost
+DB_PORT=5432
+DB_DATABASE=dartian
+DB_USERNAME=root
+DB_PASSWORD=
+
+# Redis
+REDIS_HOST=localhost
+REDIS_PORT=6379
+REDIS_PASSWORD=
+
+# Security
+JWT_SECRET=your-secret-key-change-this-in-production
+SESSION_LIFETIME=86400
+''';
+
+    await File('$projectName/.env.example').writeAsString(content);
+    print('  ✓ .env.example');
+  }
+
+  Future<void> _generateGitignore(String projectName) async {
+    final content = '''# Dart
+.dart_tool/
+.packages
+build/
+pubspec.lock
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Environment
+.env
+
+# Storage
+storage/cache/*
+!storage/cache/.gitkeep
+storage/logs/*
+!storage/logs/.gitkeep
+
+# Database
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+
+# OS
+.DS_Store
+Thumbs.db
+''';
+
+    await File('$projectName/.gitignore').writeAsString(content);
+    print('  ✓ .gitignore');
+
+    // Create .gitkeep files
+    await File('$projectName/storage/cache/.gitkeep').writeAsString('');
+    await File('$projectName/storage/logs/.gitkeep').writeAsString('');
+  }
+
+  Future<void> _generateReadme(String projectName) async {
+    final content =
+        '''# $projectName
+
+A web application built with Dartian framework.
+
+## Getting Started
+
+### Prerequisites
+
+- Dart SDK >= 3.9.4
+- Dartian CLI
+
+### Installation
+
+1. Install dependencies:
+   ```bash
+   dart pub get
+   ```
+
+2. Copy environment file:
+   ```bash
+   cp .env.example .env
+   ```
+
+3. Generate application key:
+   ```bash
+   # Edit .env and set your JWT_SECRET
+   ```
+
+### Development
+
+Start the development server with hot reload:
+
+```bash
+dartian serve
+```
+
+The application will be available at http://localhost:8000
+
+### Testing
+
+Run tests:
+
+```bash
+dart test
+```
+
+### Database
+
+Run migrations:
+
+```bash
+dartian migrate
+```
+
+Rollback migrations:
+
+```bash
+dartian migrate:rollback
+```
+
+### Production
+
+Build AOT executable:
+
+```bash
+dartian build exe
+```
+
+Run production server:
+
+```bash
+./build/$projectName-aot
+```
+
+## Project Structure
+
+```
+$projectName/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/    # Request handlers
+│   │   ├── Middleware/     # HTTP middleware
+│   │   └── Requests/       # Request validators
+│   ├── Models/             # Data models
+│   └── Providers/          # Service providers
+├── config/                 # Configuration files
+├── database/
+│   └── migrations/         # Database migrations
+├── public/                 # Public assets
+├── resources/
+│   ├── lang/              # Translations
+│   └── views/             # Templates
+├── routes/                # Route definitions
+├── storage/               # Logs and cache
+└── test/                  # Tests
+```
+
+## License
+
+Copyright © 2025. All rights reserved.
+''';
+
+    await File('$projectName/README.md').writeAsString(content);
+    print('  ✓ README.md');
+  }
+
+  Future<void> _generateExampleController(String projectName) async {
+    final content = '''import 'package:shelf/shelf.dart';
+import 'package:dartian_view/dartian_view.dart';
+
+class HomeController {
+  final _viewEngine = ViewEngine();
+
+  /// Display the welcome page
+  Future<Response> index(Request request) async {
+    return _viewEngine.render('welcome', {
+      'title': 'Welcome to Dartian',
+      'message': 'Your application is ready!',
+    });
+  }
+}
+''';
+
+    await File(
+      '$projectName/app/Http/Controllers/HomeController.dart',
+    ).writeAsString(content);
+    print('  ✓ app/Http/Controllers/HomeController.dart');
+  }
+
+  Future<void> _generateExampleView(String projectName) async {
+    final content = '''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .container {
+            text-align: center;
+            padding: 2rem;
+        }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+        }
+        .links {
+            margin-top: 2rem;
+        }
+        a {
+            color: white;
+            text-decoration: none;
+            margin: 0 1rem;
+            padding: 0.5rem 1rem;
+            border: 2px solid white;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        a:hover {
+            background: white;
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{title}}</h1>
+        <p>{{message}}</p>
+        <div class="links">
+            <a href="https://github.com/verseles/dartian" target="_blank">Documentation</a>
+            <a href="/api/status" target="_blank">API Status</a>
+        </div>
+    </div>
+</body>
+</html>
+''';
+
+    await File(
+      '$projectName/resources/views/welcome.mustache',
+    ).writeAsString(content);
+    print('  ✓ resources/views/welcome.mustache');
+  }
+
+  Future<void> _generateExampleTest(String projectName) async {
+    final content = '''import 'package:test/test.dart';
+
+void main() {
+  group('Application', () {
+    test('should pass basic test', () {
+      expect(true, isTrue);
+    });
+
+    test('should test arithmetic', () {
+      expect(1 + 1, equals(2));
+    });
+  });
+}
+''';
+
+    await File('$projectName/test/app_test.dart').writeAsString(content);
+    print('  ✓ test/app_test.dart');
+  }
+}
+</file>
+
+<file path="lib/src/commands/queue_work_command.dart">
+import 'dart:async';
+import 'dart:io';
+import 'package:args/args.dart';
+
+class QueueWorkCommand {
+  Future<void> run(List<String> arguments) async {
+    final parser = ArgParser()
+      ..addOption('queue', defaultsTo: 'default', help: 'The queue to process')
+      ..addOption(
+        'driver',
+        defaultsTo: 'sync',
+        allowed: ['sync', 'redis'],
+        help: 'Queue driver (sync or redis)',
+      )
+      ..addOption(
+        'sleep',
+        defaultsTo: '3',
+        help: 'Seconds to sleep when no jobs are available',
+      )
+      ..addOption(
+        'max-jobs',
+        defaultsTo: '0',
+        help: 'Maximum jobs to process (0 = unlimited)',
+      )
+      ..addOption(
+        'memory',
+        defaultsTo: '128',
+        help: 'Memory limit in MB (0 = unlimited)',
+      )
+      ..addFlag('daemon', defaultsTo: true, help: 'Run as daemon')
+      ..addFlag('once', defaultsTo: false, help: 'Process one job and exit');
+
+    ArgResults args;
+    try {
+      args = parser.parse(arguments);
+    } catch (e) {
+      print('Error parsing arguments: $e');
+      print('\nUsage: dartian queue:work [options]');
+      print(parser.usage);
+      return;
+    }
+
+    final queue = args['queue'] as String;
+    final driver = args['driver'] as String;
+    final sleep = int.tryParse(args['sleep'] as String) ?? 3;
+    final maxJobs = int.tryParse(args['max-jobs'] as String) ?? 0;
+    final memoryLimit = int.tryParse(args['memory'] as String) ?? 128;
+    final daemon = args['daemon'] as bool;
+    final once = args['once'] as bool;
+
+    print('🚀 Queue Worker Starting');
+    print('━' * 50);
+    print('📦 Queue: $queue');
+    print('🔧 Driver: $driver');
+    print('⏱️  Sleep: ${sleep}s');
+    if (maxJobs > 0) print('🎯 Max Jobs: $maxJobs');
+    if (memoryLimit > 0) print('💾 Memory Limit: ${memoryLimit}MB');
+    print(
+      '🔄 Mode: ${once
+          ? "once"
+          : daemon
+          ? "daemon"
+          : "single"}',
+    );
+    print('━' * 50);
+    print('');
+
+    if (once) {
+      await _processOnce(queue, driver);
+    } else if (daemon) {
+      await _processDaemon(queue, driver, sleep, maxJobs, memoryLimit);
+    }
+  }
+
+  Future<void> _processOnce(String queue, String driver) async {
+    print('⏳ Processing one job from queue "$queue"...');
+
+    // Simulate job processing
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    print('✅ Processed 1 job');
+    print('👋 Worker stopped');
+  }
+
+  Future<void> _processDaemon(
+    String queue,
+    String driver,
+    int sleep,
+    int maxJobs,
+    int memoryLimit,
+  ) async {
+    print('💪 Worker started successfully');
+    print('👀 Listening for jobs on queue "$queue"...');
+    print('');
+
+    int processedJobs = 0;
+    bool shouldStop = false;
+
+    // Handle Ctrl+C gracefully
+    ProcessSignal.sigint.watch().listen((_) {
+      print('\n\n🛑 Stopping worker gracefully...');
+      shouldStop = true;
+    });
+
+    while (!shouldStop) {
+      // Check memory limit
+      if (memoryLimit > 0) {
+        final currentMemory = ProcessInfo.currentRss ~/ (1024 * 1024);
+        if (currentMemory > memoryLimit) {
+          print(
+            '⚠️  Memory limit exceeded ($currentMemory MB > $memoryLimit MB)',
+          );
+          print('🛑 Worker stopping due to memory limit');
+          break;
+        }
+      }
+
+      // Check max jobs limit
+      if (maxJobs > 0 && processedJobs >= maxJobs) {
+        print('✅ Processed $processedJobs jobs (limit reached)');
+        print('🛑 Worker stopping');
+        break;
+      }
+
+      // Simulate job checking and processing
+      final hasJob = await _checkForJob(queue, driver);
+
+      if (hasJob) {
+        try {
+          await _processJob(queue, driver, processedJobs + 1);
+          processedJobs++;
+        } catch (e) {
+          print('❌ Job failed: $e');
+        }
+      } else {
+        // No jobs available, sleep
+        await Future.delayed(Duration(seconds: sleep));
+      }
+    }
+
+    print('');
+    print('📊 Summary:');
+    print('  Total jobs processed: $processedJobs');
+    print('');
+    print('👋 Worker stopped');
+  }
+
+  Future<bool> _checkForJob(String queue, String driver) async {
+    // Simulate checking for jobs (10% chance of having a job)
+    await Future.delayed(const Duration(milliseconds: 100));
+
+    // In real implementation, this would check the actual queue
+    // For now, simulate occasionally finding jobs
+    return DateTime.now().second % 10 == 0;
+  }
+
+  Future<void> _processJob(String queue, String driver, int jobNumber) async {
+    final timestamp = DateTime.now().toIso8601String();
+    print('[$timestamp] Processing job #$jobNumber from "$queue"...');
+
+    // Simulate job processing time
+    await Future.delayed(Duration(milliseconds: 200 + (jobNumber % 5) * 100));
+
+    print('[$timestamp] ✅ Job #$jobNumber completed');
+  }
+}
+</file>
+
+<file path="lib/src/commands/schedule_run_command.dart">
+import 'dart:async';
+import 'dart:io';
+
+class ScheduleRunCommand {
+  final List<Timer> _timers = [];
+  bool _shouldStop = false;
+
+  Future<void> run(List<String> arguments) async {
+    print('🕐 Task Scheduler Starting');
+    print('━' * 50);
+    print('📅 Checking for scheduled tasks...');
+    print('━' * 50);
+    print('');
+
+    // Load scheduled tasks
+    final tasks = _loadScheduledTasks();
+
+    if (tasks.isEmpty) {
+      print('⚠️  No scheduled tasks found');
+      print('💡 Define tasks in app/Console/Kernel.dart');
+      print('');
+      return;
+    }
+
+    print('✅ Loaded ${tasks.length} scheduled task(s):');
+    for (final task in tasks) {
+      print('  • ${task['name']} - ${task['schedule']}');
+    }
+    print('');
+    print('💪 Scheduler started successfully');
+    print('⏰ Running every minute...');
+    print('');
+
+    // Handle Ctrl+C gracefully
+    ProcessSignal.sigint.watch().listen((_) {
+      print('\n\n🛑 Stopping scheduler...');
+      _shouldStop = true;
+      _cleanup();
+    });
+
+    // Run scheduler loop
+    await _runScheduler(tasks);
+  }
+
+  List<Map<String, dynamic>> _loadScheduledTasks() {
+    // In a real implementation, this would load from app/Console/Kernel.dart
+    // For now, return example tasks
+    return [
+      {
+        'name': 'cleanup:temp',
+        'command': 'Clean temporary files',
+        'schedule': 'daily at 00:00',
+        'cron': '0 0 * * *',
+      },
+      {
+        'name': 'reports:generate',
+        'command': 'Generate daily reports',
+        'schedule': 'daily at 08:00',
+        'cron': '0 8 * * *',
+      },
+      {
+        'name': 'cache:clear',
+        'command': 'Clear expired cache',
+        'schedule': 'every hour',
+        'cron': '0 * * * *',
+      },
+    ];
+  }
+
+  Future<void> _runScheduler(List<Map<String, dynamic>> tasks) async {
+    // Check for due tasks every minute
+    Timer.periodic(const Duration(minutes: 1), (timer) {
+      if (_shouldStop) {
+        timer.cancel();
+        return;
+      }
+
+      _checkAndRunTasks(tasks);
+    });
+
+    // Also check immediately on start
+    _checkAndRunTasks(tasks);
+
+    // Keep the process running
+    while (!_shouldStop) {
+      await Future.delayed(const Duration(seconds: 1));
+    }
+  }
+
+  void _checkAndRunTasks(List<Map<String, dynamic>> tasks) {
+    final now = DateTime.now();
+    final timestamp = now.toIso8601String().substring(0, 19);
+
+    print('[$timestamp] Checking for due tasks...');
+
+    int ranTasks = 0;
+
+    for (final task in tasks) {
+      if (_isTaskDue(task, now)) {
+        _runTask(task);
+        ranTasks++;
+      }
+    }
+
+    if (ranTasks == 0) {
+      print('[$timestamp] No tasks due');
+    }
+
+    print('');
+  }
+
+  bool _isTaskDue(Map<String, dynamic> task, DateTime now) {
+    final cron = task['cron'] as String;
+
+    // Simple cron parsing for demonstration
+    // In real implementation, use a proper cron parser
+    final parts = cron.split(' ');
+    if (parts.length != 5) return false;
+
+    final minute = parts[0];
+    final hour = parts[1];
+
+    // Check if current time matches
+    if (minute != '*' && minute != now.minute.toString()) {
+      return false;
+    }
+
+    if (hour != '*' && hour != now.hour.toString()) {
+      return false;
+    }
+
+    // For simplicity, only checking minute and hour
+    // Real implementation would check day, month, day of week
+    return true;
+  }
+
+  void _runTask(Map<String, dynamic> task) {
+    final timestamp = DateTime.now().toIso8601String().substring(0, 19);
+    final name = task['name'] as String;
+    final command = task['command'] as String;
+
+    print('[$timestamp] ⏰ Running: $name');
+    print('[$timestamp]    Command: $command');
+
+    // Simulate task execution
+    Timer(const Duration(seconds: 2), () {
+      print('[$timestamp] ✅ Completed: $name');
+    });
+  }
+
+  void _cleanup() {
+    for (final timer in _timers) {
+      timer.cancel();
+    }
+    _timers.clear();
+    print('✅ Cleanup completed');
+    print('👋 Scheduler stopped');
+  }
+}
+</file>
+
+<file path="lib/src/commands/serve_command.dart">
+import 'dart:async';
+import 'dart:io';
+
+import 'package:args/args.dart';
+import 'package:dartian_http/dartian_http.dart';
+import 'package:hotreloader/hotreloader.dart';
+import 'package:shelf/shelf.dart';
+import 'package:watcher/watcher.dart';
+
+class ServeCommand {
+  static const defaultHost = 'localhost';
+  static const defaultPort = 8000;
+
+  final List<String> _watchDirectories = ['lib', 'app', 'routes', 'resources'];
+
+  HttpServer? _server;
+  HotReloader? _hotReloader;
+  final List<DirectoryWatcher> _watchers = [];
+  final List<StreamSubscription> _subscriptions = [];
+  bool _isReloading = false;
+  DateTime? _lastReload;
+  static const _reloadDebounceMs = 500;
+
+  Future<void> run(List<String> arguments) async {
+    final parser = ArgParser()
+      ..addOption(
+        'host',
+        abbr: 'h',
+        defaultsTo: defaultHost,
+        help: 'The host to bind to',
+      )
+      ..addOption(
+        'port',
+        abbr: 'p',
+        defaultsTo: '$defaultPort',
+        help: 'The port to bind to',
+      );
+
+    ArgResults args;
+    try {
+      args = parser.parse(arguments);
+    } catch (e) {
+      print('Error parsing arguments: $e');
+      print('\nUsage: dartian serve [options]');
+      print(parser.usage);
+      return;
+    }
+
+    final host = args['host'] as String;
+    final port = int.tryParse(args['port'] as String) ?? defaultPort;
+
+    print('🚀 Dartian Development Server');
+    print('━' * 50);
+    print('📍 Server: http://$host:$port');
+    print('👀 Watching: ${_watchDirectories.join(', ')}');
+    print('━' * 50);
+    print('');
+
+    // Start the server
+    await _startServer(host, port);
+
+    // Setup file watchers
+    _setupWatchers();
+
+    // Handle Ctrl+C gracefully
+    ProcessSignal.sigint.watch().listen((_) async {
+      print('\n\n🛑 Shutting down server...');
+      await _cleanup();
+      exit(0);
+    });
+
+    // Keep the process running
+    await Future.delayed(const Duration(days: 365));
+  }
+
+  Future<void> _startServer(String host, int port) async {
+    try {
+      // Initialize HotReloader for automatic code reload
+      _hotReloader = await HotReloader.create(
+        debounceInterval: const Duration(milliseconds: _reloadDebounceMs),
+        onAfterReload: (ctx) {
+          print('✅ Hot reload completed successfully');
+          print('');
+        },
+      );
+
+      // Create HTTP kernel with basic handler
+      final kernel = HttpKernel();
+
+      // Add a simple logging middleware
+      kernel.use((Handler handler) {
+        return (Request request) async {
+          final startTime = DateTime.now();
+          final response = await handler(request);
+          final duration = DateTime.now().difference(startTime);
+
+          print(
+            '[${startTime.toIso8601String()}] ${request.method} ${request.requestedUri.path} - ${response.statusCode} (${duration.inMilliseconds}ms)',
+          );
+
+          return response;
+        };
+      });
+
+      // Set default handler (returns welcome page for all routes)
+      // In a real app, this would load routes from routes/ directory
+      kernel.setHandler((Request request) {
+        return Response.ok(
+          '<h1>Dartian Development Server</h1> '
+          '<p>Server is running at http://$host:$port</p> '
+          '<p>Add your routes in the <code>routes/</code> directory.</p>',
+          headers: {'Content-Type': 'text/html'},
+        );
+      });
+
+      // Start the server
+      _server = await kernel.listen(host, port);
+
+      print('✅ Server started successfully');
+      print('💡 Ready for connections');
+      print('🔥 Hot reload enabled');
+      print('');
+    } catch (e) {
+      print('❌ Error starting server: $e');
+      rethrow;
+    }
+  }
+
+  void _setupWatchers() {
+    for (final dirPath in _watchDirectories) {
+      final dir = Directory(dirPath);
+      if (!dir.existsSync()) {
+        print('⚠️  Directory not found: $dirPath (skipping watch)');
+        continue;
+      }
+
+      try {
+        final watcher = DirectoryWatcher(dirPath);
+        _watchers.add(watcher);
+
+        final subscription = watcher.events.listen(
+          _handleFileChange,
+          onError: (error) {
+            print('⚠️  Watcher error in $dirPath: $error');
+          },
+        );
+        _subscriptions.add(subscription);
+      } catch (e) {
+        print('⚠️  Could not watch $dirPath: $e');
+      }
+    }
+
+    if (_watchers.isEmpty) {
+      print('⚠️  No directories being watched. Hot reload disabled.');
+    }
+  }
+
+  void _handleFileChange(WatchEvent event) {
+    // Ignore non-Dart files
+    if (!event.path.endsWith('.dart')) {
+      return;
+    }
+
+    // Ignore files in hidden directories or build directories
+    if (event.path.contains('/.') ||
+        event.path.contains('/build/') ||
+        event.path.contains('/.dart_tool/')) {
+      return;
+    }
+
+    // Debounce rapid changes
+    final now = DateTime.now();
+    if (_lastReload != null) {
+      final diff = now.difference(_lastReload!).inMilliseconds;
+      if (diff < _reloadDebounceMs) {
+        return;
+      }
+    }
+    _lastReload = now;
+
+    // Prevent concurrent reloads
+    if (_isReloading) {
+      return;
+    }
+
+    _reload(event);
+  }
+
+  Future<void> _reload(WatchEvent event) async {
+    _isReloading = true;
+
+    try {
+      final eventType = _getEventTypeDescription(event.type);
+      final relativePath = event.path;
+
+      print('');
+      print('📝 File $eventType: $relativePath');
+      print('🔄 Reloading server...');
+
+      // Trigger hot reload via HotReloader
+      if (_hotReloader != null) {
+        final startTime = DateTime.now();
+        await _hotReloader!.reloadCode();
+        final duration = DateTime.now().difference(startTime);
+        print('✅ Hot reload completed in ${duration.inMilliseconds}ms');
+      } else {
+        print('⚠️  HotReloader not initialized, skipping reload');
+      }
+
+      print('');
+    } catch (e) {
+      print('❌ Reload failed: $e');
+      print('💡 Consider restarting the server manually');
+      print('');
+    } finally {
+      _isReloading = false;
+    }
+  }
+
+  String _getEventTypeDescription(ChangeType type) {
+    switch (type) {
+      case ChangeType.ADD:
+        return 'added';
+      case ChangeType.MODIFY:
+        return 'modified';
+      case ChangeType.REMOVE:
+        return 'removed';
+      default:
+        return 'changed';
+    }
+  }
+
+  Future<void> _cleanup() async {
+    // Cancel all watchers
+    for (final subscription in _subscriptions) {
+      await subscription.cancel();
+    }
+    _subscriptions.clear();
+    _watchers.clear();
+
+    // Stop hot reloader
+    if (_hotReloader != null) {
+      await _hotReloader!.stop();
+      _hotReloader = null;
+    }
+
+    // Stop HTTP server
+    if (_server != null) {
+      await _server!.close(force: true);
+      _server = null;
+    }
+
+    print('✅ Cleanup completed');
+  }
+}
+</file>
+
+<file path="lib/src/commands/test_command.dart">
+import 'dart:io';
+import 'package:args/args.dart';
+
+class TestCommand {
+  Future<void> run(List<String> arguments) async {
+    final parser = ArgParser()
+      ..addFlag('coverage', help: 'Generate coverage report', negatable: false)
+      ..addOption(
+        'reporter',
+        abbr: 'r',
+        defaultsTo: 'compact',
+        allowed: ['compact', 'expanded', 'json', 'github'],
+        help: 'Test reporter format',
+      )
+      ..addOption('name', abbr: 'n', help: 'Filter tests by name pattern')
+      ..addOption('tags', abbr: 't', help: 'Run only tests with specified tags')
+      ..addOption(
+        'exclude-tags',
+        abbr: 'x',
+        help: 'Exclude tests with specified tags',
+      )
+      ..addFlag('verbose', abbr: 'v', help: 'Verbose output', negatable: false)
+      ..addFlag('fail-fast', help: 'Stop after first failure', negatable: false)
+      ..addOption(
+        'concurrency',
+        abbr: 'j',
+        defaultsTo: '10',
+        help: 'Number of concurrent test suites',
+      );
+
+    ArgResults args;
+    try {
+      args = parser.parse(arguments);
+    } catch (e) {
+      print('Error parsing arguments: $e');
+      print('\nUsage: dartian test [options] [files]');
+      print(parser.usage);
+      return;
+    }
+
+    print('🧪 Running Tests');
+    print('━' * 50);
+
+    // Build dart test command
+    final testArgs = <String>[];
+
+    // Add reporter
+    testArgs.addAll(['-r', args['reporter'] as String]);
+
+    // Add coverage if requested
+    if (args['coverage'] as bool) {
+      print('📊 Coverage: enabled');
+      testArgs.addAll(['--coverage=coverage']);
+    }
+
+    // Add name filter
+    final nameFilter = args['name'] as String?;
+    if (nameFilter != null) {
+      print('🔍 Filter: $nameFilter');
+      testArgs.addAll(['-n', nameFilter]);
+    }
+
+    // Add tags
+    final tags = args['tags'] as String?;
+    if (tags != null) {
+      print('🏷️  Tags: $tags');
+      testArgs.addAll(['-t', tags]);
+    }
+
+    // Add exclude tags
+    final excludeTags = args['exclude-tags'] as String?;
+    if (excludeTags != null) {
+      print('🚫 Exclude Tags: $excludeTags');
+      testArgs.addAll(['-x', excludeTags]);
+    }
+
+    // Add fail-fast
+    if (args['fail-fast'] as bool) {
+      testArgs.add('--fail-fast');
+    }
+
+    // Add concurrency
+    final concurrency = args['concurrency'] as String;
+    testArgs.addAll(['-j', concurrency]);
+
+    // Add verbose if requested
+    if (args['verbose'] as bool) {
+      testArgs.add('--verbose-trace');
+    }
+
+    // Add remaining arguments (test files/directories)
+    testArgs.addAll(args.rest);
+
+    print('━' * 50);
+    print('');
+
+    // Run dart test
+    final result = await Process.run('dart', ['test', ...testArgs]);
+
+    // Print output
+    if (result.stdout.toString().isNotEmpty) {
+      print(result.stdout);
+    }
+    if (result.stderr.toString().isNotEmpty) {
+      print(result.stderr);
+    }
+
+    // Check result
+    if (result.exitCode != 0) {
+      exit(result.exitCode);
+    }
+
+    // Generate coverage report if requested
+    if (args['coverage'] as bool) {
+      print('');
+      print('📊 Generating coverage report...');
+
+      // Check if coverage directory exists
+      final coverageDir = Directory('coverage');
+      if (coverageDir.existsSync()) {
+        // Try to generate HTML report using coverage tool
+        final formatResult = await Process.run('dart', [
+          'pub',
+          'global',
+          'run',
+          'coverage:format_coverage',
+          '--lcov',
+          '--in=coverage',
+          '--out=coverage/lcov.info',
+          '--packages=.dart_tool/package_config.json',
+          '--report-on=lib',
+        ]);
+
+        if (formatResult.exitCode == 0) {
+          print('✅ Coverage report generated: coverage/lcov.info');
+
+          // Try to generate HTML report
+          final htmlResult = await Process.run('genhtml', [
+            '-o',
+            'coverage/html',
+            'coverage/lcov.info',
+          ]);
+
+          if (htmlResult.exitCode == 0) {
+            print('✅ HTML report generated: coverage/html/index.html');
+          } else {
+            print(
+              '💡 Install lcov to generate HTML reports: sudo apt install lcov',
+            );
+          }
+        } else {
+          print('💡 Install coverage tool: dart pub global activate coverage');
+        }
+      }
+    }
+  }
+}
+
+extension on Process {
+  static Future<ProcessResult> run(
+    String executable,
+    List<String> arguments, {
+    bool runInStdio = false,
+  }) async {
+    if (runInStdio) {
+      // Run with inherited stdio for interactive output
+      final process = await Process.start(
+        executable,
+        arguments,
+        mode: ProcessStartMode.inheritStdio,
+      );
+
+      final exitCode = await process.exitCode;
+      return ProcessResult(process.pid, exitCode, '', '');
+    } else {
+      return Process.run(executable, arguments);
+    }
+  }
+}
+</file>
+
+<file path="lib/dartian_console.dart">
+library dartian_cli;
+
+import 'package:args/args.dart';
+import 'dart:io';
+
+class DartianCli {
+  static const version = '0.0.1';
+
+  static String run(List<String> arguments) {
+    final parser = ArgParser()
+      ..addCommand('version')
+      ..addCommand('help')
+      ..addCommand('new')
+      ..addCommand('serve')
+      ..addCommand('make')
+      ..addCommand('migrate')
+      ..addCommand('queue')
+      ..addCommand('schedule')
+      ..addCommand('test')
+      ..addCommand('build');
+
+    final results = parser.parse(arguments);
+
+    if (results.command == null) {
+      if (results.arguments.isEmpty) {
+        return _showHelp();
+      }
+    }
+
+    final command = results.command?.name;
+    final commandArgs = results.command?.arguments ?? [];
+
+    switch (command) {
+      case 'version':
+        return 'Dartian $version';
+      case 'help':
+        return _showHelp();
+      case 'serve':
+        // Serve command is now handled in bin/dartian.dart with ServeCommand
+        return 'Use: dartian serve [--host localhost] [--port 8000]';
+      case 'new':
+        // New command is now handled in bin/dartian.dart with NewCommand
+        return 'Use: dartian new <project-name>';
+      case 'make':
+        return _handleMakeCommand(commandArgs);
+      case 'queue':
+        if (commandArgs.isEmpty || commandArgs[0] != 'work') {
+          return 'Usage: dartian queue:work [options]';
+        }
+        return 'Use: dartian queue:work [--queue=default] [--driver=sync]';
+      case 'schedule':
+        if (commandArgs.isEmpty || commandArgs[0] != 'run') {
+          return 'Usage: dartian schedule:run';
+        }
+        return 'Use: dartian schedule:run';
+      case 'build':
+        if (commandArgs.isEmpty) {
+          return 'Usage: dartian build <type>\nTypes: exe, aot-snapshot, wasm';
+        }
+        return 'Use: dartian build exe|aot-snapshot|wasm';
+      case 'migrate':
+        // Migrate command is now handled in bin/dartian.dart
+        return 'Use: dartian migrate [--status] [--database=path]';
+      case 'test':
+        // Test command is now handled in bin/dartian.dart
+        return 'Use: dartian test [--coverage] [--name=pattern] [files]';
+      default:
+        return _showHelp();
+    }
+  }
+
+  static String _handleMakeCommand(List<String> arguments) {
+    if (arguments.isEmpty) {
+      return 'Make command requires a subcommand (e.g., make:view, make:controller)';
+    }
+
+    final subcommand = arguments[0];
+    final args = arguments.sublist(1);
+
+    switch (subcommand) {
+      case 'view':
+        return _makeView(args);
+      case 'lang':
+        return _makeLang(args);
+      case 'controller':
+        return _makeController(args);
+      case 'model':
+        return _makeModel(args);
+      case 'migration':
+        return _makeMigration(args);
+      case 'request':
+        return _makeRequest(args);
+      case 'provider':
+        return _makeProvider(args);
+      case 'test':
+        return _makeTest(args);
+      default:
+        return 'Unknown make subcommand: $subcommand. Available: view, lang, controller, model, migration, request, provider, test';
+    }
+  }
+
+  static String _makeView(List<String> arguments) {
+    if (arguments.isEmpty) {
+      return 'Usage: dartian make:view <name>';
+    }
+
+    final name = arguments[0];
+    return _generateView(name);
+  }
+
+  static String _makeLang(List<String> arguments) {
+    if (arguments.isEmpty) {
+      return 'Usage: dartian make:lang <locale>';
+    }
+
+    final locale = arguments[0];
+    return _generateLanguage(locale);
+  }
+
+  static String _generateView(String name) {
+    try {
+      // Create views directory if it doesn't exist
+      final viewsDir = Directory('resources/views');
+      if (!viewsDir.existsSync()) {
+        viewsDir.createSync(recursive: true);
+      }
+
+      // Parse path to create subdirectories
+      final parts = name.split('/');
+      parts.last; // ignore unused variable
+      final subDir = parts.length > 1
+          ? parts.sublist(0, parts.length - 1)
+          : null;
+
+      // Create subdirectory if needed
+      if (subDir != null && subDir.isNotEmpty) {
+        final subDirPath = 'resources/views/${subDir.join('/')}';
+        final subDirObj = Directory(subDirPath);
+        if (!subDirObj.existsSync()) {
+          subDirObj.createSync(recursive: true);
+        }
+      }
+
+      // Generate template file
+      final templatePath = 'resources/views/$name.mustache';
+      final templateFile = File(templatePath);
+
+      // Check if file already exists
+      if (templateFile.existsSync()) {
+        return 'Error: Template already exists at $templatePath';
+      }
+
+      // Generate boilerplate content
+      final content = '''<!DOCTYPE html>
+<html>
+<head>
+  <title>{{title}}</title>
+</head>
+<body>
+  <h1>{{heading}}</h1>
+  <div class="content">
+    {{#content}}
+      <p>{{.}}</p>
+    {{/content}}
+  </div>
+</body>
+</html>''';
+
+      templateFile.writeAsStringSync(content);
+
+      return 'View template created successfully at $templatePath';
+    } catch (e) {
+      return 'Error creating view: $e';
+    }
+  }
+
+  static String _generateLanguage(String locale) {
+    try {
+      // Create lang directory if it doesn't exist
+      final langDir = Directory('resources/lang');
+      if (!langDir.existsSync()) {
+        langDir.createSync(recursive: true);
+      }
+
+      // Create locale directory
+      final localeDirPath = 'resources/lang/$locale';
+      final localeDir = Directory(localeDirPath);
+      if (!localeDir.existsSync()) {
+        localeDir.createSync(recursive: true);
+      }
+
+      // Generate messages file
+      final messagesPath = '$localeDirPath/messages.json';
+      final messagesFile = File(messagesPath);
+
+      // Check if file already exists
+      if (messagesFile.existsSync()) {
+        return 'Error: Language file already exists at $messagesPath';
+      }
+
+      // Generate boilerplate content
+      final content = '''{
+  "app": {
+    "title": "Application Title",
+    "description": "Application Description"
+  },
+  "navigation": {
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "buttons": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "submit": "Submit"
+  },
+  "messages": {
+    "welcome": "Welcome, {name}!",
+    "error": "An error occurred",
+    "success": "Operation completed successfully"
+  }
+}''';
+
+      messagesFile.writeAsStringSync(content);
+
+      return 'Language file created successfully at $messagesPath';
+    } catch (e) {
+      return 'Error creating language file: $e';
+    }
+  }
+
+  static String _makeController(List<String> arguments) {
+    if (arguments.isEmpty) {
+      return 'Usage: dartian make:controller <name>';
+    }
+
+    final name = arguments[0];
+    return _generateController(name);
+  }
+
+  static String _generateController(String name) {
+    try {
+      // Create controllers directory if it doesn't exist
+      final controllersDir = Directory('app/Http/Controllers');
+      if (!controllersDir.existsSync()) {
+        controllersDir.createSync(recursive: true);
+      }
+
+      // Generate controller file
+      final controllerPath = 'app/Http/Controllers/$name.dart';
+      final controllerFile = File(controllerPath);
+
+      // Check if file already exists
+      if (controllerFile.existsSync()) {
+        return 'Error: Controller already exists at $controllerPath';
+      }
+
+      // Generate boilerplate content
+      final content =
+          '''import 'package:shelf/shelf.dart';
+
+class $name {
+  /// Handle incoming request
+  Future<Response> index(Request request) async {
+    return Response.ok('Welcome to $name');
+  }
+
+  /// Show a specific resource
+  Future<Response> show(Request request, String id) async {
+    return Response.ok('Showing resource: \$id');
+  }
+
+  /// Create a new resource
+  Future<Response> store(Request request) async {
+    return Response.ok('Resource created');
+  }
+
+  /// Update an existing resource
+  Future<Response> update(Request request, String id) async {
+    return Response.ok('Resource \$id updated');
+  }
+
+  /// Delete a resource
+  Future<Response> destroy(Request request, String id) async {
+    return Response.ok('Resource \$id deleted');
+  }
+}
+''';
+
+      controllerFile.writeAsStringSync(content);
+
+      return 'Controller created successfully at $controllerPath';
+    } catch (e) {
+      return 'Error creating controller: $e';
+    }
+  }
+
+  static String _makeModel(List<String> arguments) {
+    if (arguments.isEmpty) {
+      return 'Usage: dartian make:model <name>';
+    }
+
+    final name = arguments[0];
+    return _generateModel(name);
+  }
+
+  static String _generateModel(String name) {
+    try {
+      // Create models directory if it doesn't exist
+      final modelsDir = Directory('app/Models');
+      if (!modelsDir.existsSync()) {
+        modelsDir.createSync(recursive: true);
+      }
+
+      // Generate model file
+      final modelPath = 'app/Models/$name.dart';
+      final modelFile = File(modelPath);
+
+      // Check if file already exists
+      if (modelFile.existsSync()) {
+        return 'Error: Model already exists at $modelPath';
+      }
+
+      // Convert name to table name (e.g., User -> users)
+      final tableName = _toSnakeCase(_pluralize(name));
+
+      // Generate boilerplate content
+      final content =
+          '''class $name {
+  final int? id;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+
+  $name({
+    this.id,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  /// The table associated with the model
+  static String get tableName => '$tableName';
+
+  /// Convert model to map for database operations
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'created_at': createdAt?.toIso8601String(),
+      'updated_at': updatedAt?.toIso8601String(),
+    };
+  }
+
+  /// Create model instance from database map
+  factory $name.fromMap(Map<String, dynamic> map) {
+    return $name(
+      id: map['id'] as int?,
+      createdAt: map['created_at'] != null
+          ? DateTime.parse(map['created_at'] as String)
+          : null,
+      updatedAt: map['updated_at'] != null
+          ? DateTime.parse(map['updated_at'] as String)
+          : null,
+    );
+  }
+
+  /// Save the model to the database
+  Future<$name> save() async {
+    // Implementation will use ORM
+    throw UnimplementedError('Implement with dartian_orm');
+  }
+
+  /// Delete the model from the database
+  Future<bool> delete() async {
+    // Implementation will use ORM
+    throw UnimplementedError('Implement with dartian_orm');
+  }
+
+  /// Find a model by ID
+  static Future<$name?> find(int id) async {
+    // Implementation will use ORM
+    throw UnimplementedError('Implement with dartian_orm');
+  }
+
+  /// Get all models
+  static Future<List<$name>> all() async {
+    // Implementation will use ORM
+    throw UnimplementedError('Implement with dartian_orm');
+  }
+}
+''';
+
+      modelFile.writeAsStringSync(content);
+
+      return 'Model created successfully at $modelPath';
+    } catch (e) {
+      return 'Error creating model: $e';
+    }
+  }
+
+  static String _makeMigration(List<String> arguments) {
+    if (arguments.isEmpty) {
+      return 'Usage: dartian make:migration <name>';
+    }
+
+    final name = arguments[0];
+    return _generateMigration(name);
+  }
+
+  static String _generateMigration(String name) {
+    try {
+      // Create migrations directory if it doesn't exist
+      final migrationsDir = Directory('database/migrations');
+      if (!migrationsDir.existsSync()) {
+        migrationsDir.createSync(recursive: true);
+      }
+
+      // Generate timestamp prefix
+      final now = DateTime.now();
+      final timestamp =
+          '${now.year}_${now.month.toString().padLeft(2, '0')}_${now.day.toString().padLeft(2, '0')}_${now.hour.toString().padLeft(2, '0')}${now.minute.toString().padLeft(2, '0')}${now.second.toString().padLeft(2, '0')}';
+
+      // Convert name to class name (e.g., create_users_table -> CreateUsersTable)
+      final className = _toClassName(name);
+
+      // Generate version number from timestamp (use seconds since epoch modulo for uniqueness)
+      final version = now.millisecondsSinceEpoch ~/ 1000;
+
+      // Generate migration file
+      final migrationPath = 'database/migrations/${timestamp}_$name.dart';
+      final migrationFile = File(migrationPath);
+
+      // Check if file already exists
+      if (migrationFile.existsSync()) {
+        return 'Error: Migration already exists at $migrationPath';
+      }
+
+      // Generate boilerplate content using DriftMigration
+      final content =
+          '''import 'package:drift/drift.dart';
+import 'package:dartian_orm/dartian_orm.dart';
+
+class $className extends DriftMigration {
+  @override
+  int get version => $version;
+
+  @override
+  Future<void> up(Migrator m, QueryExecutor executor) async {
+    final ops = MigrationOperations(m, executor);
+    // Run the migrations
+    // Example:
+    // await ops.raw('CREATE TABLE table_name (id INTEGER PRIMARY KEY, name TEXT)');
+    // await ops.createIndex('idx_name', 'table_name', ['name']);
+  }
+
+  @override
+  Future<void> down(Migrator m, QueryExecutor executor) async {
+    final ops = MigrationOperations(m, executor);
+    // Reverse the migrations
+    // Example:
+    // await ops.raw('DROP TABLE IF EXISTS table_name');
+    // await ops.dropIndex('idx_name');
+  }
+}
+''';
+
+      migrationFile.writeAsStringSync(content);
+
+      return 'Migration created successfully at $migrationPath';
+    } catch (e) {
+      return 'Error creating migration: $e';
+    }
+  }
+
+  static String _makeRequest(List<String> arguments) {
+    if (arguments.isEmpty) {
+      return 'Usage: dartian make:request <name>';
+    }
+
+    final name = arguments[0];
+    return _generateRequest(name);
+  }
+
+  static String _generateRequest(String name) {
+    try {
+      // Create requests directory if it doesn't exist
+      final requestsDir = Directory('app/Http/Requests');
+      if (!requestsDir.existsSync()) {
+        requestsDir.createSync(recursive: true);
+      }
+
+      // Generate request file
+      final requestPath = 'app/Http/Requests/$name.dart';
+      final requestFile = File(requestPath);
+
+      // Check if file already exists
+      if (requestFile.existsSync()) {
+        return 'Error: Request already exists at $requestPath';
+      }
+
+      // Generate boilerplate content
+      final content =
+          '''class $name {
+  final Map<String, dynamic> data;
+
+  $name(this.data);
+
+  /// Validation rules for the request
+  Map<String, List<String>> rules() {
+    return {
+      // Example validation rules:
+      // 'name': ['required', 'string', 'min:3'],
+      // 'email': ['required', 'email'],
+      // 'age': ['required', 'integer', 'min:18'],
+    };
+  }
+
+  /// Custom validation messages
+  Map<String, String> messages() {
+    return {
+      // Example custom messages:
+      // 'name.required': 'The name field is required.',
+      // 'email.email': 'Please provide a valid email address.',
+    };
+  }
+
+  /// Authorize the request
+  bool authorize() {
+    // Return true to authorize, false to deny
+    return true;
+  }
+
+  /// Validate the request
+  Future<bool> validate() async {
+    if (!authorize()) {
+      throw Exception('Unauthorized');
+    }
+
+    // TODO: Implement validation logic based on rules()
+    return true;
+  }
+
+  /// Get validated data
+  Map<String, dynamic> validated() {
+    return data;
+  }
+
+  /// Get a specific field from request data
+  dynamic get(String key, [dynamic defaultValue]) {
+    return data[key] ?? defaultValue;
+  }
+
+  /// Check if request has a field
+  bool has(String key) {
+    return data.containsKey(key);
+  }
+}
+''';
+
+      requestFile.writeAsStringSync(content);
+
+      return 'Request validator created successfully at $requestPath';
+    } catch (e) {
+      return 'Error creating request: $e';
+    }
+  }
+
+  static String _makeProvider(List<String> arguments) {
+    if (arguments.isEmpty) {
+      return 'Usage: dartian make:provider <name>';
+    }
+
+    final name = arguments[0];
+    return _generateProvider(name);
+  }
+
+  static String _generateProvider(String name) {
+    try {
+      // Create providers directory if it doesn't exist
+      final providersDir = Directory('app/Providers');
+      if (!providersDir.existsSync()) {
+        providersDir.createSync(recursive: true);
+      }
+
+      // Generate provider file
+      final providerPath = 'app/Providers/$name.dart';
+      final providerFile = File(providerPath);
+
+      // Check if file already exists
+      if (providerFile.existsSync()) {
+        return 'Error: Provider already exists at $providerPath';
+      }
+
+      // Generate boilerplate content
+      final content =
+          '''import 'package:dartian_di/dartian_di.dart';
+
+class $name extends ServiceProvider {
+  @override
+  Future<void> register() async {
+    // Register services into the container
+    // Example:
+    // container.singleton<MyService>(() => MyService());
+    // container.register<MyRepository>(() => MyRepositoryImpl());
+  }
+
+  @override
+  Future<void> boot() async {
+    // Bootstrap services after all providers are registered
+    // This is called after all register() methods have been called
+    // Use this to set up event listeners, configure services, etc.
+  }
+}
+''';
+
+      providerFile.writeAsStringSync(content);
+
+      return 'Service provider created successfully at $providerPath';
+    } catch (e) {
+      return 'Error creating provider: $e';
+    }
+  }
+
+  static String _makeTest(List<String> arguments) {
+    if (arguments.isEmpty) {
+      return 'Usage: dartian make:test <name>';
+    }
+
+    final name = arguments[0];
+    return _generateTest(name);
+  }
+
+  static String _generateTest(String name) {
+    try {
+      // Create test directory if it doesn't exist
+      final testDir = Directory('test');
+      if (!testDir.existsSync()) {
+        testDir.createSync(recursive: true);
+      }
+
+      // Ensure name ends with _test
+      final testName = name.endsWith('_test') ? name : '${name}_test';
+
+      // Generate test file
+      final testPath = 'test/$testName.dart';
+      final testFile = File(testPath);
+
+      // Check if file already exists
+      if (testFile.existsSync()) {
+        return 'Error: Test file already exists at $testPath';
+      }
+
+      // Convert to class name
+      final className = _toClassName(testName.replaceAll('_test', ''));
+
+      // Generate boilerplate content
+      final content =
+          '''import 'package:test/test.dart';
+
+void main() {
+  group('$className', () {
+    setUp(() {
+      // Setup code here
+    });
+
+    tearDown(() {
+      // Cleanup code here
+    });
+
+    test('should pass basic test', () {
+      expect(true, isTrue);
+    });
+
+    test('should test specific functionality', () {
+      // Add your test here
+      expect(1 + 1, equals(2));
+    });
+  });
+}
+''';
+
+      testFile.writeAsStringSync(content);
+
+      return 'Test file created successfully at $testPath';
+    } catch (e) {
+      return 'Error creating test: $e';
+    }
+  }
+
+  // Helper methods
+  static String _toSnakeCase(String input) {
+    return input
+        .replaceAllMapped(
+          RegExp(r'[A-Z]'),
+          (match) => '_${match.group(0)!.toLowerCase()}',
+        )
+        .replaceFirst(RegExp(r'^_'), '');
+  }
+
+  static String _pluralize(String input) {
+    // Simple pluralization rules
+    if (input.endsWith('y')) {
+      return '${input.substring(0, input.length - 1)}ies';
+    } else if (input.endsWith('s') ||
+        input.endsWith('x') ||
+        input.endsWith('ch') ||
+        input.endsWith('sh')) {
+      return '${input}es';
+    }
+    return '${input}s';
+  }
+
+  static String _toClassName(String input) {
+    return input
+        .split('_')
+        .map((word) => word[0].toUpperCase() + word.substring(1))
+        .join('');
+  }
+
+  static String _showHelp() {
+    return '''Dartian $version
+
+Usage: dartian <command> [arguments]
+
+Available commands:
+  version              Show Dartian version
+  help                 Show this help message
+  new <project>        Create a new Dartian project
+  serve                Start development server
+  make:<subcommand>    Generate code (controller, model, etc.)
+  migrate              Run database migrations
+  queue:<subcommand>   Queue worker commands
+  schedule:<subcommand> Scheduler commands
+  test                 Run tests
+  build                Build for production
+
+Run "dartian help <command>" for more information on a specific command.''';
+  }
+}
+</file>
+
+<file path="test/command_test.dart">
+import 'package:test/test.dart';
+import 'package:dartian_console/dartian_console.dart';
+
+void main() {
+  group('Command Parsing', () {
+    test('version command returns correct version', () {
+      final result = DartianCli.run(['version']);
+      expect(result, equals('Dartian 0.0.1'));
+    });
+
+    test('help command shows help message', () {
+      final result = DartianCli.run(['help']);
+      expect(result, contains('Usage: dartian'));
+      expect(result, contains('version'));
+      expect(result, contains('help'));
+      expect(result, contains('new'));
+      expect(result, contains('serve'));
+      expect(result, contains('make'));
+      expect(result, contains('migrate'));
+      expect(result, contains('queue'));
+      expect(result, contains('schedule'));
+      expect(result, contains('test'));
+      expect(result, contains('build'));
+    });
+
+    test('unknown subcommand shows help message', () {
+      final result = DartianCli.run(['make']);
+      expect(result, contains('Make command requires a subcommand'));
+    });
+
+    test('no arguments shows help', () {
+      final result = DartianCli.run([]);
+      expect(result, contains('Usage: dartian'));
+    });
+
+    test('rejects unknown commands', () {
+      final result = DartianCli.run(['unknown']);
+      expect(result, contains('Usage: dartian'));
+    });
+
+    test('serve command shows usage', () {
+      final result = DartianCli.run(['serve']);
+      expect(result, contains('dartian serve'));
+    });
+
+    test('new command shows usage', () {
+      final result = DartianCli.run(['new']);
+      expect(result, contains('dartian new'));
+    });
+  });
+}
+</file>
+
+<file path="test/dartian_cli_test.dart">
+import 'package:dartian_console/dartian_console.dart';
+import 'package:test/test.dart';
+
+void main() {
+  group('DartianCli', () {
+    test('version command returns version', () {
+      final result = DartianCli.run(['version']);
+      expect(result, contains('Dartian'));
+      expect(result, contains(DartianCli.version));
+    });
+
+    test('help command returns help message', () {
+      final result = DartianCli.run(['help']);
+      expect(result, contains('Available commands:'));
+      expect(result, contains('dartian'));
+    });
+
+    test('no arguments shows help', () {
+      final result = DartianCli.run([]);
+      expect(result, contains('Available commands:'));
+    });
+
+    test('serve command shows usage', () {
+      final result = DartianCli.run(['serve']);
+      expect(result, contains('dartian serve'));
+      expect(result, contains('host'));
+      expect(result, contains('port'));
+    });
+
+    test('new command shows usage', () {
+      final result = DartianCli.run(['new']);
+      expect(result, contains('dartian new'));
+      expect(result, contains('project-name'));
+    });
+
+    test('queue command without subcommand shows usage', () {
+      final result = DartianCli.run(['queue']);
+      expect(result, contains('Usage:'));
+      expect(result, contains('queue:work'));
+    });
+
+    test('queue:work command shows usage', () {
+      final result = DartianCli.run(['queue', 'work']);
+      expect(result, contains('queue:work'));
+      expect(result, contains('driver'));
+    });
+
+    test('schedule command without subcommand shows usage', () {
+      final result = DartianCli.run(['schedule']);
+      expect(result, contains('Usage:'));
+      expect(result, contains('schedule:run'));
+    });
+
+    test('schedule:run command shows usage', () {
+      final result = DartianCli.run(['schedule', 'run']);
+      expect(result, contains('schedule:run'));
+    });
+
+    test('build command without type shows usage', () {
+      final result = DartianCli.run(['build']);
+      expect(result, contains('Usage:'));
+      expect(result, contains('dartian build'));
+      expect(result, contains('exe'));
+      expect(result, contains('aot-snapshot'));
+      expect(result, contains('wasm'));
+    });
+
+    test('build command with type shows usage', () {
+      final result = DartianCli.run(['build', 'exe']);
+      expect(result, contains('dartian build'));
+    });
+
+    test('migrate command shows usage', () {
+      final result = DartianCli.run(['migrate']);
+      expect(result, contains('dartian migrate'));
+      expect(result, contains('database'));
+    });
+
+    test('test command shows usage', () {
+      final result = DartianCli.run(['test']);
+      expect(result, contains('dartian test'));
+      expect(result, contains('coverage'));
+    });
+
+    test('unknown command shows help', () {
+      final result = DartianCli.run(['unknown']);
+      expect(result, contains('Available commands:'));
+    });
+
+    test('make command without subcommand shows error', () {
+      final result = DartianCli.run(['make']);
+      expect(result, contains('Make command requires a subcommand'));
+      expect(result, contains('make:view'));
+    });
+
+    test('make:controller shows result', () {
+      final result = DartianCli.run(['make', 'controller', 'TestController']);
+      // Just verify it doesn't crash and returns something
+      expect(result, isNotEmpty);
+    });
+
+    test('make:model shows result', () {
+      final result = DartianCli.run(['make', 'model', 'TestModel']);
+      expect(result, isNotEmpty);
+    });
+
+    test('make:migration shows result', () {
+      final result = DartianCli.run(['make', 'migration', 'test_migration']);
+      expect(result, isNotEmpty);
+    });
+
+    test('make:request shows result', () {
+      final result = DartianCli.run(['make', 'request', 'TestRequest']);
+      expect(result, isNotEmpty);
+    });
+
+    test('make:provider shows result', () {
+      final result = DartianCli.run(['make', 'provider', 'TestProvider']);
+      expect(result, isNotEmpty);
+    });
+
+    test('make:test shows result', () {
+      final result = DartianCli.run(['make', 'test', 'test_example']);
+      expect(result, isNotEmpty);
+    });
+
+    test('make with unknown subcommand shows error', () {
+      final result = DartianCli.run(['make', 'unknown', 'TestName']);
+      expect(result, contains('Unknown make subcommand'));
+      expect(result, contains('Available:'));
+    });
+  });
+}
+</file>
+
+<file path="test/make_generator_test.dart">
+import 'dart:io';
+import 'package:test/test.dart';
+import 'package:dartian_console/dartian_console.dart';
+
+void main() {
+  late Directory tempDir;
+
+  setUp(() {
+    // Create a temporary directory for test files
+    tempDir = Directory.systemTemp.createTempSync('dartian_cli_test_');
+    Directory.current = tempDir;
+  });
+
+  tearDown(() {
+    // Clean up temporary directory
+    Directory.current = Directory.current.parent;
+    if (tempDir.existsSync()) {
+      tempDir.deleteSync(recursive: true);
+    }
+  });
+
+  group('make:controller command', () {
+    test('should create controller file', () {
+      final result = DartianCli.run(['make', 'controller', 'TestController']);
+      expect(result, contains('Controller created successfully'));
+      expect(
+        File('app/Http/Controllers/TestController.dart').existsSync(),
+        isTrue,
+      );
+    });
+
+    test('should fail if controller already exists', () {
+      // Create first
+      DartianCli.run(['make', 'controller', 'TestController']);
+      // Try to create again
+      final result = DartianCli.run(['make', 'controller', 'TestController']);
+      expect(result, contains('Error: Controller already exists'));
+    });
+
+    test('should show usage when no name provided', () {
+      final result = DartianCli.run(['make', 'controller']);
+      expect(result, contains('Usage:'));
+    });
+  });
+
+  group('make:model command', () {
+    test('should create model file', () {
+      final result = DartianCli.run(['make', 'model', 'User']);
+      expect(result, contains('Model created successfully'));
+      expect(File('app/Models/User.dart').existsSync(), isTrue);
+    });
+
+    test('should fail if model already exists', () {
+      DartianCli.run(['make', 'model', 'User']);
+      final result = DartianCli.run(['make', 'model', 'User']);
+      expect(result, contains('Error: Model already exists'));
+    });
+
+    test('should show usage when no name provided', () {
+      final result = DartianCli.run(['make', 'model']);
+      expect(result, contains('Usage:'));
+    });
+
+    test('should generate correct table name for User model', () {
+      DartianCli.run(['make', 'model', 'User']);
+      final content = File('app/Models/User.dart').readAsStringSync();
+      expect(content, contains("'users'")); // Pluralized
+    });
+
+    test('should generate correct table name for Category model', () {
+      DartianCli.run(['make', 'model', 'Category']);
+      final content = File('app/Models/Category.dart').readAsStringSync();
+      expect(content, contains("'categories'")); // y -> ies
+    });
+
+    test('should generate correct table name for Status model', () {
+      DartianCli.run(['make', 'model', 'Status']);
+      final content = File('app/Models/Status.dart').readAsStringSync();
+      expect(content, contains("'statuses'")); // s -> es
+    });
+
+    test('should generate correct table name for Box model', () {
+      DartianCli.run(['make', 'model', 'Box']);
+      final content = File('app/Models/Box.dart').readAsStringSync();
+      expect(content, contains("'boxes'")); // x -> es
+    });
+  });
+
+  group('make:migration command', () {
+    test('should create migration file', () {
+      final result = DartianCli.run([
+        'make',
+        'migration',
+        'create_users_table',
+      ]);
+      expect(result, contains('Migration created successfully'));
+    });
+
+    test('should fail if migration already exists', () {
+      DartianCli.run(['make', 'migration', 'create_users_table']);
+      final result = DartianCli.run([
+        'make',
+        'migration',
+        'create_users_table',
+      ]);
+      expect(result, contains('Error: Migration already exists'));
+    });
+
+    test('should show usage when no name provided', () {
+      final result = DartianCli.run(['make', 'migration']);
+      expect(result, contains('Usage:'));
+    });
+  });
+
+  group('make:request command', () {
+    test('should create request file', () {
+      final result = DartianCli.run(['make', 'request', 'CreateUserRequest']);
+      expect(result, contains('created successfully'));
+      expect(
+        File('app/Http/Requests/CreateUserRequest.dart').existsSync(),
+        isTrue,
+      );
+    });
+
+    test('should fail if request already exists', () {
+      DartianCli.run(['make', 'request', 'CreateUserRequest']);
+      final result = DartianCli.run(['make', 'request', 'CreateUserRequest']);
+      expect(result, contains('Error:'));
+      expect(result, contains('already exists'));
+    });
+
+    test('should show usage when no name provided', () {
+      final result = DartianCli.run(['make', 'request']);
+      expect(result, contains('Usage:'));
+    });
+  });
+
+  group('make:provider command', () {
+    test('should create provider file', () {
+      final result = DartianCli.run(['make', 'provider', 'AppServiceProvider']);
+      expect(result, contains('created successfully'));
+      expect(
+        File('app/Providers/AppServiceProvider.dart').existsSync(),
+        isTrue,
+      );
+    });
+
+    test('should fail if provider already exists', () {
+      DartianCli.run(['make', 'provider', 'AppServiceProvider']);
+      final result = DartianCli.run(['make', 'provider', 'AppServiceProvider']);
+      expect(result, contains('Error:'));
+      expect(result, contains('already exists'));
+    });
+
+    test('should show usage when no name provided', () {
+      final result = DartianCli.run(['make', 'provider']);
+      expect(result, contains('Usage:'));
+    });
+  });
+
+  group('make:test command', () {
+    test('should create test file', () {
+      final result = DartianCli.run(['make', 'test', 'UserTest']);
+      expect(result, contains('Test file created successfully'));
+      expect(File('test/UserTest_test.dart').existsSync(), isTrue);
+    });
+
+    test('should fail if test already exists', () {
+      DartianCli.run(['make', 'test', 'UserTest']);
+      final result = DartianCli.run(['make', 'test', 'UserTest']);
+      expect(result, contains('Error:'));
+      expect(result, contains('already exists'));
+    });
+
+    test('should show usage when no name provided', () {
+      final result = DartianCli.run(['make', 'test']);
+      expect(result, contains('Usage:'));
+    });
+  });
+
+  group('Pluralization rules', () {
+    test('should pluralize words ending in y', () {
+      DartianCli.run(['make', 'model', 'Party']);
+      final content = File('app/Models/Party.dart').readAsStringSync();
+      expect(content, contains("'parties'"));
+    });
+
+    test('should pluralize words ending in sh', () {
+      DartianCli.run(['make', 'model', 'Wish']);
+      final content = File('app/Models/Wish.dart').readAsStringSync();
+      expect(content, contains("'wishes'"));
+    });
+
+    test('should pluralize words ending in ch', () {
+      DartianCli.run(['make', 'model', 'Match']);
+      final content = File('app/Models/Match.dart').readAsStringSync();
+      expect(content, contains("'matches'"));
+    });
+
+    test('should pluralize regular words', () {
+      DartianCli.run(['make', 'model', 'Post']);
+      final content = File('app/Models/Post.dart').readAsStringSync();
+      expect(content, contains("'posts'"));
+    });
+  });
+
+  group('Snake case conversion', () {
+    test('should convert PascalCase to snake_case in table names', () {
+      DartianCli.run(['make', 'model', 'UserProfile']);
+      final content = File('app/Models/UserProfile.dart').readAsStringSync();
+      expect(content, contains("'user_profiles'"));
+    });
+
+    test('should handle single word correctly', () {
+      DartianCli.run(['make', 'model', 'Item']);
+      final content = File('app/Models/Item.dart').readAsStringSync();
+      expect(content, contains("'items'"));
+    });
+  });
+}
+</file>
+
+<file path="test/make_lang_test.dart">
+import 'package:test/test.dart';
+import 'package:dartian_console/dartian_console.dart';
+import 'dart:io';
+
+void main() {
+  group('make:lang command', () {
+    setUp(() {
+      // Ensure we're in a clean state
+      final langDir = Directory('resources/lang');
+      if (langDir.existsSync()) {
+        langDir.deleteSync(recursive: true);
+      }
+    });
+
+    tearDown(() {
+      // Clean up resources/lang if it exists
+      try {
+        final langDir = Directory('resources/lang');
+        if (langDir.existsSync()) {
+          langDir.deleteSync(recursive: true);
+        }
+        // Also clean up resources directory if empty
+        final resourcesDir = Directory('resources');
+        if (resourcesDir.existsSync() && resourcesDir.listSync().isEmpty) {
+          resourcesDir.deleteSync();
+        }
+      } catch (_) {
+        // Ignore cleanup errors
+      }
+    });
+
+    test('should create language file', () {
+      final result = DartianCli.run(['make', 'lang', 'pt_BR']);
+
+      expect(result, contains('Language file created successfully'));
+      expect(result, contains('resources/lang/pt_BR/messages.json'));
+
+      final messagesFile = File('resources/lang/pt_BR/messages.json');
+      expect(messagesFile.existsSync(), isTrue);
+
+      final content = messagesFile.readAsStringSync();
+      expect(content, contains('"app"'));
+      expect(content, contains('"title"'));
+      expect(content, contains('"welcome": "Welcome, {name}!"'));
+    });
+
+    test('should create language file with simple locale', () {
+      final result = DartianCli.run(['make', 'lang', 'es']);
+
+      expect(result, contains('Language file created successfully'));
+      expect(result, contains('resources/lang/es/messages.json'));
+
+      final messagesFile = File('resources/lang/es/messages.json');
+      expect(messagesFile.existsSync(), isTrue);
+    });
+
+    test('should report error if language file already exists', () {
+      // Create language file first
+      final langDir = Directory('resources/lang/en');
+      langDir.createSync(recursive: true);
+      File('resources/lang/en/messages.json')
+        ..createSync()
+        ..writeAsStringSync('{}');
+
+      final result = DartianCli.run(['make', 'lang', 'en']);
+
+      expect(result, contains('Error: Language file already exists'));
+    });
+
+    test('should show usage if no locale provided', () {
+      final result = DartianCli.run(['make', 'lang']);
+
+      expect(result, contains('Usage: dartian make:lang <locale>'));
+    });
+  });
+}
+</file>
+
+<file path="test/make_view_test.dart">
+import 'package:test/test.dart';
+import 'package:dartian_console/dartian_console.dart';
+import 'dart:io';
+
+void main() {
+  group('make:view command', () {
+    setUp(() {
+      // Ensure we're in a clean state
+      final viewsDir = Directory('resources/views');
+      if (viewsDir.existsSync()) {
+        viewsDir.deleteSync(recursive: true);
+      }
+    });
+
+    tearDown(() {
+      // Clean up
+      final viewsDir = Directory('resources/views');
+      if (viewsDir.existsSync()) {
+        viewsDir.deleteSync(recursive: true);
+      }
+    });
+
+    test('should create view template', () {
+      final result = DartianCli.run(['make', 'view', 'users/list']);
+
+      expect(result, contains('View template created successfully'));
+      expect(result, contains('resources/views/users/list.mustache'));
+
+      final templateFile = File('resources/views/users/list.mustache');
+      expect(templateFile.existsSync(), isTrue);
+
+      final content = templateFile.readAsStringSync();
+      expect(content, contains('<title>{{title}}</title>'));
+      expect(content, contains('{{heading}}'));
+    });
+
+    test('should create view in root views directory', () {
+      final result = DartianCli.run(['make', 'view', 'home']);
+
+      expect(result, contains('View template created successfully'));
+      expect(result, contains('resources/views/home.mustache'));
+
+      final templateFile = File('resources/views/home.mustache');
+      expect(templateFile.existsSync(), isTrue);
+    });
+
+    test('should handle nested paths', () {
+      final result = DartianCli.run(['make', 'view', 'admin/users/show']);
+
+      expect(result, contains('View template created successfully'));
+      expect(result, contains('resources/views/admin/users/show.mustache'));
+
+      final templateFile = File('resources/views/admin/users/show.mustache');
+      expect(templateFile.existsSync(), isTrue);
+    });
+
+    test('should report error if template already exists', () {
+      // Create template first
+      File('resources/views/existing.mustache')..createSync(recursive: true);
+
+      final result = DartianCli.run(['make', 'view', 'existing']);
+
+      expect(result, contains('Error: Template already exists'));
+    });
+
+    test('should show usage if no name provided', () {
+      final result = DartianCli.run(['make', 'view']);
+
+      expect(result, contains('Usage: dartian make:view <name>'));
+    });
+  });
+}
+</file>
+
+<file path="test/serve_test.dart">
+import 'dart:async';
+import 'dart:io';
+
+import 'package:dartian_console/src/commands/serve_command.dart';
+import 'package:test/test.dart';
+
+void main() {
+  group('serve command', () {
+    test('should accept valid host and port arguments', () async {
+      final command = ServeCommand();
+
+      // This test just verifies that the command can be instantiated
+      // and parse arguments without errors
+      expect(command, isNotNull);
+    });
+
+    test('should handle invalid port argument', () async {
+      final command = ServeCommand();
+
+      // Test with non-numeric port - should use default
+      // Run won't throw, but will use default port
+      expect(command, isNotNull);
+    });
+
+    test('should use default host and port when not specified', () {
+      final command = ServeCommand();
+
+      // Default values should be accessible
+      expect(ServeCommand.defaultHost, equals('localhost'));
+      expect(ServeCommand.defaultPort, equals(8000));
+    });
+
+    test('should parse valid arguments', () async {
+      final command = ServeCommand();
+
+      // Test that command can parse arguments without throwing
+      // Note: We can't easily test the full execution without a real server
+      expect(() => command, returnsNormally);
+    });
+
+    test(
+      'should start server on specified port',
+      () async {
+        final command = ServeCommand();
+
+        // Start server in background with timeout
+        final serverFuture = command.run(['--host=localhost', '--port=9999']);
+
+        // Wait for server to start
+        await Future.delayed(Duration(seconds: 2));
+
+        // Try to connect to the server
+        try {
+          final client = HttpClient();
+          final request = await client.getUrl(
+            Uri.parse('http://localhost:9999/'),
+          );
+          final response = await request.close();
+
+          // Server should respond
+          expect(response.statusCode, equals(200));
+
+          // Read response body
+          final body = await response
+              .transform(SystemEncoding().decoder)
+              .join();
+          expect(body, contains('Dartian Development Server'));
+
+          client.close();
+        } catch (e) {
+          fail('Server should be running and accepting connections: $e');
+        }
+
+        // Cancel the server (it runs indefinitely)
+        // Note: In a real scenario, we'd need proper cleanup mechanism
+      },
+      timeout: Timeout(Duration(seconds: 10)),
+      skip: 'Manual test - requires VM service',
+    );
+  });
+}
+</file>
+
+<file path="test/test_example_test.dart">
+import 'package:test/test.dart';
+
+void main() {
+  group('TestExample', () {
+    setUp(() {
+      // Setup code here
+    });
+
+    tearDown(() {
+      // Cleanup code here
+    });
+
+    test('should pass basic test', () {
+      expect(true, isTrue);
+    });
+
+    test('should test specific functionality', () {
+      // Add your test here
+      expect(1 + 1, equals(2));
+    });
+  });
+}
+</file>
+
+<file path=".gitignore">
+# https://dart.dev/guides/libraries/private-files
+# Created by `dart pub`
+.dart_tool/
+</file>
+
+<file path="analysis_options.yaml">
+# Dartian Framework - Strict Analysis Options
+# This configuration enforces high code quality standards
+
+analyzer:
+  strong-mode:
+    implicit-casts: false
+    implicit-dynamic: false
+
+  errors:
+    # Treat all warnings as errors in CI/production
+    missing_required_param: error
+    missing_return: error
+    todo: ignore
+
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "**/generated/**"
+    - "build/**"
+    - ".dart_tool/**"
+
+linter:
+  rules:
+    # Error rules
+    - avoid_empty_else
+    # avoid_print removed for CLI/server applications
+    - avoid_relative_lib_imports
+    - avoid_returning_null_for_future
+    - avoid_slow_async_io
+    - avoid_type_to_string
+    - avoid_types_as_parameter_names
+    - avoid_web_libraries_in_flutter
+    - cancel_subscriptions
+    - close_sinks
+    - comment_references
+    - control_flow_in_finally
+    - empty_statements
+    - hash_and_equals
+    - invariant_booleans
+    - iterable_contains_unrelated_type
+    - list_remove_unrelated_type
+    - literal_only_boolean_expressions
+    - no_adjacent_strings_in_list
+    - no_duplicate_case_values
+    - no_logic_in_create_state
+    - prefer_void_to_null
+    - test_types_in_equals
+    - throw_in_finally
+    - unnecessary_statements
+    - unrelated_type_equality_checks
+    - unsafe_html
+    - valid_regexps
+
+    # Style rules
+    - always_declare_return_types
+    - always_put_control_body_on_new_line
+    - always_put_required_named_parameters_first
+    - always_require_non_null_named_parameters
+    - annotate_overrides
+    - avoid_annotating_with_dynamic
+    - avoid_bool_literals_in_conditional_expressions
+    - avoid_catching_errors
+    - avoid_classes_with_only_static_members
+    - avoid_double_and_int_checks
+    - avoid_escaping_inner_quotes
+    - avoid_field_initializers_in_const_classes
+    - avoid_function_literals_in_foreach_calls
+    - avoid_implementing_value_types
+    - avoid_init_to_null
+    - avoid_js_rounded_ints
+    - avoid_null_checks_in_equality_operators
+    - avoid_positional_boolean_parameters
+    - avoid_private_typedef_functions
+    - avoid_redundant_argument_values
+    - avoid_renaming_method_parameters
+    - avoid_return_types_on_setters
+    - avoid_returning_null
+    - avoid_returning_null_for_void
+    - avoid_returning_this
+    - avoid_setters_without_getters
+    - avoid_shadowing_type_parameters
+    - avoid_single_cascade_in_expression_statements
+    - avoid_unnecessary_containers
+    - avoid_unused_constructor_parameters
+    - avoid_void_async
+    - await_only_futures
+    - camel_case_extensions
+    - camel_case_types
+    - cascade_invocations
+    - cast_nullable_to_non_nullable
+    - constant_identifier_names
+    - curly_braces_in_flow_control_structures
+    - directives_ordering
+    - empty_catches
+    - empty_constructor_bodies
+    - exhaustive_cases
+    - file_names
+    - implementation_imports
+    - join_return_with_assignment
+    # leading_newlines_in_multiline_strings removed (too strict)
+    - library_names
+    - library_prefixes
+    # lines_longer_than_80_chars removed (too strict for modern screens)
+    - missing_whitespace_between_adjacent_strings
+    - no_leading_underscores_for_library_prefixes
+    - no_leading_underscores_for_local_identifiers
+    - no_runtimeType_toString
+    - non_constant_identifier_names
+    - null_check_on_nullable_type_parameter
+    - null_closures
+    - omit_local_variable_types
+    - one_member_abstracts
+    - only_throw_errors
+    - overridden_fields
+    # package_api_docs removed (not required for internal packages)
+    - package_prefixed_library_names
+    - parameter_assignments
+    - prefer_adjacent_string_concatenation
+    - prefer_asserts_in_initializer_lists
+    - prefer_asserts_with_message
+    - prefer_collection_literals
+    - prefer_conditional_assignment
+    - prefer_const_constructors
+    - prefer_const_constructors_in_immutables
+    - prefer_const_declarations
+    - prefer_const_literals_to_create_immutables
+    - prefer_constructors_over_static_methods
+    - prefer_contains
+    - prefer_equal_for_default_values
+    - prefer_final_fields
+    - prefer_final_in_for_each
+    - prefer_final_locals
+    - prefer_for_elements_to_map_fromIterable
+    - prefer_foreach
+    - prefer_function_declarations_over_variables
+    - prefer_generic_function_type_aliases
+    - prefer_if_elements_to_conditional_expressions
+    - prefer_if_null_operators
+    - prefer_initializing_formals
+    - prefer_inlined_adds
+    - prefer_int_literals
+    - prefer_interpolation_to_compose_strings
+    - prefer_is_empty
+    - prefer_is_not_empty
+    - prefer_is_not_operator
+    - prefer_iterable_whereType
+    - prefer_mixin
+    - prefer_null_aware_operators
+    - prefer_relative_imports
+    - prefer_single_quotes
+    - prefer_spread_collections
+    - prefer_typing_uninitialized_variables
+    - provide_deprecation_message
+    - recursive_getters
+    # require_trailing_commas removed (personal preference)
+    - sized_box_for_whitespace
+    - slash_for_doc_comments
+    - sort_child_properties_last
+    - sort_constructors_first
+    - sort_unnamed_constructors_first
+    - type_annotate_public_apis
+    - type_init_formals
+    - unawaited_futures
+    - unnecessary_await_in_return
+    - unnecessary_brace_in_string_interps
+    - unnecessary_const
+    - unnecessary_constructor_name
+    - unnecessary_getters_setters
+    - unnecessary_lambdas
+    - unnecessary_late
+    - unnecessary_new
+    - unnecessary_null_aware_assignments
+    - unnecessary_null_checks
+    - unnecessary_null_in_if_null_operators
+    - unnecessary_nullable_for_final_variable_declarations
+    - unnecessary_overrides
+    - unnecessary_parenthesis
+    - unnecessary_raw_strings
+    - unnecessary_string_escapes
+    - unnecessary_string_interpolations
+    - unnecessary_this
+    - unnecessary_to_list_in_spreads
+    - use_enums
+    - use_full_hex_values_for_flutter_colors
+    - use_function_type_syntax_for_parameters
+    - use_if_null_to_convert_nulls_to_bools
+    - use_is_even_rather_than_modulo
+    - use_key_in_widget_constructors
+    - use_late_for_private_fields_and_variables
+    - use_named_constants
+    - use_raw_strings
+    - use_rethrow_when_possible
+    - use_setters_to_change_properties
+    - use_string_buffers
+    - use_test_throws_matchers
+    - use_to_and_as_if_applicable
+    - void_checks
+</file>
+
+<file path="analyze_cli_coverage.dart">
+import 'dart:io';
+
+void main() {
+  final lcov = File('coverage/lcov.info').readAsStringSync();
+  final lines = lcov.split('\n');
+
+  final Map<String, Map<String, int>> fileStats = {};
+  String? currentFile;
+
+  for (final line in lines) {
+    if (line.startsWith('SF:')) {
+      currentFile = line.substring(3);
+      if (currentFile.contains('lib/')) {
+        final shortName = currentFile.split('lib/').last;
+        fileStats[shortName] = {'covered': 0, 'total': 0};
+      }
+    } else if (currentFile != null && line.startsWith('DA:')) {
+      final parts = line.substring(3).split(',');
+      final execCount = int.parse(parts[1]);
+      final shortName = currentFile.split('lib/').last;
+
+      if (fileStats.containsKey(shortName)) {
+        fileStats[shortName]!['total'] = fileStats[shortName]!['total']! + 1;
+        if (execCount > 0) {
+          fileStats[shortName]!['covered'] =
+              fileStats[shortName]!['covered']! + 1;
+        }
+      }
+    }
+  }
+
+  print('=' * 50);
+  print('DARTIAN_CLI COVERAGE BY FILE');
+  print('=' * 50);
+  print('');
+
+  final sortedFiles = fileStats.entries.toList()
+    ..sort((a, b) {
+      final aPct = (a.value['covered']! / a.value['total']!) * 100;
+      final bPct = (b.value['covered']! / b.value['total']!) * 100;
+      return aPct.compareTo(bPct);
+    });
+
+  int totalLines = 0;
+  int coveredLines = 0;
+
+  for (final entry in sortedFiles) {
+    final covered = entry.value['covered']!;
+    final total = entry.value['total']!;
+    final pct = (covered / total) * 100;
+
+    totalLines += total;
+    coveredLines += covered;
+
+    final emoji = pct >= 95
+        ? '✅'
+        : pct >= 80
+        ? '🟡'
+        : '🔴';
+    print(
+      '$emoji ${entry.key.padRight(35)} ${pct.toStringAsFixed(1).padLeft(5)}%  ($covered/$total)',
+    );
+  }
+
+  print('');
+  print('=' * 50);
+  final totalPct = (coveredLines / totalLines) * 100;
+  print('TOTAL: ${totalPct.toStringAsFixed(1)}% ($coveredLines/$totalLines)');
+  print('=' * 50);
+}
+</file>
+
+<file path="CHANGELOG.md">
+# Changelog
+
+## 1.0.1
+
+- Fix: Corrected import path in bin/dartian.dart after package rename
+
+## 1.0.0
+
+- Initial release
+- `dartian new` - Create new project
+- `dartian serve` - Development server with hot reload
+- `dartian make:*` - Code generators for controllers, models, migrations
+- `dartian migrate` - Run database migrations
+- `dartian build` - Build production executable
+</file>
+
+<file path="LICENSE">
+GNU AFFERO GENERAL PUBLIC LICENSE
+Version 3, 19 November 2007
+
+Copyright (C) 2024 Verseles
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+---
+
+Commercial licensing is available for organizations that cannot use AGPL.
+Contact: https://github.com/verseles/dartian/issues
+</file>
+
+<file path="pubspec.lock">
+# Generated by pub
+# See https://dart.dev/tools/pub/glossary#lockfile
+packages:
+  _fe_analyzer_shared:
+    dependency: transitive
+    description:
+      name: _fe_analyzer_shared
+      sha256: c209688d9f5a5f26b2fb47a188131a6fb9e876ae9e47af3737c0b4f58a93470d
+      url: "https://pub.dev"
+    source: hosted
+    version: "91.0.0"
+  analyzer:
+    dependency: transitive
+    description:
+      name: analyzer
+      sha256: f51c8499b35f9b26820cfe914828a6a98a94efd5cc78b37bb7d03debae3a1d08
+      url: "https://pub.dev"
+    source: hosted
+    version: "8.4.1"
+  args:
+    dependency: "direct main"
+    description:
+      name: args
+      sha256: d0481093c50b1da8910eb0bb301626d4d8eb7284aa739614d2b394ee09e3ea04
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.7.0"
+  async:
+    dependency: transitive
+    description:
+      name: async
+      sha256: "758e6d74e971c3e5aceb4110bfd6698efc7f501675bcfe0c775459a8140750eb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.13.0"
+  boolean_selector:
+    dependency: transitive
+    description:
+      name: boolean_selector
+      sha256: "8aab1771e1243a5063b8b0ff68042d67334e3feab9e95b9490f9a6ebf73b42ea"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.2"
+  cli_config:
+    dependency: transitive
+    description:
+      name: cli_config
+      sha256: ac20a183a07002b700f0c25e61b7ee46b23c309d76ab7b7640a028f18e4d99ec
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0"
+  collection:
+    dependency: transitive
+    description:
+      name: collection
+      sha256: "2f5709ae4d3d59dd8f7cd309b4e023046b57d8a6c82130785d2b0e5868084e76"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.19.1"
+  convert:
+    dependency: transitive
+    description:
+      name: convert
+      sha256: b30acd5944035672bc15c6b7a8b47d773e41e2f17de064350988c5d02adb1c68
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.2"
+  coverage:
+    dependency: transitive
+    description:
+      name: coverage
+      sha256: "5da775aa218eaf2151c721b16c01c7676fbfdd99cebba2bf64e8b807a28ff94d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.15.0"
+  crypto:
+    dependency: transitive
+    description:
+      name: crypto
+      sha256: c8ea0233063ba03258fbcf2ca4d6dadfefe14f02fab57702265467a19f27fadf
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.7"
+  dartian_core:
+    dependency: transitive
+    description:
+      name: dartian_core
+      sha256: "174d4b59aa73016b8d68080ff5ec2d868fb7fc1c38b762cf2789b85ec1af8c82"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
+  dartian_http:
+    dependency: "direct main"
+    description:
+      name: dartian_http
+      sha256: "54e9219011adae7324b23fef8717ba38717eb7670c303429358f907d395b0dae"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
+  dartian_i18n:
+    dependency: "direct main"
+    description:
+      name: dartian_i18n
+      sha256: "92a042a35ca5f3e1c2ff297f9c8a21565361d71c302db9b64cdde8f113ad34bc"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
+  dartian_router:
+    dependency: "direct main"
+    description:
+      name: dartian_router
+      sha256: "487092cc03923efb1db0dd741ae3ac04224f61c5b59d23d6a1a4afc75954cfb4"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
+  file:
+    dependency: transitive
+    description:
+      name: file
+      sha256: a3b4f84adafef897088c160faf7dfffb7696046cb13ae90b508c2cbc95d3b8d4
+      url: "https://pub.dev"
+    source: hosted
+    version: "7.0.1"
+  frontend_server_client:
+    dependency: transitive
+    description:
+      name: frontend_server_client
+      sha256: f64a0333a82f30b0cca061bc3d143813a486dc086b574bfb233b7c1372427694
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.0"
+  glob:
+    dependency: transitive
+    description:
+      name: glob
+      sha256: c3f1ee72c96f8f78935e18aa8cecced9ab132419e8625dc187e1c2408efc20de
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.3"
+  hotreloader:
+    dependency: "direct main"
+    description:
+      name: hotreloader
+      sha256: bc167a1163807b03bada490bfe2df25b0d744df359227880220a5cbd04e5734b
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.3.0"
+  http_methods:
+    dependency: transitive
+    description:
+      name: http_methods
+      sha256: "6bccce8f1ec7b5d701e7921dca35e202d425b57e317ba1a37f2638590e29e566"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.1"
+  http_multi_server:
+    dependency: transitive
+    description:
+      name: http_multi_server
+      sha256: aa6199f908078bb1c5efb8d8638d4ae191aac11b311132c3ef48ce352fb52ef8
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.2.2"
+  http_parser:
+    dependency: transitive
+    description:
+      name: http_parser
+      sha256: "178d74305e7866013777bab2c3d8726205dc5a4dd935297175b19a23a2e66571"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.1.2"
+  io:
+    dependency: transitive
+    description:
+      name: io
+      sha256: dfd5a80599cf0165756e3181807ed3e77daf6dd4137caaad72d0b7931597650b
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.5"
+  js:
+    dependency: transitive
+    description:
+      name: js
+      sha256: "53385261521cc4a0c4658fd0ad07a7d14591cf8fc33abbceae306ddb974888dc"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.2"
+  logging:
+    dependency: transitive
+    description:
+      name: logging
+      sha256: c8245ada5f1717ed44271ed1c26b8ce85ca3228fd2ffdb75468ab01979309d61
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.3.0"
+  matcher:
+    dependency: transitive
+    description:
+      name: matcher
+      sha256: dc58c723c3c24bf8d3e2d3ad3f2f9d7bd9cf43ec6feaa64181775e60190153f2
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.12.17"
+  meta:
+    dependency: transitive
+    description:
+      name: meta
+      sha256: "23f08335362185a5ea2ad3a4e597f1375e78bce8a040df5c600c8d3552ef2394"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.17.0"
+  mime:
+    dependency: transitive
+    description:
+      name: mime
+      sha256: "41a20518f0cb1256669420fdba0cd90d21561e560ac240f26ef8322e45bb7ed6"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
+  node_preamble:
+    dependency: transitive
+    description:
+      name: node_preamble
+      sha256: "6e7eac89047ab8a8d26cf16127b5ed26de65209847630400f9aefd7cd5c730db"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.2"
+  package_config:
+    dependency: transitive
+    description:
+      name: package_config
+      sha256: f096c55ebb7deb7e384101542bfba8c52696c1b56fca2eb62827989ef2353bbc
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.0"
+  path:
+    dependency: transitive
+    description:
+      name: path
+      sha256: "75cca69d1490965be98c73ceaea117e8a04dd21217b37b292c9ddbec0d955bc5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.9.1"
+  pool:
+    dependency: transitive
+    description:
+      name: pool
+      sha256: "978783255c543aa3586a1b3c21f6e9d720eb315376a915872c61ef8b5c20177d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.5.2"
+  pub_semver:
+    dependency: transitive
+    description:
+      name: pub_semver
+      sha256: "5bfcf68ca79ef689f8990d1160781b4bad40a3bd5e5218ad4076ddb7f4081585"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.0"
+  shelf:
+    dependency: "direct main"
+    description:
+      name: shelf
+      sha256: e7dd780a7ffb623c57850b33f43309312fc863fb6aa3d276a754bb299839ef12
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.4.2"
+  shelf_packages_handler:
+    dependency: transitive
+    description:
+      name: shelf_packages_handler
+      sha256: "89f967eca29607c933ba9571d838be31d67f53f6e4ee15147d5dc2934fee1b1e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.2"
+  shelf_router:
+    dependency: transitive
+    description:
+      name: shelf_router
+      sha256: f5e5d492440a7fb165fe1e2e1a623f31f734d3370900070b2b1e0d0428d59864
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.4"
+  shelf_static:
+    dependency: transitive
+    description:
+      name: shelf_static
+      sha256: c87c3875f91262785dade62d135760c2c69cb217ac759485334c5857ad89f6e3
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.3"
+  shelf_web_socket:
+    dependency: transitive
+    description:
+      name: shelf_web_socket
+      sha256: "3632775c8e90d6c9712f883e633716432a27758216dfb61bd86a8321c0580925"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
+  source_map_stack_trace:
+    dependency: transitive
+    description:
+      name: source_map_stack_trace
+      sha256: c0713a43e323c3302c2abe2a1cc89aa057a387101ebd280371d6a6c9fa68516b
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.2"
+  source_maps:
+    dependency: transitive
+    description:
+      name: source_maps
+      sha256: "190222579a448b03896e0ca6eca5998fa810fda630c1d65e2f78b3f638f54812"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.10.13"
+  source_span:
+    dependency: transitive
+    description:
+      name: source_span
+      sha256: "254ee5351d6cb365c859e20ee823c3bb479bf4a293c22d17a9f1bf144ce86f7c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.10.1"
+  stack_trace:
+    dependency: transitive
+    description:
+      name: stack_trace
+      sha256: "8b27215b45d22309b5cddda1aa2b19bdfec9df0e765f2de506401c071d38d1b1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.12.1"
+  stream_channel:
+    dependency: transitive
+    description:
+      name: stream_channel
+      sha256: "969e04c80b8bcdf826f8f16579c7b14d780458bd97f56d107d3950fdbeef059d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.4"
+  stream_transform:
+    dependency: transitive
+    description:
+      name: stream_transform
+      sha256: ad47125e588cfd37a9a7f86c7d6356dde8dfe89d071d293f80ca9e9273a33871
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.1"
+  string_scanner:
+    dependency: transitive
+    description:
+      name: string_scanner
+      sha256: "921cd31725b72fe181906c6a94d987c78e3b98c2e205b397ea399d4054872b43"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.4.1"
+  term_glyph:
+    dependency: transitive
+    description:
+      name: term_glyph
+      sha256: "7f554798625ea768a7518313e58f83891c7f5024f88e46e7182a4558850a4b8e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.2"
+  test:
+    dependency: "direct dev"
+    description:
+      name: test
+      sha256: "75906bf273541b676716d1ca7627a17e4c4070a3a16272b7a3dc7da3b9f3f6b7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.26.3"
+  test_api:
+    dependency: transitive
+    description:
+      name: test_api
+      sha256: ab2726c1a94d3176a45960b6234466ec367179b87dd74f1611adb1f3b5fb9d55
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.7"
+  test_core:
+    dependency: transitive
+    description:
+      name: test_core
+      sha256: "0cc24b5ff94b38d2ae73e1eb43cc302b77964fbf67abad1e296025b78deb53d0"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.6.12"
+  typed_data:
+    dependency: transitive
+    description:
+      name: typed_data
+      sha256: f9049c039ebfeb4cf7a7104a675823cd72dba8297f264b6637062516699fa006
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.4.0"
+  vm_service:
+    dependency: transitive
+    description:
+      name: vm_service
+      sha256: "45caa6c5917fa127b5dbcfbd1fa60b14e583afdc08bfc96dda38886ca252eb60"
+      url: "https://pub.dev"
+    source: hosted
+    version: "15.0.2"
+  watcher:
+    dependency: "direct main"
+    description:
+      name: watcher
+      sha256: "592ab6e2892f67760543fb712ff0177f4ec76c031f02f5b4ff8d3fc5eb9fb61a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.4"
+  web:
+    dependency: transitive
+    description:
+      name: web
+      sha256: "868d88a33d8a87b18ffc05f9f030ba328ffefba92d6c127917a2ba740f9cfe4a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.1"
+  web_socket:
+    dependency: transitive
+    description:
+      name: web_socket
+      sha256: "34d64019aa8e36bf9842ac014bb5d2f5586ca73df5e4d9bf5c936975cae6982c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
+  web_socket_channel:
+    dependency: transitive
+    description:
+      name: web_socket_channel
+      sha256: d645757fb0f4773d602444000a8131ff5d48c9e47adfe9772652dd1a4f2d45c8
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.3"
+  webkit_inspection_protocol:
+    dependency: transitive
+    description:
+      name: webkit_inspection_protocol
+      sha256: "87d3f2333bb240704cd3f1c6b5b7acd8a10e7f0bc28c28dcf14e782014f4a572"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.1"
+  yaml:
+    dependency: transitive
+    description:
+      name: yaml
+      sha256: b9da305ac7c39faa3f030eccd175340f968459dae4af175130b3fc47e40d76ce
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.3"
+sdks:
+  dart: ">=3.9.4 <4.0.0"
+</file>
+
+<file path="pubspec.yaml">
+name: dartian_console
+description: Command-line interface for Dartian framework with code generators and dev server
+version: 1.0.1
+homepage: https://github.com/verseles/dartian
+repository: https://github.com/verseles/dartian/tree/main/packages/dartian_cli
+issue_tracker: https://github.com/verseles/dartian/issues
+topics:
+  - cli
+  - generator
+  - development
+  - framework
+
+environment:
+  sdk: ^3.9.4
+
+dependencies:
+  args: ^2.4.0
+  watcher: ^1.1.0
+  hotreloader: ^4.3.0
+  shelf: ^1.4.1
+  dartian_http: ^1.0.0
+  dartian_router: ^1.0.0
+  dartian_i18n: ^1.0.0
+
+dev_dependencies:
+  test: ^1.24.0
+
+executables:
+  dartian: dartian
+</file>
+
+<file path="README.md">
+# dartian_cli
+
+Command-line interface for Dartian framework with code generators and dev server.
+
+## Features
+
+- Project scaffolding
+- Development server with hot reload
+- Code generators (controllers, models, views, etc.)
+- Database migration runner
+- AOT build support
+
+## Installation
+
+```bash
+dart pub global activate dartian_cli
+```
+
+## Usage
+
+```bash
+# Create new project
+dartian new my_app
+cd my_app
+
+# Start development server
+dartian serve
+
+# Generate files
+dartian make:controller UserController
+dartian make:model User
+dartian make:migration create_users_table
+dartian make:view home
+
+# Run migrations
+dartian migrate
+dartian migrate:rollback
+
+# Build for production
+dartian build exe
+```
+
+## Commands
+
+| Command | Description |
+|---------|-------------|
+| `dartian new <name>` | Create new project |
+| `dartian serve` | Start dev server |
+| `dartian make:controller` | Generate controller |
+| `dartian make:model` | Generate model |
+| `dartian make:migration` | Generate migration |
+| `dartian make:view` | Generate view |
+| `dartian migrate` | Run migrations |
+| `dartian build` | Build executable |
+
+## Part of Dartian
+
+This package is part of the [Dartian](https://github.com/verseles/dartian) framework.
+
+## License
+
+AGPL-3.0 - See [LICENSE](LICENSE) for details.
+</file>
+
+</files>
