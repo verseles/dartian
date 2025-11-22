@@ -24,8 +24,12 @@ class SingletonGenerator extends GeneratorForAnnotation<Singleton> {
     final async = annotation.peek('async')?.boolValue ?? false;
 
     final nameParam = name != null ? ", instanceName: '$name'" : '';
-    final registerMethod = async ? 'registerSingletonAsync' : 'registerSingleton';
-    final factoryCall = async ? '() async => $className()' : '() => $className()';
+    final registerMethod = async
+        ? 'registerSingletonAsync'
+        : 'registerSingleton';
+    final factoryCall = async
+        ? '() async => $className()'
+        : '() => $className()';
 
     return '''
 // Registration for $className
@@ -111,33 +115,39 @@ class DIGenerator extends Generator {
         // Check for @Singleton
         final singletonAnnotation = _getAnnotation(element, Singleton);
         if (singletonAnnotation != null) {
-          buffer.writeln(_singletonGenerator.generateForAnnotatedElement(
-            element,
-            ConstantReader(singletonAnnotation),
-            buildStep,
-          ));
+          buffer.writeln(
+            _singletonGenerator.generateForAnnotatedElement(
+              element,
+              ConstantReader(singletonAnnotation),
+              buildStep,
+            ),
+          );
           registrations.add('_register${element.name}');
         }
 
         // Check for @Service
         final serviceAnnotation = _getAnnotation(element, Service);
         if (serviceAnnotation != null) {
-          buffer.writeln(_serviceGenerator.generateForAnnotatedElement(
-            element,
-            ConstantReader(serviceAnnotation),
-            buildStep,
-          ));
+          buffer.writeln(
+            _serviceGenerator.generateForAnnotatedElement(
+              element,
+              ConstantReader(serviceAnnotation),
+              buildStep,
+            ),
+          );
           registrations.add('_register${element.name}');
         }
 
         // Check for @LazySingleton
         final lazyAnnotation = _getAnnotation(element, LazySingleton);
         if (lazyAnnotation != null) {
-          buffer.writeln(_lazySingletonGenerator.generateForAnnotatedElement(
-            element,
-            ConstantReader(lazyAnnotation),
-            buildStep,
-          ));
+          buffer.writeln(
+            _lazySingletonGenerator.generateForAnnotatedElement(
+              element,
+              ConstantReader(lazyAnnotation),
+              buildStep,
+            ),
+          );
           registrations.add('_register${element.name}');
         }
       }

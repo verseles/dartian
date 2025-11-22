@@ -48,9 +48,9 @@ abstract class Model<TTable extends Table, TModel> {
       await database.into(table).insert(companion);
     } else {
       // Update existing record
-      await (database.update(table)
-            ..where((tbl) => _primaryKeyEquals(tbl, primaryKey)))
-          .write(companion);
+      await (database.update(
+        table,
+      )..where((tbl) => _primaryKeyEquals(tbl, primaryKey))).write(companion);
     }
   }
 
@@ -59,9 +59,9 @@ abstract class Model<TTable extends Table, TModel> {
     if (primaryKey == null) {
       throw StateError('Cannot delete a model without a primary key');
     }
-    await (database.delete(table)
-          ..where((tbl) => _primaryKeyEquals(tbl, primaryKey)))
-        .go();
+    await (database.delete(
+      table,
+    )..where((tbl) => _primaryKeyEquals(tbl, primaryKey))).go();
   }
 
   /// Helper to build primary key condition
@@ -70,7 +70,8 @@ abstract class Model<TTable extends Table, TModel> {
     // which column is the primary key. Drift doesn't expose this directly,
     // so subclasses should override this if needed.
     throw UnimplementedError(
-        'Subclasses must override _primaryKeyEquals or ensure table has standard "id" column');
+      'Subclasses must override _primaryKeyEquals or ensure table has standard "id" column',
+    );
   }
 }
 
@@ -79,7 +80,8 @@ extension ModelQueryExtensions<TTable extends Table, TModel>
     on SimpleSelectStatement<TTable, TModel> {
   /// Add WHERE condition
   SimpleSelectStatement<TTable, TModel> whereCondition(
-      Expression<bool> Function(TTable tbl) filter) {
+    Expression<bool> Function(TTable tbl) filter,
+  ) {
     return this..where(filter);
   }
 
@@ -88,7 +90,8 @@ extension ModelQueryExtensions<TTable extends Table, TModel>
     Expression Function(TTable tbl) orderBy, {
     OrderingMode mode = OrderingMode.asc,
   }) {
-    return this..orderBy([(tbl) => OrderingTerm(expression: orderBy(tbl), mode: mode)]);
+    return this
+      ..orderBy([(tbl) => OrderingTerm(expression: orderBy(tbl), mode: mode)]);
   }
 
   /// Add LIMIT
@@ -127,8 +130,7 @@ class ModelRepository<TTable extends Table, TModel> {
   }
 
   /// Find records matching conditions
-  Future<List<TModel>> where(
-      Expression<bool> Function(TTable tbl) filter) {
+  Future<List<TModel>> where(Expression<bool> Function(TTable tbl) filter) {
     return (database.select(table)..where(filter)).get();
   }
 
@@ -145,6 +147,7 @@ class ModelRepository<TTable extends Table, TModel> {
     // This assumes the table has an 'id' column
     // In practice, Drift generates specific column accessors
     throw UnimplementedError(
-        'Subclasses must override _buildIdCondition based on table schema');
+      'Subclasses must override _buildIdCondition based on table schema',
+    );
   }
 }

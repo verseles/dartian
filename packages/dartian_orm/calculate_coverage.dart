@@ -39,7 +39,9 @@ void main() {
     print('✅ Coverage goal achieved (>= 95%)');
     exit(0);
   } else {
-    print('⚠️  Coverage below 95% (${(95.0 - percentage).toStringAsFixed(2)}% to go)');
+    print(
+      '⚠️  Coverage below 95% (${(95.0 - percentage).toStringAsFixed(2)}% to go)',
+    );
     exit(1);
   }
 }

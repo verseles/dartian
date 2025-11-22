@@ -231,11 +231,7 @@ void main() {
     });
 
     test('should accept multiple items in putMany', () {
-      final items = {
-        'key1': 'value1',
-        'key2': 'value2',
-        'key3': 'value3',
-      };
+      final items = {'key1': 'value1', 'key2': 'value2', 'key3': 'value3'};
       expect(() => cache.putMany(items), isA<Function>());
     });
 

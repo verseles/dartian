@@ -6,7 +6,8 @@ String generateId() {
 }
 
 String _randomString(int length) {
-  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const chars =
+      'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   final random = DateTime.now().microsecondsSinceEpoch;
   String result = '';
   for (var i = 0; i < length; i++) {

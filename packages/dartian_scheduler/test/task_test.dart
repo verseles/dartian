@@ -4,13 +4,16 @@ import 'package:test/test.dart';
 void main() {
   group('TaskStatus', () {
     test('should have all expected values', () {
-      expect(TaskStatus.values, containsAll([
-        TaskStatus.scheduled,
-        TaskStatus.running,
-        TaskStatus.completed,
-        TaskStatus.failed,
-        TaskStatus.cancelled,
-      ]));
+      expect(
+        TaskStatus.values,
+        containsAll([
+          TaskStatus.scheduled,
+          TaskStatus.running,
+          TaskStatus.completed,
+          TaskStatus.failed,
+          TaskStatus.cancelled,
+        ]),
+      );
     });
   });
 
@@ -126,7 +129,10 @@ void main() {
         expect(deserializedTask.id, equals('deserialized-id'));
         expect(deserializedTask.name, equals('deserialized-task'));
         expect(deserializedTask.cronExpression, equals('0 * * * *'));
-        expect(deserializedTask.createdAt, equals(DateTime(2024, 6, 15, 14, 30, 0)));
+        expect(
+          deserializedTask.createdAt,
+          equals(DateTime(2024, 6, 15, 14, 30, 0)),
+        );
         expect(deserializedTask.status, equals(TaskStatus.scheduled));
         expect(deserializedTask.lastRun, isNull);
         expect(deserializedTask.nextRun, isNull);
@@ -150,10 +156,19 @@ void main() {
         expect(deserializedTask.id, equals('full-task-id'));
         expect(deserializedTask.name, equals('full-task'));
         expect(deserializedTask.cronExpression, equals('*/5 * * * *'));
-        expect(deserializedTask.createdAt, equals(DateTime(2024, 6, 15, 14, 30, 0)));
+        expect(
+          deserializedTask.createdAt,
+          equals(DateTime(2024, 6, 15, 14, 30, 0)),
+        );
         expect(deserializedTask.status, equals(TaskStatus.completed));
-        expect(deserializedTask.lastRun, equals(DateTime(2024, 6, 15, 15, 0, 0)));
-        expect(deserializedTask.nextRun, equals(DateTime(2024, 6, 15, 15, 5, 0)));
+        expect(
+          deserializedTask.lastRun,
+          equals(DateTime(2024, 6, 15, 15, 0, 0)),
+        );
+        expect(
+          deserializedTask.nextRun,
+          equals(DateTime(2024, 6, 15, 15, 5, 0)),
+        );
         expect(deserializedTask.error, equals('Previous error'));
       });
 

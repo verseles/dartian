@@ -9,8 +9,18 @@ class RedisManager {
   RedisManager._();
 
   /// Create a Redis client connection
-  RedisClient connect(String host, {int port = 6379, String? password, int database = 0}) {
-    return RedisClient(host, port: port, password: password, database: database);
+  RedisClient connect(
+    String host, {
+    int port = 6379,
+    String? password,
+    int database = 0,
+  }) {
+    return RedisClient(
+      host,
+      port: port,
+      password: password,
+      database: database,
+    );
   }
 }
 
@@ -24,9 +34,9 @@ class RedisClient implements IRedisClient {
   late final Command _client;
 
   RedisClient(this._host, {int port = 6379, String? password, int database = 0})
-      : _port = port,
-        _password = password,
-        _database = database;
+    : _port = port,
+      _password = password,
+      _database = database;
 
   /// Connect to Redis
   Future<void> connect() async {

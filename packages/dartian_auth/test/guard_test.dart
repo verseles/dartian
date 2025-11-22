@@ -49,10 +49,10 @@ void main() {
       });
 
       test('should accept request with valid token', () async {
-        final jwt = JWT.create(
-          {'id': '123', 'email': 'test@example.com'},
-          secret: testSecret,
-        );
+        final jwt = JWT.create({
+          'id': '123',
+          'email': 'test@example.com',
+        }, secret: testSecret);
 
         final middleware = guard.middleware();
         final handler = middleware(createTestHandler());
@@ -68,10 +68,10 @@ void main() {
       });
 
       test('should add user data to request context', () async {
-        final jwt = JWT.create(
-          {'id': '456', 'role': 'admin'},
-          secret: testSecret,
-        );
+        final jwt = JWT.create({
+          'id': '456',
+          'role': 'admin',
+        }, secret: testSecret);
 
         final middleware = guard.middleware();
         Handler testHandler = (Request request) {
@@ -98,7 +98,9 @@ void main() {
         final jwt = JWT.create(
           {'id': '123'},
           secret: testSecret,
-          expiresIn: const Duration(seconds: -2), // Negative duration creates already expired token
+          expiresIn: const Duration(
+            seconds: -2,
+          ), // Negative duration creates already expired token
         );
 
         final middleware = guard.middleware();
@@ -139,7 +141,10 @@ void main() {
 
         final middleware = guardWithExcept.middleware();
         final handler = middleware(createTestHandler());
-        final request = Request('GET', Uri.parse('http://localhost/public/page'));
+        final request = Request(
+          'GET',
+          Uri.parse('http://localhost/public/page'),
+        );
 
         final response = await handler(request);
 
@@ -154,7 +159,10 @@ void main() {
 
         final middleware = guardWithExcept.middleware();
         final handler = middleware(createTestHandler());
-        final request = Request('GET', Uri.parse('http://localhost/api/login/callback'));
+        final request = Request(
+          'GET',
+          Uri.parse('http://localhost/api/login/callback'),
+        );
 
         final response = await handler(request);
 
@@ -272,7 +280,10 @@ void main() {
       });
 
       test('should accept request with valid session', () async {
-        final sessionId = guard.createSession('user123', data: {'email': 'test@example.com'});
+        final sessionId = guard.createSession(
+          'user123',
+          data: {'email': 'test@example.com'},
+        );
 
         final middleware = guard.middleware();
         final handler = middleware(createTestHandler());
@@ -288,7 +299,10 @@ void main() {
       });
 
       test('should add session data to request context', () async {
-        final sessionId = guard.createSession('user456', data: {'role': 'admin', 'name': 'Admin User'});
+        final sessionId = guard.createSession(
+          'user456',
+          data: {'role': 'admin', 'name': 'Admin User'},
+        );
 
         final middleware = guard.middleware();
         Handler testHandler = (Request request) {
@@ -354,13 +368,14 @@ void main() {
       });
 
       test('should skip authentication for wildcard excepted routes', () async {
-        final guardWithExcept = SessionGuard(
-          exceptRoutes: ['public/*'],
-        );
+        final guardWithExcept = SessionGuard(exceptRoutes: ['public/*']);
 
         final middleware = guardWithExcept.middleware();
         final handler = middleware(createTestHandler());
-        final request = Request('GET', Uri.parse('http://localhost/public/about'));
+        final request = Request(
+          'GET',
+          Uri.parse('http://localhost/public/about'),
+        );
 
         final response = await handler(request);
 
@@ -375,7 +390,9 @@ void main() {
         final request = Request(
           'GET',
           Uri.parse('http://localhost/api/user'),
-          headers: {'cookie': 'other=value; dartian_session=$sessionId; another=test'},
+          headers: {
+            'cookie': 'other=value; dartian_session=$sessionId; another=test',
+          },
         );
 
         final response = await handler(request);

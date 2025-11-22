@@ -30,11 +30,19 @@ abstract class WasmApp {
 
   /// Initialize the application
   Future<void> init() async {
-    TelemetryHooks.triggerRequest({'event': 'init', 'platform': config.platform});
+    TelemetryHooks.triggerRequest({
+      'event': 'init',
+      'platform': config.platform,
+    });
   }
 
   /// Handle request
-  Future<String> handleRequest(String method, String url, Map<String, String> headers, String? body) async {
+  Future<String> handleRequest(
+    String method,
+    String url,
+    Map<String, String> headers,
+    String? body,
+  ) async {
     final startTime = DateTime.now();
     TelemetryHooks.triggerRequest({'request': url});
 
@@ -45,13 +53,21 @@ abstract class WasmApp {
       return response;
     } catch (error) {
       final duration = DateTime.now().difference(startTime);
-      TelemetryHooks.triggerResponse({'status': 500, 'error': error.toString()}, duration);
+      TelemetryHooks.triggerResponse({
+        'status': 500,
+        'error': error.toString(),
+      }, duration);
       rethrow;
     }
   }
 
   /// Abstract method to implement request handling
-  Future<String> onHandleRequest(String method, String url, Map<String, String> headers, String? body);
+  Future<String> onHandleRequest(
+    String method,
+    String url,
+    Map<String, String> headers,
+    String? body,
+  );
 
   /// Cleanup resources
   Future<void> dispose() async {}
@@ -83,15 +99,24 @@ class CloudflareWorkerConfig extends WasmConfig {
 
 /// Application for Cloudflare Workers
 class CloudflareWorkerApp extends WasmApp {
-  final Future<String> Function(String method, String url, Map<String, String> headers, String? body) _handler;
+  final Future<String> Function(
+    String method,
+    String url,
+    Map<String, String> headers,
+    String? body,
+  )
+  _handler;
 
-  CloudflareWorkerApp(
-    CloudflareWorkerConfig config,
-    this._handler,
-  ) : super(config: config);
+  CloudflareWorkerApp(CloudflareWorkerConfig config, this._handler)
+    : super(config: config);
 
   @override
-  Future<String> onHandleRequest(String method, String url, Map<String, String> headers, String? body) async {
+  Future<String> onHandleRequest(
+    String method,
+    String url,
+    Map<String, String> headers,
+    String? body,
+  ) async {
     return _handler(method, url, headers, body);
   }
 }

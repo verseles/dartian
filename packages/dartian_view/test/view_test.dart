@@ -32,10 +32,7 @@ void main() {
 
       final view = View(
         templatePath: 'test',
-        data: {
-          'title': 'Hello',
-          'message': 'World',
-        },
+        data: {'title': 'Hello', 'message': 'World'},
       );
 
       final result = view.render();
@@ -51,9 +48,7 @@ void main() {
 
       final view = View(
         templatePath: 'escape',
-        data: {
-          'content': '<script>alert("XSS")</script>',
-        },
+        data: {'content': '<script>alert("XSS")</script>'},
       );
 
       final result = view.render();
@@ -64,8 +59,7 @@ void main() {
 
     test('should handle lists', () {
       // Create a test template
-      File('resources/views/list.mustache')
-        ..writeAsStringSync('''<ul>
+      File('resources/views/list.mustache')..writeAsStringSync('''<ul>
 {{#items}}
   <li>{{.}}</li>
 {{/items}}
@@ -95,12 +89,7 @@ void main() {
 <p>Hidden</p>
 {{/show}}''');
 
-      final view = View(
-        templatePath: 'conditional',
-        data: {
-          'show': true,
-        },
-      );
+      final view = View(templatePath: 'conditional', data: {'show': true});
 
       final result = view.render();
 
@@ -129,9 +118,7 @@ void main() {
 
       final view = View(
         templatePath: 'home',
-        data: {
-          'title': 'Home Page',
-        },
+        data: {'title': 'Home Page'},
         layout: 'layouts/main',
       );
 
@@ -144,15 +131,9 @@ void main() {
     });
 
     test('should throw exception when template not found', () {
-      final view = View(
-        templatePath: 'nonexistent',
-        data: {},
-      );
+      final view = View(templatePath: 'nonexistent', data: {});
 
-      expect(
-        () => view.render(),
-        throwsA(isA<TemplateNotFoundException>()),
-      );
+      expect(() => view.render(), throwsA(isA<TemplateNotFoundException>()));
     });
 
     test('should support template path with .mustache extension', () {
@@ -162,9 +143,7 @@ void main() {
 
       final view = View(
         templatePath: 'explicit.mustache',
-        data: {
-          'text': 'Explicit extension',
-        },
+        data: {'text': 'Explicit extension'},
       );
 
       final result = view.render();
@@ -180,7 +159,8 @@ void main() {
       final view = View(
         templatePath: 'i18n_test',
         data: {
-          'welcome_message': 'Welcome',  // In real usage, this would come from i18n
+          'welcome_message':
+              'Welcome', // In real usage, this would come from i18n
         },
       );
 
@@ -194,12 +174,7 @@ void main() {
       File('resources/views/response.mustache')
         ..writeAsStringSync('<p>{{message}}</p>');
 
-      final view = View(
-        templatePath: 'response',
-        data: {
-          'message': 'Test',
-        },
-      );
+      final view = View(templatePath: 'response', data: {'message': 'Test'});
 
       final response = view.toResponse();
 
@@ -209,13 +184,9 @@ void main() {
 
     test('should render to response with custom status', () {
       // Create a test template
-      File('resources/views/error.mustache')
-        ..writeAsStringSync('<p>Error</p>');
+      File('resources/views/error.mustache')..writeAsStringSync('<p>Error</p>');
 
-      final view = View(
-        templatePath: 'error',
-        data: {},
-      );
+      final view = View(templatePath: 'error', data: {});
 
       final response = view.toResponse(status: 404);
 
@@ -244,10 +215,7 @@ void main() {
       File('resources/views/index.mustache')
         ..writeAsStringSync('<h1>{{title}}</h1>');
 
-      final response = viewResponse(
-        'index',
-        data: {'title': 'Home'},
-      );
+      final response = viewResponse('index', data: {'title': 'Home'});
 
       expect(response.statusCode, equals(200));
       expect(response.headers['Content-Type'], contains('text/html'));
@@ -271,10 +239,7 @@ void main() {
     });
 
     test('should create JSON response with custom status', () {
-      final response = jsonResponse(
-        {'error': 'Not found'},
-        status: 404,
-      );
+      final response = jsonResponse({'error': 'Not found'}, status: 404);
 
       expect(response.statusCode, equals(404));
     });
@@ -300,10 +265,7 @@ void main() {
       File('resources/views/render_error.mustache')
         ..writeAsStringSync('<p>Error</p>');
 
-      final view = View(
-        templatePath: 'render_error',
-        data: {},
-      );
+      final view = View(templatePath: 'render_error', data: {});
 
       final response = render(view, status: 500);
 

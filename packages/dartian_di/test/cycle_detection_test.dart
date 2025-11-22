@@ -14,10 +14,7 @@ void main() {
     group('CircularDependencyException', () {
       test('creates readable message from cycle path', () {
         final exception = CircularDependencyException([ServiceA, ServiceB]);
-        expect(
-          exception.message,
-          contains('Circular dependency detected'),
-        );
+        expect(exception.message, contains('Circular dependency detected'));
         expect(exception.message, contains('ServiceA'));
         expect(exception.message, contains('ServiceB'));
       });
@@ -45,7 +42,10 @@ void main() {
         container.registerDependencies<ServiceA>([ServiceB]);
         container.registerDependencies<ServiceA>([ServiceC]);
         expect(container.getDependencies<ServiceA>(), contains(ServiceC));
-        expect(container.getDependencies<ServiceA>(), isNot(contains(ServiceB)));
+        expect(
+          container.getDependencies<ServiceA>(),
+          isNot(contains(ServiceB)),
+        );
       });
     });
 

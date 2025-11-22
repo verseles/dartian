@@ -39,7 +39,10 @@ class RedisQueue implements Queue {
   @override
   Future<Job?> pop(String queue) async {
     // Pop job ID from queue
-    final jobId = await _redis.client.send_object(['RPOP', _getQueueKey(queue)]);
+    final jobId = await _redis.client.send_object([
+      'RPOP',
+      _getQueueKey(queue),
+    ]);
 
     if (jobId == null) return null;
 
@@ -52,7 +55,10 @@ class RedisQueue implements Queue {
 
   @override
   Future<int> size(String queue) async {
-    final result = await _redis.client.send_object(['LLEN', _getQueueKey(queue)]);
+    final result = await _redis.client.send_object([
+      'LLEN',
+      _getQueueKey(queue),
+    ]);
     return result as int;
   }
 

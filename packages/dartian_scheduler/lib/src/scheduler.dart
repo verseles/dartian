@@ -15,7 +15,11 @@ class SimpleScheduler {
   ScheduleManager get manager => _manager;
 
   /// Schedule a new task to run at intervals
-  Future<String> scheduleInterval(String name, Duration interval, Function() callback) async {
+  Future<String> scheduleInterval(
+    String name,
+    Duration interval,
+    Function() callback,
+  ) async {
     final task = ScheduledTask(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       name: name,
@@ -49,7 +53,11 @@ class SimpleScheduler {
   }
 
   /// Schedule a one-time task
-  Future<String> scheduleOnce(String name, Duration delay, Function() callback) async {
+  Future<String> scheduleOnce(
+    String name,
+    Duration delay,
+    Function() callback,
+  ) async {
     final task = ScheduledTask(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       name: name,

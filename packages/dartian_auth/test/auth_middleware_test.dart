@@ -54,10 +54,10 @@ void main() {
     });
 
     test('should extract and verify valid Bearer token', () async {
-      final jwt = JWT.create(
-        {'id': '123', 'email': 'test@example.com'},
-        secret: testSecret,
-      );
+      final jwt = JWT.create({
+        'id': '123',
+        'email': 'test@example.com',
+      }, secret: testSecret);
 
       final middleware = authMiddleware.middleware;
       final handler = middleware(createTestHandler(checkAuth: true));
@@ -75,10 +75,11 @@ void main() {
     });
 
     test('should set user data in context from JWT payload', () async {
-      final jwt = JWT.create(
-        {'id': '456', 'email': 'user@example.com', 'role': 'admin'},
-        secret: testSecret,
-      );
+      final jwt = JWT.create({
+        'id': '456',
+        'email': 'user@example.com',
+        'role': 'admin',
+      }, secret: testSecret);
 
       final middleware = authMiddleware.middleware;
       Handler testHandler = (Request request) {
@@ -101,10 +102,7 @@ void main() {
     });
 
     test('should set auth_token in context', () async {
-      final jwt = JWT.create(
-        {'id': '789'},
-        secret: testSecret,
-      );
+      final jwt = JWT.create({'id': '789'}, secret: testSecret);
 
       final middleware = authMiddleware.middleware;
       Handler testHandler = (Request request) {
@@ -235,7 +233,7 @@ void main() {
         'GET',
         Uri.parse('http://localhost/'),
         context: {
-          'user': {'id': '456', 'email': 'test@example.com'}
+          'user': {'id': '456', 'email': 'test@example.com'},
         },
       );
       expect(request.userId, equals('456'));

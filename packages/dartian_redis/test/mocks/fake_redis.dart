@@ -38,8 +38,7 @@ class FakeRedis {
         final seconds = int.parse(command[2].toString());
         final value = command[3].toString();
         _data[key] = value;
-        _expirations[key] =
-            DateTime.now().add(Duration(seconds: seconds));
+        _expirations[key] = DateTime.now().add(Duration(seconds: seconds));
         return 'OK';
 
       case 'GET':
@@ -81,8 +80,7 @@ class FakeRedis {
         if (!_data.containsKey(key)) {
           return 0;
         }
-        _expirations[key] =
-            DateTime.now().add(Duration(seconds: seconds));
+        _expirations[key] = DateTime.now().add(Duration(seconds: seconds));
         return 1;
 
       case 'TTL':
@@ -100,8 +98,9 @@ class FakeRedis {
         if (!_data.containsKey(key)) {
           return -2; // Just expired
         }
-        final remaining =
-            _expirations[key]!.difference(DateTime.now()).inSeconds;
+        final remaining = _expirations[key]!
+            .difference(DateTime.now())
+            .inSeconds;
         return remaining > 0 ? remaining : -2;
 
       case 'INCR':

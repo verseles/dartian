@@ -10,11 +10,7 @@ class View {
   final Map<String, dynamic> data;
   final String? layout;
 
-  View({
-    required this.templatePath,
-    required this.data,
-    this.layout,
-  });
+  View({required this.templatePath, required this.data, this.layout});
 
   /// Render the view with mustache
   String render() {
@@ -100,10 +96,7 @@ shelf.Response viewResponse(
 }
 
 /// JSON response helper
-shelf.Response jsonResponse(
-  Map<String, dynamic> data, {
-  int status = 200,
-}) {
+shelf.Response jsonResponse(Map<String, dynamic> data, {int status = 200}) {
   return shelf.Response(
     status,
     headers: {'Content-Type': 'application/json; charset=utf-8'},
@@ -112,10 +105,7 @@ shelf.Response jsonResponse(
 }
 
 /// Text response helper
-shelf.Response textResponse(
-  String text, {
-  int status = 200,
-}) {
+shelf.Response textResponse(String text, {int status = 200}) {
   return shelf.Response(
     status,
     headers: {'Content-Type': 'text/plain; charset=utf-8'},

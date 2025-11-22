@@ -9,8 +9,7 @@ class Users extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get name => text().withLength(min: 1, max: 100)();
   TextColumn get email => text().unique()();
-  DateTimeColumn get createdAt =>
-      dateTime().withDefault(currentDateAndTime)();
+  DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
 }
 
 /// Test table for posts
@@ -19,8 +18,7 @@ class Posts extends Table {
   IntColumn get userId => integer().references(Users, #id)();
   TextColumn get title => text()();
   TextColumn get content => text()();
-  DateTimeColumn get createdAt =>
-      dateTime().withDefault(currentDateAndTime)();
+  DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
 }
 
 /// Test table for roles
@@ -50,7 +48,7 @@ class Profiles extends Table {
 @DriftDatabase(tables: [Users, Posts, Roles, UserRoles, Profiles])
 class TestDatabase extends _$TestDatabase {
   TestDatabase([QueryExecutor? executor])
-      : super(executor ?? NativeDatabase.memory());
+    : super(executor ?? NativeDatabase.memory());
 
   @override
   int get schemaVersion => 1;

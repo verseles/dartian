@@ -190,10 +190,7 @@ void main() {
       });
 
       test('should handle unscheduling non-existent task', () async {
-        await expectLater(
-          scheduler.unschedule('non-existent'),
-          completes,
-        );
+        await expectLater(scheduler.unschedule('non-existent'), completes);
       });
 
       test('should stop task execution after unscheduling', () async {
@@ -220,11 +217,23 @@ void main() {
     group('getTasks', () {
       test('should return all tasks', () async {
         await scheduler.start();
-        await scheduler.scheduleInterval('task1', const Duration(seconds: 1), () {});
+        await scheduler.scheduleInterval(
+          'task1',
+          const Duration(seconds: 1),
+          () {},
+        );
         await Future.delayed(const Duration(milliseconds: 10));
-        await scheduler.scheduleInterval('task2', const Duration(seconds: 1), () {});
+        await scheduler.scheduleInterval(
+          'task2',
+          const Duration(seconds: 1),
+          () {},
+        );
         await Future.delayed(const Duration(milliseconds: 10));
-        await scheduler.scheduleOnce('task3', const Duration(seconds: 1), () {});
+        await scheduler.scheduleOnce(
+          'task3',
+          const Duration(seconds: 1),
+          () {},
+        );
 
         final tasks = scheduler.getTasks();
         expect(tasks.length, equals(3));
@@ -238,10 +247,18 @@ void main() {
 
     group('getTasksByStatus', () {
       test('should return tasks by status', () async {
-        await scheduler.scheduleInterval('task1', const Duration(seconds: 10), () {});
+        await scheduler.scheduleInterval(
+          'task1',
+          const Duration(seconds: 10),
+          () {},
+        );
         // Small delay to ensure tasks have different IDs
         await Future.delayed(const Duration(milliseconds: 10));
-        await scheduler.scheduleInterval('task2', const Duration(seconds: 10), () {});
+        await scheduler.scheduleInterval(
+          'task2',
+          const Duration(seconds: 10),
+          () {},
+        );
 
         final scheduledTasks = scheduler.getTasksByStatus(TaskStatus.scheduled);
         expect(scheduledTasks.length, equals(2));
@@ -288,7 +305,11 @@ void main() {
         // Scheduler should be running (no direct way to check, but test via task execution)
         int callCount = 0;
 
-        await scheduler.scheduleInterval('test', const Duration(milliseconds: 50), () => callCount++);
+        await scheduler.scheduleInterval(
+          'test',
+          const Duration(milliseconds: 50),
+          () => callCount++,
+        );
         await Future.delayed(const Duration(milliseconds: 100));
 
         expect(callCount, greaterThan(0));
@@ -298,7 +319,11 @@ void main() {
         int callCount = 0;
 
         await scheduler.start();
-        await scheduler.scheduleInterval('test', const Duration(milliseconds: 50), () => callCount++);
+        await scheduler.scheduleInterval(
+          'test',
+          const Duration(milliseconds: 50),
+          () => callCount++,
+        );
 
         await Future.delayed(const Duration(milliseconds: 100));
         final countBeforeStop = callCount;
@@ -314,8 +339,16 @@ void main() {
     group('close', () {
       test('should close and cleanup all resources', () async {
         await scheduler.start();
-        await scheduler.scheduleInterval('task1', const Duration(seconds: 1), () {});
-        await scheduler.scheduleInterval('task2', const Duration(seconds: 1), () {});
+        await scheduler.scheduleInterval(
+          'task1',
+          const Duration(seconds: 1),
+          () {},
+        );
+        await scheduler.scheduleInterval(
+          'task2',
+          const Duration(seconds: 1),
+          () {},
+        );
 
         await scheduler.close();
 
@@ -326,7 +359,11 @@ void main() {
         int callCount = 0;
 
         await scheduler.start();
-        await scheduler.scheduleInterval('test', const Duration(milliseconds: 50), () => callCount++);
+        await scheduler.scheduleInterval(
+          'test',
+          const Duration(milliseconds: 50),
+          () => callCount++,
+        );
 
         await Future.delayed(const Duration(milliseconds: 100));
         await scheduler.close();

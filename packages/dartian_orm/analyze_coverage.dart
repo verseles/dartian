@@ -31,10 +31,8 @@ void main() {
 
   final sortedFiles = fileStats.entries.toList()
     ..sort((a, b) {
-      final aPercent =
-          (a.value['covered']! / a.value['total']!) * 100;
-      final bPercent =
-          (b.value['covered']! / b.value['total']!) * 100;
+      final aPercent = (a.value['covered']! / a.value['total']!) * 100;
+      final bPercent = (b.value['covered']! / b.value['total']!) * 100;
       return aPercent.compareTo(bPercent);
     });
 
@@ -44,9 +42,14 @@ void main() {
     final covered = entry.value['covered']!;
     final percent = (covered / total) * 100;
 
-    final status = percent >= 95 ? '✅' : percent >= 80 ? '🟡' : '🔴';
+    final status = percent >= 95
+        ? '✅'
+        : percent >= 80
+        ? '🟡'
+        : '🔴';
     print(
-        '$status ${fileName.padRight(30)} ${percent.toStringAsFixed(1).padLeft(5)}%  ($covered/$total)');
+      '$status ${fileName.padRight(30)} ${percent.toStringAsFixed(1).padLeft(5)}%  ($covered/$total)',
+    );
   }
 
   print('\n==========================================');

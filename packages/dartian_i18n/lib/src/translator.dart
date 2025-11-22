@@ -65,7 +65,11 @@ class Translator {
   }
 
   /// Flatten nested map with dot notation
-  void _flattenMap(String prefix, Map<String, dynamic> map, Map<String, String> target) {
+  void _flattenMap(
+    String prefix,
+    Map<String, dynamic> map,
+    Map<String, String> target,
+  ) {
     for (final entry in map.entries) {
       final key = '${prefix}.${entry.key}';
       if (entry.value is String) {
@@ -150,7 +154,8 @@ class Translator {
   }
 
   /// Get all available locales
-  List<String> get availableLocales => UnmodifiableListView(_messages.keys.toList()..sort());
+  List<String> get availableLocales =>
+      UnmodifiableListView(_messages.keys.toList()..sort());
 
   /// Get all translation keys for a locale
   List<String> getKeys({String? locale}) {

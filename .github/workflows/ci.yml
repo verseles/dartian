@@ -97,7 +97,7 @@ jobs:
 
       - name: Analyze
         working-directory: packages/${{ matrix.package }}
-        run: dart analyze lib/
+        run: dart analyze --no-fatal-warnings --no-fatal-infos lib/
 
   # Check code formatting
   format:

@@ -15,7 +15,10 @@ class JsBridge {
   }
 
   /// Call async JavaScript function (placeholder)
-  static Future<T> callAsync<T>(String functionName, [List<Object?>? args]) async {
+  static Future<T> callAsync<T>(
+    String functionName, [
+    List<Object?>? args,
+  ]) async {
     throw UnimplementedError('JsBridge.callAsync requires JS interop context');
   }
 

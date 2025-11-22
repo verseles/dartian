@@ -37,13 +37,16 @@ void main() {
         await newClient.close();
       });
 
-      test('should throw error when calling methods without connection', () async {
-        final newClient = FakeRedisClient('localhost');
-        expect(
-          () => newClient.set('key', 'value'),
-          throwsA(isA<StateError>()),
-        );
-      });
+      test(
+        'should throw error when calling methods without connection',
+        () async {
+          final newClient = FakeRedisClient('localhost');
+          expect(
+            () => newClient.set('key', 'value'),
+            throwsA(isA<StateError>()),
+          );
+        },
+      );
     });
 
     group('Basic Operations', () {
@@ -117,7 +120,11 @@ void main() {
       });
 
       test('should expire key after TTL', () async {
-        await client.set('test_key', 'test_value', ttl: Duration(milliseconds: 100));
+        await client.set(
+          'test_key',
+          'test_value',
+          ttl: Duration(milliseconds: 100),
+        );
         await Future.delayed(Duration(milliseconds: 150));
         final value = await client.get('test_key');
         expect(value, isNull);
@@ -169,19 +176,13 @@ void main() {
 
     group('Error Handling', () {
       test('should throw on empty command', () async {
-        expect(
-          () => client.sendCommand([]),
-          throwsA(isA<ArgumentError>()),
-        );
+        expect(() => client.sendCommand([]), throwsA(isA<ArgumentError>()));
       });
 
       test('should handle connection close gracefully', () async {
         await client.set('test_key', 'test_value');
         await client.close();
-        expect(
-          () => client.get('test_key'),
-          throwsA(isA<StateError>()),
-        );
+        expect(() => client.get('test_key'), throwsA(isA<StateError>()));
       });
     });
 
@@ -201,7 +202,11 @@ void main() {
 
       test('should publish message', () async {
         await client.sendCommand(['SUBSCRIBE', 'test_channel']);
-        final result = await client.sendCommand(['PUBLISH', 'test_channel', 'hello']);
+        final result = await client.sendCommand([
+          'PUBLISH',
+          'test_channel',
+          'hello',
+        ]);
         expect(result, isA<int>());
       });
     });
@@ -324,7 +329,11 @@ void main() {
       test('should handle missing keys in getMany', () async {
         await cache.put('key1', 'value1');
 
-        final results = await cache.getMany<String>(['key1', 'missing', 'key2']);
+        final results = await cache.getMany<String>([
+          'key1',
+          'missing',
+          'key2',
+        ]);
 
         expect(results['key1'], equals('value1'));
         expect(results['missing'], isNull);
@@ -332,11 +341,7 @@ void main() {
       });
 
       test('should put many values', () async {
-        final values = {
-          'key1': 'value1',
-          'key2': 'value2',
-          'key3': 'value3',
-        };
+        final values = {'key1': 'value1', 'key2': 'value2', 'key3': 'value3'};
 
         await cache.putMany(values);
 
@@ -350,10 +355,7 @@ void main() {
       });
 
       test('should put many values with TTL', () async {
-        final values = {
-          'key1': 'value1',
-          'key2': 'value2',
-        };
+        final values = {'key1': 'value1', 'key2': 'value2'};
 
         await cache.putMany(values, ttl: Duration(seconds: 60));
 

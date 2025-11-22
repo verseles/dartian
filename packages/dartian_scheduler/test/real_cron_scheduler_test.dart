@@ -124,10 +124,7 @@ void main() {
       });
 
       test('should handle unscheduling non-existent task', () async {
-        await expectLater(
-          scheduler.unschedule('non-existent'),
-          completes,
-        );
+        await expectLater(scheduler.unschedule('non-existent'), completes);
       });
     });
 
@@ -204,7 +201,12 @@ void main() {
         expect(task, isNotNull);
         expect(task!.nextRun, isNotNull);
         // Next run should be in the future
-        expect(task.nextRun!.isAfter(DateTime.now().subtract(const Duration(seconds: 1))), isTrue);
+        expect(
+          task.nextRun!.isAfter(
+            DateTime.now().subtract(const Duration(seconds: 1)),
+          ),
+          isTrue,
+        );
       });
 
       test('should set task status to scheduled on creation', () async {
@@ -225,7 +227,9 @@ void main() {
         final taskId = await scheduler.schedule(
           'lastrun-test',
           '* * * * *',
-          () { executed = true; },
+          () {
+            executed = true;
+          },
         );
 
         final task = scheduler.getTask(taskId);
@@ -247,6 +251,5 @@ void main() {
         expect(scheduler.getTask(taskId), isNotNull);
       });
     });
-
   });
 }

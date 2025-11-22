@@ -14,7 +14,8 @@ abstract class DriftMigration {
   /// Reverse the migration (optional)
   Future<void> down(Migrator m, QueryExecutor executor) async {
     throw UnimplementedError(
-        'Migration rollback not implemented for version $version');
+      'Migration rollback not implemented for version $version',
+    );
   }
 }
 
@@ -50,9 +51,13 @@ class MigrationOperations {
 
   /// Rename a column (SQLite 3.25.0+)
   Future<void> renameColumn(
-      String table, String oldName, String newName) async {
-    await executor
-        .runCustom('ALTER TABLE $table RENAME COLUMN $oldName TO $newName');
+    String table,
+    String oldName,
+    String newName,
+  ) async {
+    await executor.runCustom(
+      'ALTER TABLE $table RENAME COLUMN $oldName TO $newName',
+    );
   }
 
   /// Drop a column (SQLite 3.35.0+)
@@ -70,7 +75,8 @@ class MigrationOperations {
     final uniqueStr = unique ? 'UNIQUE ' : '';
     final columnsStr = columns.join(', ');
     await executor.runCustom(
-        'CREATE ${uniqueStr}INDEX $indexName ON $table($columnsStr)');
+      'CREATE ${uniqueStr}INDEX $indexName ON $table($columnsStr)',
+    );
   }
 
   /// Drop an index

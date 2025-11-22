@@ -5,7 +5,13 @@ import 'dart:async';
 import 'package:dartian_core/dartian_core.dart';
 
 /// Cloudflare Worker event handler
-typedef WorkerHandler = Future<String> Function(String method, String url, Map<String, String> headers, String? body);
+typedef WorkerHandler =
+    Future<String> Function(
+      String method,
+      String url,
+      Map<String, String> headers,
+      String? body,
+    );
 
 /// Cloudflare Worker utility class
 class CloudflareWorker {
@@ -96,11 +102,23 @@ class WorkerRequestExtractor {
 
 /// Cloudflare Worker middleware system
 abstract class WorkerMiddleware {
-  Future<String> call(String method, String url, Map<String, String> headers, String? body, NextFunction next);
+  Future<String> call(
+    String method,
+    String url,
+    Map<String, String> headers,
+    String? body,
+    NextFunction next,
+  );
 }
 
 /// Next function in middleware chain
-typedef NextFunction = Future<String> Function(String method, String url, Map<String, String> headers, String? body);
+typedef NextFunction =
+    Future<String> Function(
+      String method,
+      String url,
+      Map<String, String> headers,
+      String? body,
+    );
 
 /// Middleware pipeline
 class MiddlewarePipeline {
@@ -112,7 +130,13 @@ class MiddlewarePipeline {
   }
 
   /// Execute pipeline
-  Future<String> execute(String method, String url, Map<String, String> headers, String? body, WorkerHandler handler) async {
+  Future<String> execute(
+    String method,
+    String url,
+    Map<String, String> headers,
+    String? body,
+    WorkerHandler handler,
+  ) async {
     NextFunction lastHandler = (m, u, h, b) async => handler(m, u, h, b);
 
     // Build middleware chain
@@ -129,7 +153,13 @@ class MiddlewarePipeline {
 /// CORS middleware for Workers
 class CorsMiddleware implements WorkerMiddleware {
   @override
-  Future<String> call(String method, String url, Map<String, String> headers, String? body, NextFunction next) async {
+  Future<String> call(
+    String method,
+    String url,
+    Map<String, String> headers,
+    String? body,
+    NextFunction next,
+  ) async {
     if (method == 'OPTIONS') {
       return 'OK';
     }
@@ -140,7 +170,13 @@ class CorsMiddleware implements WorkerMiddleware {
 /// Logging middleware
 class LoggingMiddleware implements WorkerMiddleware {
   @override
-  Future<String> call(String method, String url, Map<String, String> headers, String? body, NextFunction next) async {
+  Future<String> call(
+    String method,
+    String url,
+    Map<String, String> headers,
+    String? body,
+    NextFunction next,
+  ) async {
     // Log the request (would use telemetry in real implementation)
     return next(method, url, headers, body);
   }

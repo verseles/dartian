@@ -16,9 +16,7 @@ class HttpKernel {
   /// Handle a request and return a response
   Future<Response> handle(Request request) async {
     if (_handler == null) {
-      return Response.internalServerError(
-        body: 'No handler registered',
-      );
+      return Response.internalServerError(body: 'No handler registered');
     }
 
     // Trigger request start hooks

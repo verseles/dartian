@@ -53,7 +53,13 @@ void main() {
   group('CloudflareWorkerApp', () {
     test('should create worker app', () {
       final config = CloudflareWorkerConfig();
-      final handler = (String method, String url, Map<String, String> headers, String? body) async => 'Worker response';
+      final handler =
+          (
+            String method,
+            String url,
+            Map<String, String> headers,
+            String? body,
+          ) async => 'Worker response';
       final app = CloudflareWorkerApp(config, handler);
       expect(app, isNotNull);
     });
@@ -61,9 +67,15 @@ void main() {
     test('should handle request', () async {
       final config = CloudflareWorkerConfig();
       final response = 'Hello Worker';
-      final handler = (String method, String url, Map<String, String> headers, String? body) async => response;
+      final handler =
+          (
+            String method,
+            String url,
+            Map<String, String> headers,
+            String? body,
+          ) async => response;
       final app = CloudflareWorkerApp(config, handler);
-      
+
       await app.init();
       final result = await app.onHandleRequest('GET', '/', {}, null);
       expect(result, equals(response));
@@ -121,7 +133,10 @@ void main() {
     test('should throw when calling unimplemented function', () {
       final bytes = Uint8List.fromList([0, 1, 2, 3]);
       final module = WasmModuleProxy(bytes);
-      expect(() => module.call<String>('test'), throwsA(isA<UnimplementedError>()));
+      expect(
+        () => module.call<String>('test'),
+        throwsA(isA<UnimplementedError>()),
+      );
     });
   });
 
@@ -165,7 +180,7 @@ void main() {
     test('should get worker', () async {
       final manager = WorkerManager();
       final handler = (WorkerMessage message) async => {'status': 'ok'};
-      
+
       final worker = await manager.getWorker('test-worker', handler);
       expect(worker, isNotNull);
       expect(worker.name, equals('test-worker'));
@@ -192,8 +207,14 @@ void main() {
     test('should execute pipeline', () async {
       final pipeline = MiddlewarePipeline();
       pipeline.use(TestMiddleware());
-      
-      final handler = (String method, String url, Map<String, String> headers, String? body) async => 'Response';
+
+      final handler =
+          (
+            String method,
+            String url,
+            Map<String, String> headers,
+            String? body,
+          ) async => 'Response';
       final result = await pipeline.execute('GET', '/', {}, null, handler);
       expect(result, equals('Response'));
     });
@@ -207,7 +228,13 @@ void main() {
 
     test('should handle OPTIONS request', () async {
       final middleware = CorsMiddleware();
-      final next = (String method, String url, Map<String, String> headers, String? body) async => 'OK';
+      final next =
+          (
+            String method,
+            String url,
+            Map<String, String> headers,
+            String? body,
+          ) async => 'OK';
       final result = await middleware.call('OPTIONS', '/', {}, null, next);
       expect(result, equals('OK'));
     });
@@ -221,7 +248,12 @@ class TestWasmApp extends WasmApp {
   TestWasmApp() : super();
 
   @override
-  Future<String> onHandleRequest(String method, String url, Map<String, String> headers, String? body) async {
+  Future<String> onHandleRequest(
+    String method,
+    String url,
+    Map<String, String> headers,
+    String? body,
+  ) async {
     return 'OK';
   }
 
@@ -235,7 +267,13 @@ class TestWasmApp extends WasmApp {
 /// Test middleware implementation
 class TestMiddleware implements WorkerMiddleware {
   @override
-  Future<String> call(String method, String url, Map<String, String> headers, String? body, NextFunction next) async {
+  Future<String> call(
+    String method,
+    String url,
+    Map<String, String> headers,
+    String? body,
+    NextFunction next,
+  ) async {
     return next(method, url, headers, body);
   }
 }

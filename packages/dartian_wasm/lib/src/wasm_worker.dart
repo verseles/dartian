@@ -17,15 +17,12 @@ class WorkerMessage {
   final Map<String, Object> data;
   final String? id;
 
-  WorkerMessage({
-    required this.type,
-    required this.data,
-    this.id,
-  });
+  WorkerMessage({required this.type, required this.data, this.id});
 }
 
 /// Worker message handler
-typedef WorkerMessageHandler = Future<Map<String, Object>> Function(WorkerMessage message);
+typedef WorkerMessageHandler =
+    Future<Map<String, Object>> Function(WorkerMessage message);
 
 /// Web Worker for background processing
 class WasmWorker {
@@ -72,7 +69,10 @@ class WorkerManager {
   WorkerManager({this.maxWorkers = 4});
 
   /// Create or get worker
-  Future<WasmWorker> getWorker(String name, WorkerMessageHandler handler) async {
+  Future<WasmWorker> getWorker(
+    String name,
+    WorkerMessageHandler handler,
+  ) async {
     if (_workers.containsKey(name)) {
       return _workers[name]!;
     }

@@ -104,7 +104,10 @@ void main() {
         });
 
         const testDuration = Duration(milliseconds: 100);
-        TelemetryHooks.triggerQueryExecuted('SELECT * FROM users', testDuration);
+        TelemetryHooks.triggerQueryExecuted(
+          'SELECT * FROM users',
+          testDuration,
+        );
 
         expect(callCount, equals(1));
         expect(capturedSql, equals('SELECT * FROM users'));
@@ -242,7 +245,7 @@ void main() {
           'method': 'POST',
           'path': '/api/users',
           'headers': {'Content-Type': 'application/json'},
-          'body': {'name': 'John Doe'}
+          'body': {'name': 'John Doe'},
         };
 
         TelemetryHooks.triggerRequest(complexRequest);
@@ -304,7 +307,10 @@ void main() {
 
     group('safeJsonDecode', () {
       test('should decode valid JSON', () {
-        final result = safeJsonDecode('{"name": "John"}', (json) => json['name'] as String);
+        final result = safeJsonDecode(
+          '{"name": "John"}',
+          (json) => json['name'] as String,
+        );
         expect(result, equals('John'));
       });
 
@@ -319,12 +325,18 @@ void main() {
       });
 
       test('should return null for invalid JSON', () {
-        final result = safeJsonDecode('invalid json', (json) => json['name'] as String);
+        final result = safeJsonDecode(
+          'invalid json',
+          (json) => json['name'] as String,
+        );
         expect(result, isNull);
       });
 
       test('should return null for non-map JSON', () {
-        final result = safeJsonDecode('"just a string"', (json) => json['name'] as String);
+        final result = safeJsonDecode(
+          '"just a string"',
+          (json) => json['name'] as String,
+        );
         expect(result, isNull);
       });
     });

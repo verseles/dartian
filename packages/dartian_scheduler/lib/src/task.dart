@@ -35,14 +35,20 @@ class ScheduledTask {
   };
 
   /// Create task from JSON
-  factory ScheduledTask.fromJson(Map<String, dynamic> json) => ScheduledTask(
-    id: json['id'] as String,
-    name: json['name'] as String,
-    cronExpression: json['cronExpression'] as String,
-    callback: () {}, // Callback cannot be deserialized
-    createdAt: DateTime.parse(json['createdAt'] as String),
-  )..status = TaskStatus.values.byName(json['status'] as String)
-   ..lastRun = json['lastRun'] == null ? null : DateTime.parse(json['lastRun'] as String)
-   ..nextRun = json['nextRun'] == null ? null : DateTime.parse(json['nextRun'] as String)
-   ..error = json['error'] as String?;
+  factory ScheduledTask.fromJson(Map<String, dynamic> json) =>
+      ScheduledTask(
+          id: json['id'] as String,
+          name: json['name'] as String,
+          cronExpression: json['cronExpression'] as String,
+          callback: () {}, // Callback cannot be deserialized
+          createdAt: DateTime.parse(json['createdAt'] as String),
+        )
+        ..status = TaskStatus.values.byName(json['status'] as String)
+        ..lastRun = json['lastRun'] == null
+            ? null
+            : DateTime.parse(json['lastRun'] as String)
+        ..nextRun = json['nextRun'] == null
+            ? null
+            : DateTime.parse(json['nextRun'] as String)
+        ..error = json['error'] as String?;
 }

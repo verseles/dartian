@@ -288,9 +288,24 @@ void main() {
       final processor2 = JobProcessor(handler2);
       final processor3 = JobProcessor(handler3, maxRetries: 1);
 
-      final job1 = Job(id: '1', queue: 'default', payload: '{}', createdAt: DateTime.now());
-      final job2 = Job(id: '2', queue: 'default', payload: '{}', createdAt: DateTime.now());
-      final job3 = Job(id: '3', queue: 'default', payload: '{}', createdAt: DateTime.now());
+      final job1 = Job(
+        id: '1',
+        queue: 'default',
+        payload: '{}',
+        createdAt: DateTime.now(),
+      );
+      final job2 = Job(
+        id: '2',
+        queue: 'default',
+        payload: '{}',
+        createdAt: DateTime.now(),
+      );
+      final job3 = Job(
+        id: '3',
+        queue: 'default',
+        payload: '{}',
+        createdAt: DateTime.now(),
+      );
 
       await processor1.processWithRetry(job1);
       await processor2.processWithRetry(job2);
@@ -308,7 +323,12 @@ void main() {
     test('should handle different error types', () async {
       final handler = FailingJobHandler();
       final processor = JobProcessor(handler, maxRetries: 0);
-      final job = Job(id: '1', queue: 'default', payload: '{}', createdAt: DateTime.now());
+      final job = Job(
+        id: '1',
+        queue: 'default',
+        payload: '{}',
+        createdAt: DateTime.now(),
+      );
 
       await processor.processWithRetry(job);
 
@@ -342,7 +362,12 @@ void main() {
     test('should handle handler that changes job status directly', () async {
       final handler = SuccessfulJobHandler();
       final processor = JobProcessor(handler);
-      final job = Job(id: '1', queue: 'default', payload: '{}', createdAt: DateTime.now());
+      final job = Job(
+        id: '1',
+        queue: 'default',
+        payload: '{}',
+        createdAt: DateTime.now(),
+      );
 
       await processor.processWithRetry(job);
 
@@ -352,7 +377,12 @@ void main() {
     test('should handle very high retry counts', () async {
       final handler = FastFailingJobHandler();
       final processor = JobProcessor(handler, maxRetries: 10);
-      final job = Job(id: '1', queue: 'default', payload: '{}', createdAt: DateTime.now());
+      final job = Job(
+        id: '1',
+        queue: 'default',
+        payload: '{}',
+        createdAt: DateTime.now(),
+      );
 
       await processor.processWithRetry(job);
 
@@ -360,15 +390,23 @@ void main() {
       expect(handler.callCount, equals(11)); // 1 initial + 10 retries
     });
 
-    test('should handle handler that throws different exception types', () async {
-      final handler = FailingJobHandler();
-      final processor = JobProcessor(handler, maxRetries: 0);
-      final job = Job(id: '1', queue: 'default', payload: '{}', createdAt: DateTime.now());
+    test(
+      'should handle handler that throws different exception types',
+      () async {
+        final handler = FailingJobHandler();
+        final processor = JobProcessor(handler, maxRetries: 0);
+        final job = Job(
+          id: '1',
+          queue: 'default',
+          payload: '{}',
+          createdAt: DateTime.now(),
+        );
 
-      await processor.processWithRetry(job);
+        await processor.processWithRetry(job);
 
-      expect(job.status, equals(JobStatus.failed));
-      expect(job.error, isNotNull);
-    });
+        expect(job.status, equals(JobStatus.failed));
+        expect(job.error, isNotNull);
+      },
+    );
   });
 }

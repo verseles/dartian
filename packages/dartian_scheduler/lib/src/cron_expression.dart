@@ -49,7 +49,12 @@ class CronExpression {
   }
 
   /// Parse a single cron field
-  static List<int> _parseField(String field, int min, int max, String fieldName) {
+  static List<int> _parseField(
+    String field,
+    int min,
+    int max,
+    String fieldName,
+  ) {
     // Handle wildcard
     if (field == '*') {
       return List.generate(max - min + 1, (i) => min + i);
@@ -99,14 +104,21 @@ class CronExpression {
     // Handle single value
     final value = int.tryParse(field);
     if (value == null || value < min || value > max) {
-      throw ArgumentError('Invalid value in $fieldName: $field (must be between $min and $max)');
+      throw ArgumentError(
+        'Invalid value in $fieldName: $field (must be between $min and $max)',
+      );
     }
 
     return [value];
   }
 
   /// Parse a range expression (e.g., "1-5")
-  static List<int> _parseRange(String range, int min, int max, String fieldName) {
+  static List<int> _parseRange(
+    String range,
+    int min,
+    int max,
+    String fieldName,
+  ) {
     final parts = range.split('-');
 
     if (parts.length != 2) {
@@ -116,7 +128,11 @@ class CronExpression {
     final start = int.tryParse(parts[0]);
     final end = int.tryParse(parts[1]);
 
-    if (start == null || end == null || start < min || end > max || start > end) {
+    if (start == null ||
+        end == null ||
+        start < min ||
+        end > max ||
+        start > end) {
       throw ArgumentError('Invalid range in $fieldName: $range');
     }
 
@@ -129,7 +145,9 @@ class CronExpression {
         hours.contains(dateTime.hour) &&
         daysOfMonth.contains(dateTime.day) &&
         months.contains(dateTime.month) &&
-        daysOfWeek.contains(dateTime.weekday % 7); // Convert Monday=1 to Sunday=0
+        daysOfWeek.contains(
+          dateTime.weekday % 7,
+        ); // Convert Monday=1 to Sunday=0
   }
 
   /// Get the next run time after a given DateTime
@@ -168,7 +186,9 @@ class CronExpression {
     } else if (minutes.length == 1) {
       parts.add('at minute ${minutes[0]}');
     } else {
-      parts.add('at minutes ${minutes.take(3).join(", ")}${minutes.length > 3 ? "..." : ""}');
+      parts.add(
+        'at minutes ${minutes.take(3).join(", ")}${minutes.length > 3 ? "..." : ""}',
+      );
     }
 
     // Describe hour
@@ -177,7 +197,9 @@ class CronExpression {
     } else if (hours.length == 1) {
       parts.add('at ${hours[0].toString().padLeft(2, "0")}:00');
     } else {
-      parts.add('during hours ${hours.take(3).join(", ")}${hours.length > 3 ? "..." : ""}');
+      parts.add(
+        'during hours ${hours.take(3).join(", ")}${hours.length > 3 ? "..." : ""}',
+      );
     }
 
     // Describe day
@@ -185,7 +207,9 @@ class CronExpression {
       if (daysOfMonth.length == 1) {
         parts.add('on day ${daysOfMonth[0]}');
       } else {
-        parts.add('on days ${daysOfMonth.take(3).join(", ")}${daysOfMonth.length > 3 ? "..." : ""}');
+        parts.add(
+          'on days ${daysOfMonth.take(3).join(", ")}${daysOfMonth.length > 3 ? "..." : ""}',
+        );
       }
     }
 
@@ -194,7 +218,9 @@ class CronExpression {
       if (months.length == 1) {
         parts.add('in ${_monthName(months[0])}');
       } else {
-        parts.add('in ${months.map(_monthName).take(2).join(", ")}${months.length > 2 ? "..." : ""}');
+        parts.add(
+          'in ${months.map(_monthName).take(2).join(", ")}${months.length > 2 ? "..." : ""}',
+        );
       }
     }
 
@@ -203,7 +229,9 @@ class CronExpression {
       if (daysOfWeek.length == 1) {
         parts.add('on ${_dayName(daysOfWeek[0])}');
       } else {
-        parts.add('on ${daysOfWeek.map(_dayName).take(3).join(", ")}${daysOfWeek.length > 3 ? "..." : ""}');
+        parts.add(
+          'on ${daysOfWeek.map(_dayName).take(3).join(", ")}${daysOfWeek.length > 3 ? "..." : ""}',
+        );
       }
     }
 
@@ -211,12 +239,33 @@ class CronExpression {
   }
 
   static String _monthName(int month) {
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
     return months[month - 1];
   }
 
   static String _dayName(int day) {
-    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const days = [
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+    ];
     return days[day];
   }
 

@@ -152,8 +152,7 @@ abstract class BelongsToMany<TModel> {
 
     if (pivotResults.isEmpty) return [];
 
-    final relatedIds =
-        pivotResults.map((r) => extractRelatedId(r)).toList();
+    final relatedIds = pivotResults.map((r) => extractRelatedId(r)).toList();
     final relatedQuery = database.select(relatedTable)
       ..where((tbl) => buildRelatedIdsCondition(tbl, relatedIds));
 
@@ -169,17 +168,16 @@ abstract class BelongsToMany<TModel> {
   /// Detach a related model (delete pivot record)
   Future<void> detach(dynamic relatedId) async {
     await (database.delete(pivotTable)
-          ..where((tbl) =>
-              buildPivotDeleteCondition(tbl, localKey, relatedId)))
+          ..where((tbl) => buildPivotDeleteCondition(tbl, localKey, relatedId)))
         .go();
   }
 
   /// Sync related models (replace all pivot records)
   Future<void> sync(List<dynamic> relatedIds) async {
     // Delete all existing pivot records
-    await (database.delete(pivotTable)
-          ..where((tbl) => buildPivotCondition(tbl)))
-        .go();
+    await (database.delete(
+      pivotTable,
+    )..where((tbl) => buildPivotCondition(tbl))).go();
 
     // Insert new pivot records
     for (final relatedId in relatedIds) {
@@ -191,8 +189,7 @@ abstract class BelongsToMany<TModel> {
   Expression<bool> buildPivotCondition(dynamic tbl);
 
   /// Build condition for related IDs
-  Expression<bool> buildRelatedIdsCondition(
-      dynamic tbl, List<dynamic> ids);
+  Expression<bool> buildRelatedIdsCondition(dynamic tbl, List<dynamic> ids);
 
   /// Extract related ID from pivot record
   dynamic extractRelatedId(dynamic record);
@@ -202,5 +199,8 @@ abstract class BelongsToMany<TModel> {
 
   /// Build pivot delete condition
   Expression<bool> buildPivotDeleteCondition(
-      dynamic tbl, dynamic localId, dynamic relatedId);
+    dynamic tbl,
+    dynamic localId,
+    dynamic relatedId,
+  );
 }

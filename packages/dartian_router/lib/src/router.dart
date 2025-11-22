@@ -7,9 +7,7 @@ class Router {
   final String? _prefix;
   final Map<String, String> _namedRoutes = {};
 
-  Router({String? prefix})
-      : _router = shelf_router.Router(),
-        _prefix = prefix;
+  Router({String? prefix}) : _router = shelf_router.Router(), _prefix = prefix;
 
   /// Add a GET route
   Router get(String pattern, Handler handler, {String? name}) {
@@ -53,7 +51,9 @@ class Router {
 
   /// Create a route group with a common prefix
   Router group(String pattern, void Function(Router router) callback) {
-    final subRouter = Router(prefix: _prefix != null ? '$_prefix$pattern' : pattern);
+    final subRouter = Router(
+      prefix: _prefix != null ? '$_prefix$pattern' : pattern,
+    );
     callback(subRouter);
     _mergeRouter(subRouter);
     return this;

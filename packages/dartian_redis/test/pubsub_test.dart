@@ -17,8 +17,14 @@ void main() {
       final msg = PubSubMessage('channel', 'message');
       final after = DateTime.now();
 
-      expect(msg.timestamp.isAfter(before) || msg.timestamp.isAtSameMomentAs(before), isTrue);
-      expect(msg.timestamp.isBefore(after) || msg.timestamp.isAtSameMomentAs(after), isTrue);
+      expect(
+        msg.timestamp.isAfter(before) || msg.timestamp.isAtSameMomentAs(before),
+        isTrue,
+      );
+      expect(
+        msg.timestamp.isBefore(after) || msg.timestamp.isAtSameMomentAs(after),
+        isTrue,
+      );
     });
 
     test('should handle empty channel name', () {
@@ -47,8 +53,11 @@ void main() {
       final msg2 = PubSubMessage('channel', 'message2');
 
       // The timestamps should be different or the same (but not before)
-      expect(msg2.timestamp.isAfter(msg1.timestamp) ||
-             msg2.timestamp.isAtSameMomentAs(msg1.timestamp), isTrue);
+      expect(
+        msg2.timestamp.isAfter(msg1.timestamp) ||
+            msg2.timestamp.isAtSameMomentAs(msg1.timestamp),
+        isTrue,
+      );
     });
   });
 

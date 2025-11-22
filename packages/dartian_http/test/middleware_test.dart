@@ -65,10 +65,7 @@ void main() {
       final wrappedHandler = middleware(handler);
 
       // Create a request without Accept-Language header
-      final request = Request(
-        'GET',
-        Uri.parse('http://localhost:8000/'),
-      );
+      final request = Request('GET', Uri.parse('http://localhost:8000/'));
 
       wrappedHandler(request);
 
@@ -89,10 +86,7 @@ void main() {
 
       final wrappedHandler = middleware(handler);
 
-      final request = Request(
-        'GET',
-        Uri.parse('http://localhost:8000/'),
-      );
+      final request = Request('GET', Uri.parse('http://localhost:8000/'));
 
       wrappedHandler(request);
 
@@ -114,7 +108,10 @@ void main() {
 
       final response = await wrappedHandler(request);
       expect(response.statusCode, 200);
-      expect(response.headers['Access-Control-Allow-Origin'], 'https://example.com');
+      expect(
+        response.headers['Access-Control-Allow-Origin'],
+        'https://example.com',
+      );
     });
 
     test('should handle OPTIONS preflight request', () async {
@@ -132,9 +129,15 @@ void main() {
 
       final response = await wrappedHandler(request);
       expect(response.statusCode, 200);
-      expect(response.headers['Access-Control-Allow-Origin'], 'https://example.com');
+      expect(
+        response.headers['Access-Control-Allow-Origin'],
+        'https://example.com',
+      );
       expect(response.headers['Access-Control-Allow-Methods'], contains('GET'));
-      expect(response.headers['Access-Control-Allow-Methods'], contains('POST'));
+      expect(
+        response.headers['Access-Control-Allow-Methods'],
+        contains('POST'),
+      );
       expect(response.headers['Access-Control-Max-Age'], '86400');
     });
 
@@ -157,9 +160,7 @@ void main() {
     });
 
     test('should support wildcard origin', () async {
-      final middleware = corsMiddleware(
-        allowedOrigins: ['*'],
-      );
+      final middleware = corsMiddleware(allowedOrigins: ['*']);
       final handler = (Request request) => Response.ok('OK');
       final wrappedHandler = middleware(handler);
 
@@ -171,7 +172,10 @@ void main() {
 
       final response = await wrappedHandler(request);
       expect(response.statusCode, 200);
-      expect(response.headers['Access-Control-Allow-Origin'], 'https://anything.com');
+      expect(
+        response.headers['Access-Control-Allow-Origin'],
+        'https://anything.com',
+      );
     });
 
     test('should support prefix matching', () async {
@@ -189,26 +193,32 @@ void main() {
 
       final response = await wrappedHandler(request);
       expect(response.statusCode, 200);
-      expect(response.headers['Access-Control-Allow-Origin'], 'https://example.com.br');
+      expect(
+        response.headers['Access-Control-Allow-Origin'],
+        'https://example.com.br',
+      );
     });
 
-    test('should add credentials header when allowCredentials is true', () async {
-      final middleware = corsMiddleware(
-        allowedOrigins: ['https://example.com'],
-        allowCredentials: true,
-      );
-      final handler = (Request request) => Response.ok('OK');
-      final wrappedHandler = middleware(handler);
+    test(
+      'should add credentials header when allowCredentials is true',
+      () async {
+        final middleware = corsMiddleware(
+          allowedOrigins: ['https://example.com'],
+          allowCredentials: true,
+        );
+        final handler = (Request request) => Response.ok('OK');
+        final wrappedHandler = middleware(handler);
 
-      final request = Request(
-        'GET',
-        Uri.parse('http://localhost:8000/'),
-        headers: {'origin': 'https://example.com'},
-      );
+        final request = Request(
+          'GET',
+          Uri.parse('http://localhost:8000/'),
+          headers: {'origin': 'https://example.com'},
+        );
 
-      final response = await wrappedHandler(request);
-      expect(response.headers['Access-Control-Allow-Credentials'], 'true');
-    });
+        final response = await wrappedHandler(request);
+        expect(response.headers['Access-Control-Allow-Credentials'], 'true');
+      },
+    );
 
     test('should add exposed headers when provided', () async {
       final middleware = corsMiddleware(
@@ -225,7 +235,10 @@ void main() {
       );
 
       final response = await wrappedHandler(request);
-      expect(response.headers['Access-Control-Expose-Headers'], contains('X-Custom-Header'));
+      expect(
+        response.headers['Access-Control-Expose-Headers'],
+        contains('X-Custom-Header'),
+      );
     });
 
     test('should handle request without origin header', () async {
@@ -235,10 +248,7 @@ void main() {
       final handler = (Request request) => Response.ok('OK');
       final wrappedHandler = middleware(handler);
 
-      final request = Request(
-        'GET',
-        Uri.parse('http://localhost:8000/'),
-      );
+      final request = Request('GET', Uri.parse('http://localhost:8000/'));
 
       final response = await wrappedHandler(request);
       expect(response.statusCode, 200);
@@ -314,7 +324,10 @@ void main() {
       final response = await wrappedHandler(request);
 
       expect(response.statusCode, 403);
-      expect(await response.readAsString(), contains('Invalid or expired CSRF token'));
+      expect(
+        await response.readAsString(),
+        contains('Invalid or expired CSRF token'),
+      );
     });
 
     test('should accept POST request with valid token', () async {
@@ -336,10 +349,7 @@ void main() {
       final postRequest = Request(
         'POST',
         Uri.parse('http://localhost:8000/'),
-        headers: {
-          'X-CSRF-Token': token,
-          'cookie': 'XSRF-TOKEN=$token',
-        },
+        headers: {'X-CSRF-Token': token, 'cookie': 'XSRF-TOKEN=$token'},
       );
       final postResponse = await wrappedHandler(postRequest);
 
@@ -355,9 +365,9 @@ void main() {
       // Get initial token
       final getRequest = Request('GET', Uri.parse('http://localhost:8000/'));
       final getResponse = await wrappedHandler(getRequest);
-      final initialToken = RegExp(r'XSRF-TOKEN=([^;]+)')
-          .firstMatch(getResponse.headers['Set-Cookie']!)!
-          .group(1)!;
+      final initialToken = RegExp(
+        r'XSRF-TOKEN=([^;]+)',
+      ).firstMatch(getResponse.headers['Set-Cookie']!)!.group(1)!;
 
       // Make POST request with token
       final postRequest = Request(
@@ -371,9 +381,9 @@ void main() {
       final postResponse = await wrappedHandler(postRequest);
 
       // Check that a new token was issued
-      final newToken = RegExp(r'XSRF-TOKEN=([^;]+)')
-          .firstMatch(postResponse.headers['Set-Cookie']!)!
-          .group(1)!;
+      final newToken = RegExp(
+        r'XSRF-TOKEN=([^;]+)',
+      ).firstMatch(postResponse.headers['Set-Cookie']!)!.group(1)!;
 
       expect(newToken, isNot(equals(initialToken)));
     });

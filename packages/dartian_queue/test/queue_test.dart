@@ -368,7 +368,10 @@ void main() {
       final worker = SyncQueueWorker();
       final manager = QueueManager(queue, worker);
 
-      final jobId = await manager.push('default', '{"userId": 123, "action": "send_email"}');
+      final jobId = await manager.push(
+        'default',
+        '{"userId": 123, "action": "send_email"}',
+      );
       expect(jobId, isNotEmpty);
 
       final job = await queue.pop('default');

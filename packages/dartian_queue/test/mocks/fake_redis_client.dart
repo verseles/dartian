@@ -49,7 +49,8 @@ class FakeRedisClient implements IRedisClient {
   dynamic get client => FakeRedisLowLevelClient(this);
 
   // Other RedisClient methods for compatibility
-  Future<bool> exists(String key) async => _storage.containsKey(key) || _lists.containsKey(key);
+  Future<bool> exists(String key) async =>
+      _storage.containsKey(key) || _lists.containsKey(key);
 
   Future<void> expire(String key, Duration ttl) async {
     // No-op for fake client
@@ -60,7 +61,8 @@ class FakeRedisClient implements IRedisClient {
     return -1;
   }
 
-  Future<dynamic> sendCommand(List command) async => _handleListCommand(command[0].toString(), command.skip(1).toList());
+  Future<dynamic> sendCommand(List command) async =>
+      _handleListCommand(command[0].toString(), command.skip(1).toList());
 
   /// Internal method to handle list operations
   Future<dynamic> _handleListCommand(String command, List<dynamic> args) async {

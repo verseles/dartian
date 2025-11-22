@@ -6,6 +6,7 @@ import 'dart:typed_data';
 
 // JS interop types (placeholders for cross-platform compatibility)
 abstract class JSFunction {}
+
 abstract class JSArrayBuffer {}
 
 /// Runtime configuration for WASM applications
@@ -31,8 +32,8 @@ class WasmRuntime {
   final Map<String, Object> state;
 
   WasmRuntime({WasmRuntimeConfig? config})
-      : config = config ?? WasmRuntimeConfig(),
-        state = {};
+    : config = config ?? WasmRuntimeConfig(),
+      state = {};
 
   /// Check if WebAssembly is supported
   static bool isSupported() {
@@ -46,11 +47,7 @@ class WasmRuntime {
 
   /// Get supported features
   static Map<String, bool> getSupportedFeatures() {
-    return {
-      'wasm_gc': isSupported(),
-      'threads': false,
-      'simd': isSupported(),
-    };
+    return {'wasm_gc': isSupported(), 'threads': false, 'simd': isSupported()};
   }
 
   /// Compile WASM module (placeholder)
@@ -79,8 +76,8 @@ class WasmModuleProxy {
   final Uint8List _bytes;
   final Map<String, Object> _exports;
 
-  WasmModuleProxy(this._bytes, {Map<String, Object>? exports}) 
-      : _exports = exports ?? {};
+  WasmModuleProxy(this._bytes, {Map<String, Object>? exports})
+    : _exports = exports ?? {};
 
   /// Get exported function
   JSFunction? getFunction(String name) {

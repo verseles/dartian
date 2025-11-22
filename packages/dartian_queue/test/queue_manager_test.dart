@@ -10,12 +10,9 @@ class MockQueue implements Queue {
   @override
   Future<String> push(String queue, String payload) async {
     final jobId = '${_idCounter++}';
-    _jobs.add(Job(
-      id: jobId,
-      queue: queue,
-      payload: payload,
-      createdAt: DateTime.now(),
-    ));
+    _jobs.add(
+      Job(id: jobId, queue: queue, payload: payload, createdAt: DateTime.now()),
+    );
     return jobId;
   }
 

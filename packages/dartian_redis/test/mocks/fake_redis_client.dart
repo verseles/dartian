@@ -13,10 +13,10 @@ class FakeRedisClient extends RedisClient {
     int port = 6379,
     String? password,
     int database = 0,
-  })  : _fakeRedis = FakeRedis(),
-        _testPassword = password,
-        _testDatabase = database,
-        super(host, port: port, password: password, database: database);
+  }) : _fakeRedis = FakeRedis(),
+       _testPassword = password,
+       _testDatabase = database,
+       super(host, port: port, password: password, database: database);
 
   /// Override connect to use fake Redis
   @override

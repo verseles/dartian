@@ -43,16 +43,15 @@ void main() {
 
     test('should execute SELECT query and return results', () {
       // Insert test data
-      db.execute(
-        'INSERT INTO users (name, email) VALUES (?, ?)',
-        ['John Doe', 'john@example.com'],
-      );
+      db.execute('INSERT INTO users (name, email) VALUES (?, ?)', [
+        'John Doe',
+        'john@example.com',
+      ]);
 
       // Query the data
-      final results = db.query(
-        'SELECT * FROM users WHERE name = ?',
-        ['John Doe'],
-      );
+      final results = db.query('SELECT * FROM users WHERE name = ?', [
+        'John Doe',
+      ]);
 
       expect(results, isNotEmpty);
       expect(results.length, 1);
@@ -76,25 +75,21 @@ void main() {
       expect(updateResult, greaterThan(0));
 
       // Test DELETE
-      final deleteResult = db.execute(
-        'DELETE FROM users WHERE name = ?',
-        ['Jane Doe'],
-      );
+      final deleteResult = db.execute('DELETE FROM users WHERE name = ?', [
+        'Jane Doe',
+      ]);
       expect(deleteResult, greaterThan(0));
     });
 
     test('should execute querySingle and return single value', () {
       // Insert test data
-      db.execute(
-        'INSERT INTO users (name, email) VALUES (?, ?)',
-        ['Count Test', 'count@example.com'],
-      );
+      db.execute('INSERT INTO users (name, email) VALUES (?, ?)', [
+        'Count Test',
+        'count@example.com',
+      ]);
 
       // Query single value
-      final count = db.querySingle<int>(
-        'SELECT COUNT(*) FROM users',
-        [],
-      );
+      final count = db.querySingle<int>('SELECT COUNT(*) FROM users', []);
 
       expect(count, isA<int>());
       expect(count, greaterThan(0));
@@ -117,15 +112,14 @@ void main() {
 
     test('should handle parameterized queries safely', () {
       // Test with special characters
-      db.execute(
-        'INSERT INTO users (name, email) VALUES (?, ?)',
-        ['O\'Brien', 'obrien@example.com'],
-      );
+      db.execute('INSERT INTO users (name, email) VALUES (?, ?)', [
+        'O\'Brien',
+        'obrien@example.com',
+      ]);
 
-      final results = db.query(
-        'SELECT * FROM users WHERE name = ?',
-        ['O\'Brien'],
-      );
+      final results = db.query('SELECT * FROM users WHERE name = ?', [
+        'O\'Brien',
+      ]);
 
       expect(results, isNotEmpty);
       expect(results.first['name'], 'O\'Brien');
@@ -134,18 +128,14 @@ void main() {
     test('should query with LIMIT only', () {
       // Insert multiple test records
       for (var i = 1; i <= 5; i++) {
-        db.execute(
-          'INSERT INTO users (name, email) VALUES (?, ?)',
-          ['User$i', 'user$i@example.com'],
-        );
+        db.execute('INSERT INTO users (name, email) VALUES (?, ?)', [
+          'User$i',
+          'user$i@example.com',
+        ]);
       }
 
       // Query with limit only
-      final results = db.query(
-        'SELECT * FROM users',
-        [],
-        limit: 3,
-      );
+      final results = db.query('SELECT * FROM users', [], limit: 3);
 
       expect(results.length, 3);
     });
@@ -153,10 +143,10 @@ void main() {
     test('should query with LIMIT and OFFSET', () {
       // Insert multiple test records
       for (var i = 1; i <= 5; i++) {
-        db.execute(
-          'INSERT INTO users (name, email) VALUES (?, ?)',
-          ['Paged$i', 'paged$i@example.com'],
-        );
+        db.execute('INSERT INTO users (name, email) VALUES (?, ?)', [
+          'Paged$i',
+          'paged$i@example.com',
+        ]);
       }
 
       // Query with limit and offset

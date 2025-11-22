@@ -60,7 +60,10 @@ class Password {
   /// [targetCost] - The desired cost factor
   ///
   /// Returns true if the hash should be regenerated with the new cost
-  static bool needsRehash(String hashedPassword, {int targetCost = defaultCost}) {
+  static bool needsRehash(
+    String hashedPassword, {
+    int targetCost = defaultCost,
+  }) {
     try {
       // Bcrypt hash format: $2a$10$...
       // Extract cost from hash

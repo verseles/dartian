@@ -58,10 +58,7 @@ class QueryDatabase {
   }
 
   /// Execute a query that returns a single value
-  T querySingle<T>(
-    String sql,
-    List<dynamic> args,
-  ) {
+  T querySingle<T>(String sql, List<dynamic> args) {
     final ResultSet result = _database.select(sql, args);
     if (result.isEmpty) {
       throw Exception('No results found');

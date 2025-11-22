@@ -13,17 +13,17 @@ class DatabaseConfig {
   final PostgresConfig? postgresConfig;
 
   const DatabaseConfig.sqlite(this.path)
-      : type = DatabaseType.sqlite,
-        postgresConfig = null;
+    : type = DatabaseType.sqlite,
+      postgresConfig = null;
 
   const DatabaseConfig.memory()
-      : type = DatabaseType.memory,
-        path = null,
-        postgresConfig = null;
+    : type = DatabaseType.memory,
+      path = null,
+      postgresConfig = null;
 
   const DatabaseConfig.postgres(this.postgresConfig)
-      : type = DatabaseType.postgres,
-        path = null;
+    : type = DatabaseType.postgres,
+      path = null;
 }
 
 class PostgresConfig {

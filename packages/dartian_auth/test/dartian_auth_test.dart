@@ -109,7 +109,11 @@ void main() {
       final payload = {'id': 'user1'};
 
       // Use a duration that is definitely in the past (1 day)
-      final jwt = JWT.create(payload, secret: secret, expiresIn: Duration(days: -1));
+      final jwt = JWT.create(
+        payload,
+        secret: secret,
+        expiresIn: Duration(days: -1),
+      );
       final result = JWT.verify(jwt.token, secret: secret);
 
       expect(result, isNull);
@@ -243,7 +247,10 @@ void main() {
       );
 
       expect(result.success, isFalse);
-      expect(result.message, contains('Password must be at least 8 characters'));
+      expect(
+        result.message,
+        contains('Password must be at least 8 characters'),
+      );
     });
 
     test('should login user successfully', () async {
@@ -259,10 +266,7 @@ void main() {
     });
 
     test('should reject login with empty credentials', () async {
-      final result = await authManager.login(
-        username: '',
-        password: '',
-      );
+      final result = await authManager.login(username: '', password: '');
 
       expect(result.success, isFalse);
       expect(result.message, contains('Username and password are required'));
@@ -329,7 +333,10 @@ void main() {
       );
 
       expect(result.success, isFalse);
-      expect(result.message, contains('New password must be at least 8 characters'));
+      expect(
+        result.message,
+        contains('New password must be at least 8 characters'),
+      );
     });
 
     test('should reject password change with wrong current password', () async {
@@ -344,7 +351,9 @@ void main() {
     });
 
     test('should generate password reset token', () async {
-      final result = await authManager.generatePasswordResetToken('test@example.com');
+      final result = await authManager.generatePasswordResetToken(
+        'test@example.com',
+      );
 
       expect(result.success, isTrue);
       expect(result.message, contains('Password reset token generated'));
@@ -353,7 +362,9 @@ void main() {
     });
 
     test('should reject password reset token for invalid email', () async {
-      final result = await authManager.generatePasswordResetToken('invalidemail');
+      final result = await authManager.generatePasswordResetToken(
+        'invalidemail',
+      );
 
       expect(result.success, isFalse);
       expect(result.message, contains('Valid email is required'));
@@ -385,7 +396,10 @@ void main() {
       );
 
       expect(result.success, isFalse);
-      expect(result.message, contains('New password must be at least 8 characters'));
+      expect(
+        result.message,
+        contains('New password must be at least 8 characters'),
+      );
     });
   });
 

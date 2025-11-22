@@ -84,9 +84,9 @@ void main() {
     });
 
     test('whereCondition() should filter results', () async {
-      final query = db.select(db.users).whereCondition(
-        (tbl) => tbl.email.contains('bob'),
-      );
+      final query = db
+          .select(db.users)
+          .whereCondition((tbl) => tbl.email.contains('bob'));
 
       final results = await query.get();
       expect(results.length, equals(1));
@@ -94,10 +94,9 @@ void main() {
     });
 
     test('orderByColumn() should sort ascending', () async {
-      final query = db.select(db.users).orderByColumn(
-        (tbl) => tbl.name,
-        mode: OrderingMode.asc,
-      );
+      final query = db
+          .select(db.users)
+          .orderByColumn((tbl) => tbl.name, mode: OrderingMode.asc);
 
       final results = await query.get();
       expect(results.first.name, equals('Alice'));
@@ -105,10 +104,9 @@ void main() {
     });
 
     test('orderByColumn() should sort descending', () async {
-      final query = db.select(db.users).orderByColumn(
-        (tbl) => tbl.name,
-        mode: OrderingMode.desc,
-      );
+      final query = db
+          .select(db.users)
+          .orderByColumn((tbl) => tbl.name, mode: OrderingMode.desc);
 
       final results = await query.get();
       expect(results.first.name, equals('Dave'));

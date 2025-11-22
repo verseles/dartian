@@ -8,17 +8,13 @@ class User {
 
   User({this.id, required this.name, required this.email});
 
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'email': email,
-      };
+  Map<String, dynamic> toJson() => {'id': id, 'name': name, 'email': email};
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-        id: json['id'] as int?,
-        name: json['name'] as String,
-        email: json['email'] as String,
-      );
+    id: json['id'] as int?,
+    name: json['name'] as String,
+    email: json['email'] as String,
+  );
 }
 
 void main() {
@@ -56,14 +52,14 @@ void main() {
 
     test('should find all users', () {
       // Insert test users
-      db.execute(
-        'INSERT INTO users (name, email) VALUES (?, ?)',
-        ['User 1', 'user1@example.com'],
-      );
-      db.execute(
-        'INSERT INTO users (name, email) VALUES (?, ?)',
-        ['User 2', 'user2@example.com'],
-      );
+      db.execute('INSERT INTO users (name, email) VALUES (?, ?)', [
+        'User 1',
+        'user1@example.com',
+      ]);
+      db.execute('INSERT INTO users (name, email) VALUES (?, ?)', [
+        'User 2',
+        'user2@example.com',
+      ]);
 
       final users = repository.findAll();
 
@@ -73,10 +69,10 @@ void main() {
 
     test('should find user by ID', () {
       // Insert a user
-      db.execute(
-        'INSERT INTO users (name, email) VALUES (?, ?)',
-        ['Find Me', 'find@example.com'],
-      );
+      db.execute('INSERT INTO users (name, email) VALUES (?, ?)', [
+        'Find Me',
+        'find@example.com',
+      ]);
       final results = db.query('SELECT * FROM users', []);
       final userId = results.first['id'] as int;
 
@@ -95,10 +91,10 @@ void main() {
 
     test('should update a user', () {
       // Insert a user
-      db.execute(
-        'INSERT INTO users (name, email) VALUES (?, ?)',
-        ['Original', 'original@example.com'],
-      );
+      db.execute('INSERT INTO users (name, email) VALUES (?, ?)', [
+        'Original',
+        'original@example.com',
+      ]);
       final results = db.query('SELECT * FROM users', []);
       final userId = results.first['id'] as int;
 
@@ -119,10 +115,10 @@ void main() {
 
     test('should delete a user', () {
       // Insert a user
-      db.execute(
-        'INSERT INTO users (name, email) VALUES (?, ?)',
-        ['To Delete', 'delete@example.com'],
-      );
+      db.execute('INSERT INTO users (name, email) VALUES (?, ?)', [
+        'To Delete',
+        'delete@example.com',
+      ]);
       final results = db.query('SELECT * FROM users', []);
       final userId = results.first['id'] as int;
 
@@ -136,18 +132,18 @@ void main() {
 
     test('should count all users', () {
       // Insert test users
-      db.execute(
-        'INSERT INTO users (name, email) VALUES (?, ?)',
-        ['User 1', 'user1@example.com'],
-      );
-      db.execute(
-        'INSERT INTO users (name, email) VALUES (?, ?)',
-        ['User 2', 'user2@example.com'],
-      );
-      db.execute(
-        'INSERT INTO users (name, email) VALUES (?, ?)',
-        ['User 3', 'user3@example.com'],
-      );
+      db.execute('INSERT INTO users (name, email) VALUES (?, ?)', [
+        'User 1',
+        'user1@example.com',
+      ]);
+      db.execute('INSERT INTO users (name, email) VALUES (?, ?)', [
+        'User 2',
+        'user2@example.com',
+      ]);
+      db.execute('INSERT INTO users (name, email) VALUES (?, ?)', [
+        'User 3',
+        'user3@example.com',
+      ]);
 
       final count = repository.count();
 

@@ -38,8 +38,21 @@ Middleware i18nMiddleware({String defaultLocale = 'en'}) {
 /// ```
 Middleware corsMiddleware({
   List<String>? allowedOrigins,
-  List<String> allowedMethods = const ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  List<String> allowedHeaders = const ['Origin', 'Content-Type', 'Accept', 'Authorization', 'X-CSRF-Token'],
+  List<String> allowedMethods = const [
+    'GET',
+    'POST',
+    'PUT',
+    'DELETE',
+    'PATCH',
+    'OPTIONS',
+  ],
+  List<String> allowedHeaders = const [
+    'Origin',
+    'Content-Type',
+    'Accept',
+    'Authorization',
+    'X-CSRF-Token',
+  ],
   List<String> exposedHeaders = const [],
   bool allowCredentials = true,
   int maxAge = 86400, // 24 hours
@@ -69,10 +82,12 @@ Middleware corsMiddleware({
         return Response.ok(
           null,
           headers: {
-            if (isOriginAllowed && origin != null) 'Access-Control-Allow-Origin': origin,
+            if (isOriginAllowed && origin != null)
+              'Access-Control-Allow-Origin': origin,
             'Access-Control-Allow-Methods': allowedMethods.join(', '),
             'Access-Control-Allow-Headers': allowedHeaders.join(', '),
-            if (exposedHeaders.isNotEmpty) 'Access-Control-Expose-Headers': exposedHeaders.join(', '),
+            if (exposedHeaders.isNotEmpty)
+              'Access-Control-Expose-Headers': exposedHeaders.join(', '),
             if (allowCredentials) 'Access-Control-Allow-Credentials': 'true',
             'Access-Control-Max-Age': maxAge.toString(),
           },
@@ -83,11 +98,15 @@ Middleware corsMiddleware({
       final response = await handler(request);
 
       // Add CORS headers to response
-      return response.change(headers: {
-        if (isOriginAllowed && origin != null) 'Access-Control-Allow-Origin': origin,
-        if (exposedHeaders.isNotEmpty) 'Access-Control-Expose-Headers': exposedHeaders.join(', '),
-        if (allowCredentials) 'Access-Control-Allow-Credentials': 'true',
-      });
+      return response.change(
+        headers: {
+          if (isOriginAllowed && origin != null)
+            'Access-Control-Allow-Origin': origin,
+          if (exposedHeaders.isNotEmpty)
+            'Access-Control-Expose-Headers': exposedHeaders.join(', '),
+          if (allowCredentials) 'Access-Control-Allow-Credentials': 'true',
+        },
+      );
     };
   };
 }
@@ -128,7 +147,9 @@ class CsrfMiddleware {
     // Create HMAC signature to prevent tampering
     final payload = '$token:$timestamp';
     final hmac = Hmac(sha256, utf8.encode(secretKey));
-    final signature = base64Url.encode(hmac.convert(utf8.encode(payload)).bytes);
+    final signature = base64Url.encode(
+      hmac.convert(utf8.encode(payload)).bytes,
+    );
 
     return '$payload:$signature';
   }
@@ -150,7 +171,9 @@ class CsrfMiddleware {
       // Verify HMAC signature
       final payload = '$tokenValue:$timestamp';
       final hmac = Hmac(sha256, utf8.encode(secretKey));
-      final expectedSignature = base64Url.encode(hmac.convert(utf8.encode(payload)).bytes);
+      final expectedSignature = base64Url.encode(
+        hmac.convert(utf8.encode(payload)).bytes,
+      );
 
       return signature == expectedSignature;
     } catch (e) {
@@ -170,14 +193,18 @@ class CsrfMiddleware {
           final token = _generateToken();
 
           // Add token to cookie for subsequent requests
-          return response.change(headers: {
-            'Set-Cookie': '$cookieName=$token; Path=/; SameSite=Strict; HttpOnly',
-          });
+          return response.change(
+            headers: {
+              'Set-Cookie':
+                  '$cookieName=$token; Path=/; SameSite=Strict; HttpOnly',
+            },
+          );
         }
 
         // Validate CSRF token for unsafe methods
-        final headerToken = request.headers[tokenName.toLowerCase()] ??
-                           request.headers[tokenName];
+        final headerToken =
+            request.headers[tokenName.toLowerCase()] ??
+            request.headers[tokenName];
         final cookieToken = _extractTokenFromCookie(request.headers['cookie']);
 
         if (headerToken == null || cookieToken == null) {
@@ -207,9 +234,12 @@ class CsrfMiddleware {
         // Rotate token after successful request
         final newToken = _generateToken();
 
-        return response.change(headers: {
-          'Set-Cookie': '$cookieName=$newToken; Path=/; SameSite=Strict; HttpOnly',
-        });
+        return response.change(
+          headers: {
+            'Set-Cookie':
+                '$cookieName=$newToken; Path=/; SameSite=Strict; HttpOnly',
+          },
+        );
       };
     };
   }

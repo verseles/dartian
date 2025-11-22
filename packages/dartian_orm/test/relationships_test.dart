@@ -83,7 +83,10 @@ class UserRolesRelation extends BelongsToMany<Role> {
 
   @override
   Expression<bool> buildPivotDeleteCondition(
-      dynamic tbl, dynamic localId, dynamic relatedId) {
+    dynamic tbl,
+    dynamic localId,
+    dynamic relatedId,
+  ) {
     final t = tbl as UserRoles;
     return t.userId.equals(localId as int) & t.roleId.equals(relatedId as int);
   }
@@ -104,7 +107,9 @@ void main() {
   group('HasMany - One-to-many relationship', () {
     test('should get all related records', () async {
       // Insert user
-      final userId = await db.into(db.users).insert(
+      final userId = await db
+          .into(db.users)
+          .insert(
             UsersCompanion.insert(name: 'John', email: 'john@example.com'),
           );
 
@@ -112,11 +117,20 @@ void main() {
       await db.batch((batch) {
         batch.insertAll(db.posts, [
           PostsCompanion.insert(
-              userId: userId, title: 'Post 1', content: 'Content 1'),
+            userId: userId,
+            title: 'Post 1',
+            content: 'Content 1',
+          ),
           PostsCompanion.insert(
-              userId: userId, title: 'Post 2', content: 'Content 2'),
+            userId: userId,
+            title: 'Post 2',
+            content: 'Content 2',
+          ),
           PostsCompanion.insert(
-              userId: userId, title: 'Post 3', content: 'Content 3'),
+            userId: userId,
+            title: 'Post 3',
+            content: 'Content 3',
+          ),
         ]);
       });
 
@@ -135,7 +149,9 @@ void main() {
     });
 
     test('should return empty list when no related records', () async {
-      final userId = await db.into(db.users).insert(
+      final userId = await db
+          .into(db.users)
+          .insert(
             UsersCompanion.insert(name: 'Jane', email: 'jane@example.com'),
           );
 
@@ -154,14 +170,21 @@ void main() {
   group('BelongsTo - Many-to-one relationship', () {
     test('should get related record', () async {
       // Insert user
-      final userId = await db.into(db.users).insert(
+      final userId = await db
+          .into(db.users)
+          .insert(
             UsersCompanion.insert(name: 'Author', email: 'author@example.com'),
           );
 
       // Insert post
-      await db.into(db.posts).insert(
+      await db
+          .into(db.posts)
+          .insert(
             PostsCompanion.insert(
-                userId: userId, title: 'My Post', content: 'Content'),
+              userId: userId,
+              title: 'My Post',
+              content: 'Content',
+            ),
           );
 
       final relation = PostUserRelation(
@@ -202,12 +225,16 @@ void main() {
   group('HasOne - One-to-one relationship', () {
     test('should get related record', () async {
       // Insert user
-      final userId = await db.into(db.users).insert(
+      final userId = await db
+          .into(db.users)
+          .insert(
             UsersCompanion.insert(name: 'User', email: 'user@example.com'),
           );
 
       // Insert profile
-      await db.into(db.profiles).insert(
+      await db
+          .into(db.profiles)
+          .insert(
             ProfilesCompanion.insert(
               userId: userId,
               bio: Value('Bio text'),
@@ -230,9 +257,13 @@ void main() {
     });
 
     test('should return null when no related record', () async {
-      final userId = await db.into(db.users).insert(
+      final userId = await db
+          .into(db.users)
+          .insert(
             UsersCompanion.insert(
-                name: 'No Profile', email: 'noprofile@example.com'),
+              name: 'No Profile',
+              email: 'noprofile@example.com',
+            ),
           );
 
       final relation = UserProfileRelation(
@@ -250,17 +281,19 @@ void main() {
   group('BelongsToMany - Many-to-many relationship', () {
     test('should get all related records through pivot', () async {
       // Insert user
-      final userId = await db.into(db.users).insert(
+      final userId = await db
+          .into(db.users)
+          .insert(
             UsersCompanion.insert(name: 'User', email: 'user@example.com'),
           );
 
       // Insert roles
-      final adminRoleId = await db.into(db.roles).insert(
-            RolesCompanion.insert(name: 'admin'),
-          );
-      final editorRoleId = await db.into(db.roles).insert(
-            RolesCompanion.insert(name: 'editor'),
-          );
+      final adminRoleId = await db
+          .into(db.roles)
+          .insert(RolesCompanion.insert(name: 'admin'));
+      final editorRoleId = await db
+          .into(db.roles)
+          .insert(RolesCompanion.insert(name: 'editor'));
 
       // Create pivot records
       await db.batch((batch) {
@@ -286,9 +319,13 @@ void main() {
     });
 
     test('should return empty list when no related records', () async {
-      final userId = await db.into(db.users).insert(
+      final userId = await db
+          .into(db.users)
+          .insert(
             UsersCompanion.insert(
-                name: 'No Roles', email: 'noroles@example.com'),
+              name: 'No Roles',
+              email: 'noroles@example.com',
+            ),
           );
 
       final relation = UserRolesRelation(
@@ -305,12 +342,14 @@ void main() {
     });
 
     test('attach() should create pivot record', () async {
-      final userId = await db.into(db.users).insert(
+      final userId = await db
+          .into(db.users)
+          .insert(
             UsersCompanion.insert(name: 'User', email: 'user@example.com'),
           );
-      final roleId = await db.into(db.roles).insert(
-            RolesCompanion.insert(name: 'moderator'),
-          );
+      final roleId = await db
+          .into(db.roles)
+          .insert(RolesCompanion.insert(name: 'moderator'));
 
       final relation = UserRolesRelation(
         database: db,
@@ -330,17 +369,19 @@ void main() {
     });
 
     test('detach() should delete pivot record', () async {
-      final userId = await db.into(db.users).insert(
+      final userId = await db
+          .into(db.users)
+          .insert(
             UsersCompanion.insert(name: 'User', email: 'user@example.com'),
           );
-      final roleId = await db.into(db.roles).insert(
-            RolesCompanion.insert(name: 'guest'),
-          );
+      final roleId = await db
+          .into(db.roles)
+          .insert(RolesCompanion.insert(name: 'guest'));
 
       // Create pivot record
-      await db.into(db.userRoles).insert(
-            UserRolesCompanion.insert(userId: userId, roleId: roleId),
-          );
+      await db
+          .into(db.userRoles)
+          .insert(UserRolesCompanion.insert(userId: userId, roleId: roleId));
 
       final relation = UserRolesRelation(
         database: db,
@@ -358,20 +399,22 @@ void main() {
     });
 
     test('sync() should replace all pivot records', () async {
-      final userId = await db.into(db.users).insert(
+      final userId = await db
+          .into(db.users)
+          .insert(
             UsersCompanion.insert(name: 'User', email: 'user@example.com'),
           );
 
       // Create initial roles
-      final role1 = await db.into(db.roles).insert(
-            RolesCompanion.insert(name: 'role1'),
-          );
-      final role2 = await db.into(db.roles).insert(
-            RolesCompanion.insert(name: 'role2'),
-          );
-      final role3 = await db.into(db.roles).insert(
-            RolesCompanion.insert(name: 'role3'),
-          );
+      final role1 = await db
+          .into(db.roles)
+          .insert(RolesCompanion.insert(name: 'role1'));
+      final role2 = await db
+          .into(db.roles)
+          .insert(RolesCompanion.insert(name: 'role2'));
+      final role3 = await db
+          .into(db.roles)
+          .insert(RolesCompanion.insert(name: 'role3'));
 
       // Create initial pivot records
       await db.batch((batch) {

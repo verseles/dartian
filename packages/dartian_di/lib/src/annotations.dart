@@ -30,11 +30,7 @@ class Singleton {
   /// Use when the service needs async initialization
   final bool async;
 
-  const Singleton({
-    this.name,
-    this.asType,
-    this.async = false,
-  });
+  const Singleton({this.name, this.asType, this.async = false});
 }
 
 /// Marks a class as a factory service
@@ -60,10 +56,7 @@ class Service {
   /// Optional list of interfaces/abstract classes this service implements
   final List<Type>? asType;
 
-  const Service({
-    this.name,
-    this.asType,
-  });
+  const Service({this.name, this.asType});
 }
 
 /// Marks a class as a lazy singleton
@@ -85,10 +78,7 @@ class LazySingleton {
   /// Optional list of interfaces/abstract classes this service implements
   final List<Type>? asType;
 
-  const LazySingleton({
-    this.name,
-    this.asType,
-  });
+  const LazySingleton({this.name, this.asType});
 }
 
 /// Marks a parameter as injectable

@@ -29,13 +29,15 @@ class Job {
   };
 
   /// Create job from JSON
-  factory Job.fromJson(Map<String, dynamic> json) => Job(
-    id: json['id'] as String,
-    queue: json['queue'] as String,
-    payload: json['payload'] as String,
-    createdAt: DateTime.parse(json['createdAt'] as String),
-  )..status = JobStatus.values.byName(json['status'] as String)
-   ..error = json['error'] as String?;
+  factory Job.fromJson(Map<String, dynamic> json) =>
+      Job(
+          id: json['id'] as String,
+          queue: json['queue'] as String,
+          payload: json['payload'] as String,
+          createdAt: DateTime.parse(json['createdAt'] as String),
+        )
+        ..status = JobStatus.values.byName(json['status'] as String)
+        ..error = json['error'] as String?;
 }
 
 /// Queue interface

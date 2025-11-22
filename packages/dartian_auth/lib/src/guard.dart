@@ -19,10 +19,7 @@ class JwtGuard implements Guard {
   final String jwtSecret;
   final List<String> exceptRoutes;
 
-  JwtGuard({
-    required this.jwtSecret,
-    this.exceptRoutes = const [],
-  });
+  JwtGuard({required this.jwtSecret, this.exceptRoutes = const []});
 
   @override
   Middleware middleware() {
@@ -37,18 +34,22 @@ class JwtGuard implements Guard {
         final token = _extractToken(request);
 
         if (token == null) {
-          return Response(401,
-              body: '{"error": "Unauthorized", "message": "No token provided"}',
-              headers: {'Content-Type': 'application/json'});
+          return Response(
+            401,
+            body: '{"error": "Unauthorized", "message": "No token provided"}',
+            headers: {'Content-Type': 'application/json'},
+          );
         }
 
         final jwt = JWT.verify(token, secret: jwtSecret);
 
         if (jwt == null || _isTokenExpired(jwt)) {
-          return Response(401,
-              body:
-                  '{"error": "Unauthorized", "message": "Invalid or expired token"}',
-              headers: {'Content-Type': 'application/json'});
+          return Response(
+            401,
+            body:
+                '{"error": "Unauthorized", "message": "Invalid or expired token"}',
+            headers: {'Content-Type': 'application/json'},
+          );
         }
 
         // Add user data to request context
@@ -139,10 +140,12 @@ class SessionGuard implements Guard {
         final sessionId = _extractSessionId(request);
 
         if (sessionId == null) {
-          return Response(401,
-              body:
-                  '{"error": "Unauthorized", "message": "No session cookie found"}',
-              headers: {'Content-Type': 'application/json'});
+          return Response(
+            401,
+            body:
+                '{"error": "Unauthorized", "message": "No session cookie found"}',
+            headers: {'Content-Type': 'application/json'},
+          );
         }
 
         // Verify session
@@ -154,10 +157,12 @@ class SessionGuard implements Guard {
             _sessions.remove(sessionId);
           }
 
-          return Response(401,
-              body:
-                  '{"error": "Unauthorized", "message": "Invalid or expired session"}',
-              headers: {'Content-Type': 'application/json'});
+          return Response(
+            401,
+            body:
+                '{"error": "Unauthorized", "message": "Invalid or expired session"}',
+            headers: {'Content-Type': 'application/json'},
+          );
         }
 
         // Add user data to request context

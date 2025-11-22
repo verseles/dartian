@@ -88,13 +88,20 @@ class I18nUtils {
   /// Check if locale is RTL (right-to-left)
   static bool isRtl(String locale) {
     const rtlLocales = [
-      'ar', 'ar_EG', 'ar_SA', 'ar_AE',
-      'he', 'he_IL',
-      'fa', 'fa_IR',
-      'ur', 'ur_PK',
+      'ar',
+      'ar_EG',
+      'ar_SA',
+      'ar_AE',
+      'he',
+      'he_IL',
+      'fa',
+      'fa_IR',
+      'ur',
+      'ur_PK',
     ];
 
-    return rtlLocales.contains(locale) || rtlLocales.contains(locale.split('_').first);
+    return rtlLocales.contains(locale) ||
+        rtlLocales.contains(locale.split('_').first);
   }
 
   /// Get locale display name

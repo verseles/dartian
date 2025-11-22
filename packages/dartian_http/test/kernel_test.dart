@@ -15,8 +15,8 @@ void main() {
     });
 
     test('adds middleware correctly', () {
-      final middleware =
-          (Handler handler) => (Request request) => handler(request);
+      final middleware = (Handler handler) =>
+          (Request request) => handler(request);
       kernel.use(middleware);
       // Middleware added, no exception thrown
       expect(kernel, isNotNull);
@@ -45,8 +45,8 @@ void main() {
 
     test('applies middleware correctly', () async {
       final handler = (Request request) => Response.ok('Test');
-      final middleware =
-          (Handler handler) => (Request request) => handler(request);
+      final middleware = (Handler handler) =>
+          (Request request) => handler(request);
       kernel.use(middleware);
       kernel.setHandler(handler);
       final request = Request('GET', Uri.parse('http://localhost:8000/test'));
@@ -94,10 +94,7 @@ void main() {
       kernel.setHandler(handler);
       final request = Request('GET', Uri.parse('http://localhost:8000/test'));
 
-      expect(
-        () async => await kernel.handle(request),
-        throwsException,
-      );
+      expect(() async => await kernel.handle(request), throwsException);
     });
 
     test('listen throws StateError when no handler is set', () async {

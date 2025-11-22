@@ -3,14 +3,17 @@
 class TelemetryHooks {
   // Request lifecycle hooks
   static final List<void Function(dynamic request)> _onRequestCallbacks = [];
-  static final List<void Function(dynamic response, Duration duration)> _onResponseCallbacks = [];
+  static final List<void Function(dynamic response, Duration duration)>
+  _onResponseCallbacks = [];
 
   // Database hooks
-  static final List<void Function(String sql, Duration duration)> _onQueryExecutedCallbacks = [];
+  static final List<void Function(String sql, Duration duration)>
+  _onQueryExecutedCallbacks = [];
 
   // Queue hooks
   static final List<void Function(dynamic job)> _onJobQueuedCallbacks = [];
-  static final List<void Function(dynamic job, Duration duration)> _onJobProcessedCallbacks = [];
+  static final List<void Function(dynamic job, Duration duration)>
+  _onJobProcessedCallbacks = [];
 
   /// Register a callback for request start
   static void onRequest(void Function(dynamic request) callback) {
@@ -18,12 +21,16 @@ class TelemetryHooks {
   }
 
   /// Register a callback for response complete
-  static void onResponse(void Function(dynamic response, Duration duration) callback) {
+  static void onResponse(
+    void Function(dynamic response, Duration duration) callback,
+  ) {
     _onResponseCallbacks.add(callback);
   }
 
   /// Register a callback for database query execution
-  static void onQueryExecuted(void Function(String sql, Duration duration) callback) {
+  static void onQueryExecuted(
+    void Function(String sql, Duration duration) callback,
+  ) {
     _onQueryExecutedCallbacks.add(callback);
   }
 
@@ -33,7 +40,9 @@ class TelemetryHooks {
   }
 
   /// Register a callback for job processed
-  static void onJobProcessed(void Function(dynamic job, Duration duration) callback) {
+  static void onJobProcessed(
+    void Function(dynamic job, Duration duration) callback,
+  ) {
     _onJobProcessedCallbacks.add(callback);
   }
 

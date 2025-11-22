@@ -124,8 +124,9 @@ void main() {
 
     test('creates unique index', () async {
       await ops.raw('CREATE TABLE users (id INTEGER PRIMARY KEY, email TEXT)');
-      await ops.createIndex('idx_users_email', 'users', ['email'],
-          unique: true);
+      await ops.createIndex('idx_users_email', 'users', [
+        'email',
+      ], unique: true);
 
       final result = await executor.runSelect(
         'SELECT sql FROM sqlite_master WHERE type="index" AND name="idx_users_email"',
@@ -157,7 +158,9 @@ void main() {
     });
 
     test('renames column', () async {
-      await ops.raw('CREATE TABLE users (id INTEGER PRIMARY KEY, old_name TEXT)');
+      await ops.raw(
+        'CREATE TABLE users (id INTEGER PRIMARY KEY, old_name TEXT)',
+      );
       await ops.renameColumn('users', 'old_name', 'new_name');
 
       final result = await executor.runSelect('PRAGMA table_info(users)', []);
@@ -166,7 +169,9 @@ void main() {
     });
 
     test('drops column', () async {
-      await ops.raw('CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT, email TEXT)');
+      await ops.raw(
+        'CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT, email TEXT)',
+      );
       await ops.dropColumn('users', 'email');
 
       final result = await executor.runSelect('PRAGMA table_info(users)', []);
@@ -188,9 +193,9 @@ void main() {
 
     test('creates tables on initialization', () async {
       // Insert a record to verify table exists
-      await db.into(db.testTableV1).insert(
-            TestTableV1Companion.insert(name: 'Test'),
-          );
+      await db
+          .into(db.testTableV1)
+          .insert(TestTableV1Companion.insert(name: 'Test'));
 
       final records = await db.select(db.testTableV1).get();
       expect(records.length, 1);

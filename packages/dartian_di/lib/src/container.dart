@@ -6,7 +6,8 @@ class CircularDependencyException implements Exception {
   final String message;
 
   CircularDependencyException(this.cycle)
-      : message = 'Circular dependency detected: ${cycle.map((t) => t.toString()).join(' → ')} → ${cycle.first}';
+    : message =
+          'Circular dependency detected: ${cycle.map((t) => t.toString()).join(' → ')} → ${cycle.first}';
 
   @override
   String toString() => message;

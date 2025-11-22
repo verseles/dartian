@@ -38,7 +38,11 @@ class RealCronScheduler {
   /// - "0 9 * * 1-5" - 9 AM on weekdays
   /// - "*/5 * * * *" - every 5 minutes
   /// - "0 0 1 * *" - first day of every month
-  Future<String> schedule(String name, String cronExpression, Function() callback) async {
+  Future<String> schedule(
+    String name,
+    String cronExpression,
+    Function() callback,
+  ) async {
     // Parse and validate cron expression
     final cron = CronExpression.parse(cronExpression);
 
@@ -62,7 +66,11 @@ class RealCronScheduler {
   }
 
   /// Schedule a task to run every N minutes
-  Future<String> everyMinutes(String name, int minutes, Function() callback) async {
+  Future<String> everyMinutes(
+    String name,
+    int minutes,
+    Function() callback,
+  ) async {
     return schedule(name, '*/$minutes * * * *', callback);
   }
 
@@ -72,18 +80,35 @@ class RealCronScheduler {
   }
 
   /// Schedule a task to run daily at a specific time
-  Future<String> daily(String name, int hour, int minute, Function() callback) async {
+  Future<String> daily(
+    String name,
+    int hour,
+    int minute,
+    Function() callback,
+  ) async {
     return schedule(name, '$minute $hour * * *', callback);
   }
 
   /// Schedule a task to run weekly on specific days
-  Future<String> weekly(String name, List<int> daysOfWeek, int hour, int minute, Function() callback) async {
+  Future<String> weekly(
+    String name,
+    List<int> daysOfWeek,
+    int hour,
+    int minute,
+    Function() callback,
+  ) async {
     final days = daysOfWeek.join(',');
     return schedule(name, '$minute $hour * * $days', callback);
   }
 
   /// Schedule a task to run monthly on a specific day
-  Future<String> monthly(String name, int day, int hour, int minute, Function() callback) async {
+  Future<String> monthly(
+    String name,
+    int day,
+    int hour,
+    int minute,
+    Function() callback,
+  ) async {
     return schedule(name, '$minute $hour $day * *', callback);
   }
 

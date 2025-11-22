@@ -272,5 +272,4 @@ void main() {
       expect(locale1.hashCode, isNot(equals(locale3.hashCode)));
     });
   });
-
 }

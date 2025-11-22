@@ -40,7 +40,10 @@ void main() {
       test('should parse step values', () {
         final cron = CronExpression.parse('*/5 * * * *');
 
-        expect(cron.minutes, containsAll([0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55]));
+        expect(
+          cron.minutes,
+          containsAll([0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55]),
+        );
         expect(cron.minutes.length, equals(12));
       });
 
@@ -78,7 +81,10 @@ void main() {
 
       test('should throw on invalid range', () {
         expect(() => CronExpression.parse('10-5 * * * *'), throwsArgumentError);
-        expect(() => CronExpression.parse('60-65 * * * *'), throwsArgumentError);
+        expect(
+          () => CronExpression.parse('60-65 * * * *'),
+          throwsArgumentError,
+        );
       });
 
       test('should throw on invalid single value', () {
@@ -87,7 +93,10 @@ void main() {
       });
 
       test('should throw on invalid range format', () {
-        expect(() => CronExpression.parse('1-2-3 * * * *'), throwsArgumentError);
+        expect(
+          () => CronExpression.parse('1-2-3 * * * *'),
+          throwsArgumentError,
+        );
         expect(() => CronExpression.parse('a-b * * * *'), throwsArgumentError);
       });
     });

@@ -18,12 +18,13 @@ class JWT {
   });
 
   /// Create a JWT token
-  static JWT create(Map<String, dynamic> payload, {String? secret, Duration? expiresIn}) {
+  static JWT create(
+    Map<String, dynamic> payload, {
+    String? secret,
+    Duration? expiresIn,
+  }) {
     final now = DateTime.now();
-    final headerMap = {
-      'alg': 'HS256',
-      'typ': 'JWT',
-    };
+    final headerMap = {'alg': 'HS256', 'typ': 'JWT'};
 
     // Create a copy of the payload to avoid mutation
     final payloadCopy = Map<String, dynamic>.from(payload);
@@ -35,7 +36,8 @@ class JWT {
 
     // Add expiration
     if (expiresIn != null) {
-      payloadCopy['exp'] = (now.add(expiresIn).millisecondsSinceEpoch / 1000).round();
+      payloadCopy['exp'] = (now.add(expiresIn).millisecondsSinceEpoch / 1000)
+          .round();
     }
 
     final headerBase64 = _base64Encode(jsonEncode(headerMap));
@@ -57,7 +59,9 @@ class JWT {
       payload: payloadCopy,
       signature: signature,
       issuedAt: now,
-      expiresAt: payloadCopy['exp'] != null ? DateTime.fromMillisecondsSinceEpoch(payloadCopy['exp'] * 1000) : null,
+      expiresAt: payloadCopy['exp'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(payloadCopy['exp'] * 1000)
+          : null,
     );
   }
 
@@ -91,7 +95,8 @@ class JWT {
         final expiry = DateTime.fromMillisecondsSinceEpoch(exp * 1000);
         // Use isAfter OR equals for edge case when expiry equals now
         final now = DateTime.now();
-        if (now.isAfter(expiry) || now.millisecondsSinceEpoch >= expiry.millisecondsSinceEpoch) {
+        if (now.isAfter(expiry) ||
+            now.millisecondsSinceEpoch >= expiry.millisecondsSinceEpoch) {
           return null;
         }
       }
@@ -100,8 +105,12 @@ class JWT {
         token: token,
         payload: payload,
         signature: signature,
-        issuedAt: payload['iat'] != null ? DateTime.fromMillisecondsSinceEpoch(payload['iat'] * 1000) : null,
-        expiresAt: exp != null ? DateTime.fromMillisecondsSinceEpoch(exp * 1000) : null,
+        issuedAt: payload['iat'] != null
+            ? DateTime.fromMillisecondsSinceEpoch(payload['iat'] * 1000)
+            : null,
+        expiresAt: exp != null
+            ? DateTime.fromMillisecondsSinceEpoch(exp * 1000)
+            : null,
       );
     } catch (e) {
       return null;

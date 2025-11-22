@@ -154,7 +154,10 @@ void main() {
     });
 
     test('should handle JSON serialization/deserialization', () async {
-      final jobId = await queue.push('default', jsonEncode({'action': 'send_email', 'to': 'user@example.com'}));
+      final jobId = await queue.push(
+        'default',
+        jsonEncode({'action': 'send_email', 'to': 'user@example.com'}),
+      );
 
       final job = await queue.pop('default');
       expect(job, isNotNull);
@@ -281,7 +284,10 @@ void main() {
     });
 
     test('should handle job lifecycle', () async {
-      final jobId = await queue.push('default', '{"action": "send_notification"}');
+      final jobId = await queue.push(
+        'default',
+        '{"action": "send_notification"}',
+      );
       expect(jobId, isNotEmpty);
 
       final job = await queue.pop('default');

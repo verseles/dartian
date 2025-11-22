@@ -107,13 +107,10 @@ void main() {
 
     test('registerLazySingleton creates instance on first access', () {
       var creationCount = 0;
-      container.registerLazySingleton<LazyTestService>(
-        () {
-          creationCount++;
-          return LazyTestService();
-        },
-        instanceName: 'lazy1',
-      );
+      container.registerLazySingleton<LazyTestService>(() {
+        creationCount++;
+        return LazyTestService();
+      }, instanceName: 'lazy1');
 
       // Not created yet
       expect(creationCount, equals(0));
@@ -138,7 +135,9 @@ void main() {
 
       container.unregister<String>(instanceName: 'unregTest');
       expect(
-          container.isRegistered<String>(instanceName: 'unregTest'), isFalse);
+        container.isRegistered<String>(instanceName: 'unregTest'),
+        isFalse,
+      );
     });
 
     test('lazy singleton returns same instance on multiple calls', () {

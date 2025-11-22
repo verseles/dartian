@@ -55,10 +55,10 @@ void main() {
       });
 
       test('should add WHERE condition', () {
-        final results = queryBuilder
-            .select(['name', 'category'])
-            .where('category = ?', ['Electronics'])
-            .get();
+        final results = queryBuilder.select(['name', 'category']).where(
+          'category = ?',
+          ['Electronics'],
+        ).get();
 
         expect(results, isNotEmpty);
         expect(results.length, 2);
@@ -132,7 +132,9 @@ void main() {
         expect(result, greaterThan(0));
 
         // Verify the insert
-        final products = queryBuilder.select(['name']).where('name = ?', ['Keyboard']).get();
+        final products = queryBuilder.select(['name']).where('name = ?', [
+          'Keyboard',
+        ]).get();
         expect(products, isNotEmpty);
         expect(products.first['name'], 'Keyboard');
       });
@@ -141,26 +143,23 @@ void main() {
     group('UpdateQuery', () {
       test('should update data', () {
         // Get a product ID
-        final products = db.query('SELECT id FROM products WHERE name = ?', ['Mouse']);
+        final products = db.query('SELECT id FROM products WHERE name = ?', [
+          'Mouse',
+        ]);
         final productId = products.first['id'] as int;
 
-        final data = {
-          'name': 'Wireless Mouse',
-          'price': 39.99,
-        };
+        final data = {'name': 'Wireless Mouse', 'price': 39.99};
 
-        final result = queryBuilder
-            .update(data)
-            .where('id = ?', [productId])
-            .execute();
+        final result = queryBuilder.update(data).where('id = ?', [
+          productId,
+        ]).execute();
 
         expect(result, greaterThan(0));
 
         // Verify the update
-        final updated = db.query(
-          'SELECT * FROM products WHERE id = ?',
-          [productId],
-        );
+        final updated = db.query('SELECT * FROM products WHERE id = ?', [
+          productId,
+        ]);
         expect(updated.first['name'], 'Wireless Mouse');
         expect(updated.first['price'], 39.99);
       });
@@ -177,7 +176,9 @@ void main() {
         expect(result, greaterThan(0));
 
         // Verify
-        final updated = db.query('SELECT * FROM products WHERE name = ?', ['Desk']);
+        final updated = db.query('SELECT * FROM products WHERE name = ?', [
+          'Desk',
+        ]);
         expect(updated.first['price'], 199.99);
       });
     });
@@ -185,28 +186,36 @@ void main() {
     group('DeleteQuery', () {
       test('should delete data', () {
         // Get a product ID
-        final products = db.query('SELECT id FROM products WHERE name = ?', ['Mouse']);
+        final products = db.query('SELECT id FROM products WHERE name = ?', [
+          'Mouse',
+        ]);
         final productId = products.first['id'] as int;
 
-        final result = queryBuilder.delete().where('id = ?', [productId]).execute();
+        final result = queryBuilder.delete().where('id = ?', [
+          productId,
+        ]).execute();
 
         expect(result, greaterThan(0));
 
         // Verify deletion
-        final deleted = db.query('SELECT * FROM products WHERE id = ?', [productId]);
+        final deleted = db.query('SELECT * FROM products WHERE id = ?', [
+          productId,
+        ]);
         expect(deleted, isEmpty);
       });
 
       test('should delete with WHERE condition', () {
-        final result = queryBuilder
-            .delete()
-            .where('category = ?', ['Furniture'])
-            .execute();
+        final result = queryBuilder.delete().where('category = ?', [
+          'Furniture',
+        ]).execute();
 
         expect(result, equals(1));
 
         // Verify all furniture is deleted
-        final remaining = db.query('SELECT * FROM products WHERE category = ?', ['Furniture']);
+        final remaining = db.query(
+          'SELECT * FROM products WHERE category = ?',
+          ['Furniture'],
+        );
         expect(remaining, isEmpty);
       });
 
@@ -227,7 +236,10 @@ void main() {
         expect(result, equals(2));
 
         // Verify only Mouse (29.99) remains in Electronics
-        final remaining = db.query('SELECT * FROM products WHERE category = ?', ['Electronics']);
+        final remaining = db.query(
+          'SELECT * FROM products WHERE category = ?',
+          ['Electronics'],
+        );
         expect(remaining.length, equals(1));
         expect(remaining.first['name'], 'Mouse');
       });

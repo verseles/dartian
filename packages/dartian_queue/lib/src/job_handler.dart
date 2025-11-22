@@ -29,7 +29,7 @@ class JobProcessor {
   final int maxRetries;
 
   JobProcessor(this.handler, {int? maxRetries})
-      : maxRetries = maxRetries ?? handler.maxRetries;
+    : maxRetries = maxRetries ?? handler.maxRetries;
 
   /// Process a job with retry logic
   Future<void> processWithRetry(Job job) async {

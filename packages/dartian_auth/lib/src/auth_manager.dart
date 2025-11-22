@@ -89,10 +89,7 @@ class AuthManager {
       }
 
       // Create session
-      final session = Session.create(
-        userData['id'] as String,
-        sessionDuration,
-      );
+      final session = Session.create(userData['id'] as String, sessionDuration);
 
       // Create JWT token
       final jwt = JWT.create(
@@ -122,9 +119,7 @@ class AuthManager {
       // In a real implementation, this would invalidate the session
       // For now, just return success
 
-      return AuthResult.success(
-        message: 'Logout successful',
-      );
+      return AuthResult.success(message: 'Logout successful');
     } catch (e) {
       return AuthResult.error('Logout failed: ${e.toString()}');
     }
@@ -193,9 +188,7 @@ class AuthManager {
 
       // In real implementation, save to database here
 
-      return AuthResult.success(
-        message: 'Password changed successfully',
-      );
+      return AuthResult.success(message: 'Password changed successfully');
     } catch (e) {
       return AuthResult.error('Password change failed: ${e.toString()}');
     }
@@ -236,9 +229,7 @@ class AuthManager {
       // In a real implementation, this would verify the token and update the password
       // For now, we'll just return success
 
-      return AuthResult.success(
-        message: 'Password reset successful',
-      );
+      return AuthResult.success(message: 'Password reset successful');
     } catch (e) {
       return AuthResult.error('Password reset failed: ${e.toString()}');
     }
@@ -307,9 +298,6 @@ class AuthResult {
   }
 
   factory AuthResult.error(String error) {
-    return AuthResult(
-      success: false,
-      message: error,
-    );
+    return AuthResult(success: false, message: error);
   }
 }

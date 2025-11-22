@@ -58,10 +58,11 @@ void main() {
       db = TestDatabase();
 
       // Create
-      final userId = await db.into(db.users).insert(UsersCompanion.insert(
-            name: 'John Doe',
-            email: 'john@example.com',
-          ));
+      final userId = await db
+          .into(db.users)
+          .insert(
+            UsersCompanion.insert(name: 'John Doe', email: 'john@example.com'),
+          );
       expect(userId, greaterThan(0));
 
       // Read
@@ -71,12 +72,13 @@ void main() {
       expect(users.first.email, 'john@example.com');
 
       // Update
-      await (db.update(db.users)..where((u) => u.id.equals(userId)))
-          .write(UsersCompanion(name: Value('Jane Doe')));
+      await (db.update(db.users)..where((u) => u.id.equals(userId))).write(
+        UsersCompanion(name: Value('Jane Doe')),
+      );
 
-      final updatedUser =
-          await (db.select(db.users)..where((u) => u.id.equals(userId)))
-              .getSingle();
+      final updatedUser = await (db.select(
+        db.users,
+      )..where((u) => u.id.equals(userId))).getSingle();
       expect(updatedUser.name, 'Jane Doe');
 
       // Delete
@@ -112,9 +114,9 @@ void main() {
         ]);
       });
 
-      final alice = await (db.select(db.users)
-            ..where((u) => u.name.equals('Alice')))
-          .getSingle();
+      final alice = await (db.select(
+        db.users,
+      )..where((u) => u.name.equals('Alice'))).getSingle();
       expect(alice.name, 'Alice');
       expect(alice.email, 'alice@example.com');
     });
@@ -130,9 +132,9 @@ void main() {
         ]);
       });
 
-      final users = await (db.select(db.users)
-            ..orderBy([(u) => OrderingTerm.asc(u.name)]))
-          .get();
+      final users = await (db.select(
+        db.users,
+      )..orderBy([(u) => OrderingTerm.asc(u.name)])).get();
       expect(users[0].name, 'Alice');
       expect(users[1].name, 'Bob');
       expect(users[2].name, 'Charlie');
@@ -153,9 +155,7 @@ void main() {
       final limited = await (db.select(db.users)..limit(2)).get();
       expect(limited.length, 2);
 
-      final offset = await (db.select(db.users)
-            ..limit(2, offset: 2))
-          .get();
+      final offset = await (db.select(db.users)..limit(2, offset: 2)).get();
       expect(offset.length, 2);
       expect(offset[0].name, 'User 3');
     });
@@ -164,10 +164,11 @@ void main() {
       db = TestDatabase();
 
       // Insert user
-      final userId = await db.into(db.users).insert(UsersCompanion.insert(
-            name: 'John Doe',
-            email: 'john@example.com',
-          ));
+      final userId = await db
+          .into(db.users)
+          .insert(
+            UsersCompanion.insert(name: 'John Doe', email: 'john@example.com'),
+          );
 
       // Insert posts
       await db.batch((batch) {
@@ -204,17 +205,22 @@ void main() {
     test('enforces unique constraints', () async {
       db = TestDatabase();
 
-      await db.into(db.users).insert(UsersCompanion.insert(
-            name: 'John Doe',
-            email: 'john@example.com',
-          ));
+      await db
+          .into(db.users)
+          .insert(
+            UsersCompanion.insert(name: 'John Doe', email: 'john@example.com'),
+          );
 
       // Try to insert duplicate email
       expect(
-        () => db.into(db.users).insert(UsersCompanion.insert(
-              name: 'Jane Doe',
-              email: 'john@example.com',
-            )),
+        () => db
+            .into(db.users)
+            .insert(
+              UsersCompanion.insert(
+                name: 'Jane Doe',
+                email: 'john@example.com',
+              ),
+            ),
         throwsA(anything),
       );
     });
