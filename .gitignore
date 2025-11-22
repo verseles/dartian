@@ -1,0 +1,35 @@
+# Dart/Flutter
+.dart_tool/
+.packages
+build/
+pubspec.lock
+
+# Coverage
+coverage/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Generated files
+*.g.dart
+*.freezed.dart
+*.mocks.dart
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Build outputs
+*.exe
+*.aot
+*.wasm
