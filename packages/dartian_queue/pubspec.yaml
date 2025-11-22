@@ -1,16 +1,22 @@
 name: dartian_queue
-description: Job queue system for Dartian (sync, isolate, Redis)
-version: 0.0.1
+description: Job queue system for Dartian with sync, isolate, and Redis-backed drivers
+version: 1.0.0
+homepage: https://github.com/verseles/dartian
+repository: https://github.com/verseles/dartian/tree/main/packages/dartian_queue
+issue_tracker: https://github.com/verseles/dartian/issues
+topics:
+  - queue
+  - jobs
+  - background
+  - async
 
 environment:
   sdk: ^3.9.4
 
 dependencies:
-  dartian_redis:
-    path: ../dartian_redis
-  dartian_core:
-    path: ../dartian_core
   async: ^2.11.0
+  dartian_core: ^1.0.0
+  dartian_redis: ^1.0.0
 
 dev_dependencies:
   test: ^1.24.0

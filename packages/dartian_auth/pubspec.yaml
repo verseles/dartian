@@ -1,14 +1,20 @@
 name: dartian_auth
-description: Authentication and security for Dartian (session and JWT)
-version: 0.0.1
-publish_to: none
+description: Authentication and security for Dartian with session, JWT, and bcrypt password hashing
+version: 1.0.0
+homepage: https://github.com/verseles/dartian
+repository: https://github.com/verseles/dartian/tree/main/packages/dartian_auth
+issue_tracker: https://github.com/verseles/dartian/issues
+topics:
+  - authentication
+  - jwt
+  - security
+  - bcrypt
 
 environment:
   sdk: ^3.9.4
 
 dependencies:
-  dartian_core:
-    path: ../dartian_core
+  dartian_core: ^1.0.0
   crypto: ^3.0.0
   bcrypt: ^1.1.3
   shelf: ^1.4.1

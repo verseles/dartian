@@ -1,13 +1,21 @@
 name: dartian_router
-description: Dartian router with fluent DSL
-version: 0.0.1
+description: Fluent routing DSL for Dartian with groups, prefixes, and named routes - Built on shelf_router
+version: 1.0.0
+homepage: https://github.com/verseles/dartian
+repository: https://github.com/verseles/dartian/tree/main/packages/dartian_router
+issue_tracker: https://github.com/verseles/dartian/issues
+topics:
+  - router
+  - routing
+  - http
+  - shelf
 
 environment:
   sdk: ^3.9.4
 
 dependencies:
-  shelf_router: ^1.1.4
   shelf: ^1.4.1
+  shelf_router: ^1.1.4
 
 dev_dependencies:
   test: ^1.24.0

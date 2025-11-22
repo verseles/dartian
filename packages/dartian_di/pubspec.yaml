@@ -1,16 +1,24 @@
 name: dartian_di
-description: Dependency injection container for Dartian using get_it with auto-discovery support
-version: 0.0.1
+description: Dependency injection container for Dartian with auto-discovery annotations and cycle detection
+version: 1.0.0
+homepage: https://github.com/verseles/dartian
+repository: https://github.com/verseles/dartian/tree/main/packages/dartian_di
+issue_tracker: https://github.com/verseles/dartian/issues
+topics:
+  - dependency-injection
+  - di
+  - ioc
+  - service-locator
 
 environment:
   sdk: ^3.9.4
 
 dependencies:
   get_it: ^8.0.0
-  # Annotations are part of main package (no code gen dependency for consumers)
+  build: ^2.4.0
+  source_gen: ^1.5.0
+  analyzer: ^6.4.0
 
 dev_dependencies:
   test: ^1.24.0
   build_runner: ^2.4.0
-  source_gen: ^1.5.0
-  analyzer: ^6.4.0

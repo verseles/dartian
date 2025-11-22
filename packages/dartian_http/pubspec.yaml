@@ -1,7 +1,14 @@
 name: dartian_http
-description: Dartian HTTP kernel
-version: 0.0.1
-publish_to: none
+description: HTTP kernel for Dartian with middleware pipeline, CORS, CSRF protection - Built on Shelf
+version: 1.0.0
+homepage: https://github.com/verseles/dartian
+repository: https://github.com/verseles/dartian/tree/main/packages/dartian_http
+issue_tracker: https://github.com/verseles/dartian/issues
+topics:
+  - http
+  - server
+  - middleware
+  - shelf
 
 environment:
   sdk: ^3.9.4
@@ -9,10 +16,8 @@ environment:
 dependencies:
   shelf: ^1.4.1
   crypto: ^3.0.0
-  dartian_i18n:
-    path: ../dartian_i18n
-  dartian_core:
-    path: ../dartian_core
+  dartian_core: ^1.0.0
+  dartian_i18n: ^1.0.0
 
 dev_dependencies:
   test: ^1.24.0

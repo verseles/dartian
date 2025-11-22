@@ -1,6 +1,14 @@
 name: dartian_core
-description: Core utilities and telemetry hooks for Dartian
-version: 0.0.1
+description: Core utilities and telemetry hooks for Dartian - A Laravel-inspired web framework for Dart
+version: 1.0.0
+homepage: https://github.com/verseles/dartian
+repository: https://github.com/verseles/dartian/tree/main/packages/dartian_core
+issue_tracker: https://github.com/verseles/dartian/issues
+topics:
+  - framework
+  - server
+  - backend
+  - web
 
 environment:
   sdk: ^3.9.4

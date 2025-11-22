@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import 'package:dartian_cli/dartian_cli.dart';
+import 'package:dartian_console/dartian_cli.dart';
 
 void main() {
   group('Command Parsing', () {

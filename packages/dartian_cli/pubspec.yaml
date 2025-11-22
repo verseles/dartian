@@ -1,7 +1,14 @@
-name: dartian_cli
-description: Dartian framework CLI
-version: 0.0.1
-publish_to: none
+name: dartian_console
+description: Command-line interface for Dartian framework with code generators and dev server
+version: 1.0.0
+homepage: https://github.com/verseles/dartian
+repository: https://github.com/verseles/dartian/tree/main/packages/dartian_cli
+issue_tracker: https://github.com/verseles/dartian/issues
+topics:
+  - cli
+  - generator
+  - development
+  - framework
 
 environment:
   sdk: ^3.9.4
@@ -11,12 +18,9 @@ dependencies:
   watcher: ^1.1.0
   hotreloader: ^4.3.0
   shelf: ^1.4.1
-  dartian_http:
-    path: ../dartian_http
-  dartian_router:
-    path: ../dartian_router
-  dartian_i18n:
-    path: ../dartian_i18n
+  dartian_http: ^1.0.0
+  dartian_router: ^1.0.0
+  dartian_i18n: ^1.0.0
 
 dev_dependencies:
   test: ^1.24.0

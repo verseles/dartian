@@ -84,31 +84,35 @@ packages:
   dartian_core:
     dependency: transitive
     description:
-      path: "../dartian_core"
-      relative: true
-    source: path
-    version: "0.0.1"
+      name: dartian_core
+      sha256: "174d4b59aa73016b8d68080ff5ec2d868fb7fc1c38b762cf2789b85ec1af8c82"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   dartian_http:
     dependency: "direct main"
     description:
-      path: "../dartian_http"
-      relative: true
-    source: path
-    version: "0.0.1"
+      name: dartian_http
+      sha256: "54e9219011adae7324b23fef8717ba38717eb7670c303429358f907d395b0dae"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   dartian_i18n:
     dependency: "direct main"
     description:
-      path: "../dartian_i18n"
-      relative: true
-    source: path
-    version: "0.0.1"
+      name: dartian_i18n
+      sha256: "92a042a35ca5f3e1c2ff297f9c8a21565361d71c302db9b64cdde8f113ad34bc"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   dartian_router:
     dependency: "direct main"
     description:
-      path: "../dartian_router"
-      relative: true
-    source: path
-    version: "0.0.1"
+      name: dartian_router
+      sha256: "487092cc03923efb1db0dd741ae3ac04224f61c5b59d23d6a1a4afc75954cfb4"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   file:
     dependency: transitive
     description:

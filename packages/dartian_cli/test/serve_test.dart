@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:dartian_cli/src/commands/serve_command.dart';
+import 'package:dartian_console/src/commands/serve_command.dart';
 import 'package:test/test.dart';
 
 void main() {

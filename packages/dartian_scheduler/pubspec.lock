@@ -84,24 +84,27 @@ packages:
   dartian_core:
     dependency: "direct main"
     description:
-      path: "../dartian_core"
-      relative: true
-    source: path
-    version: "0.0.1"
+      name: dartian_core
+      sha256: "174d4b59aa73016b8d68080ff5ec2d868fb7fc1c38b762cf2789b85ec1af8c82"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   dartian_queue:
     dependency: "direct main"
     description:
-      path: "../dartian_queue"
-      relative: true
-    source: path
-    version: "0.0.1"
+      name: dartian_queue
+      sha256: "0df091008e0928f566bd536c1c5c75a90ddbff6e171ee9e8d0be098d3c1519a3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   dartian_redis:
     dependency: transitive
     description:
-      path: "../dartian_redis"
-      relative: true
-    source: path
-    version: "0.0.1"
+      name: dartian_redis
+      sha256: c86b608a6f48c2212b10d7cfb07dbc89e54fa268cfcbb42d8dc70eb9b63ca71e
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   file:
     dependency: transitive
     description:

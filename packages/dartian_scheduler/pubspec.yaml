@@ -1,16 +1,21 @@
 name: dartian_scheduler
-description: Task scheduling for Dartian
-version: 0.0.1
-publish_to: none
+description: Task scheduling for Dartian with cron expressions and timezone support
+version: 1.0.0
+homepage: https://github.com/verseles/dartian
+repository: https://github.com/verseles/dartian/tree/main/packages/dartian_scheduler
+issue_tracker: https://github.com/verseles/dartian/issues
+topics:
+  - scheduler
+  - cron
+  - tasks
+  - background
 
 environment:
   sdk: ^3.9.4
 
 dependencies:
-  dartian_core:
-    path: ../dartian_core
-  dartian_queue:
-    path: ../dartian_queue
+  dartian_core: ^1.0.0
+  dartian_queue: ^1.0.0
 
 dev_dependencies:
   test: ^1.24.0

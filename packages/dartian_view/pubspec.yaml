@@ -1,17 +1,23 @@
 name: dartian_view
-version: 0.0.1
-description: Dartian SSR views
-publish_to: none
+description: Server-side rendering (SSR) views for Dartian using Mustache templates with i18n support
+version: 1.0.0
+homepage: https://github.com/verseles/dartian
+repository: https://github.com/verseles/dartian/tree/main/packages/dartian_view
+issue_tracker: https://github.com/verseles/dartian/issues
+topics:
+  - template
+  - mustache
+  - ssr
+  - views
 
 environment:
   sdk: ^3.9.4
 
 dependencies:
   mustache_template: ^2.0.0
-  dartian_core:
-    path: ../dartian_core
-  dartian_i18n:
-    path: ../dartian_i18n
+  shelf: ^1.4.1
+  dartian_core: ^1.0.0
+  dartian_i18n: ^1.0.0
 
 dev_dependencies:
   test: ^1.24.0

@@ -1,6 +1,14 @@
 name: dartian_orm
-description: ORM for Dartian using Drift
-version: 0.0.1
+description: Drift-based ORM for Dartian with relationships, migrations, and query builder - SQLite and PostgreSQL
+version: 1.0.0
+homepage: https://github.com/verseles/dartian
+repository: https://github.com/verseles/dartian/tree/main/packages/dartian_orm
+issue_tracker: https://github.com/verseles/dartian/issues
+topics:
+  - orm
+  - database
+  - drift
+  - sqlite
 
 environment:
   sdk: ^3.9.4

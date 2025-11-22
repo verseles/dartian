@@ -1,0 +1,30 @@
+name: dartian
+description: A Laravel-inspired web framework for Dart - HTTP, routing, DI, ORM, auth, queues, and more
+version: 1.0.0
+homepage: https://github.com/verseles/dartian
+repository: https://github.com/verseles/dartian
+issue_tracker: https://github.com/verseles/dartian/issues
+topics:
+  - framework
+  - server
+  - backend
+  - web
+
+environment:
+  sdk: ^3.9.4
+
+dependencies:
+  dartian_core: ^1.0.0
+  dartian_http: ^1.0.0
+  dartian_router: ^1.0.0
+  dartian_di: ^1.0.0
+  dartian_orm: ^1.0.0
+  dartian_redis: ^1.0.0
+  dartian_queue: ^1.0.0
+  dartian_scheduler: ^1.0.0
+  dartian_view: ^1.0.0
+  dartian_i18n: ^1.0.0
+  dartian_auth: ^1.0.0
+
+dev_dependencies:
+  test: ^1.24.0

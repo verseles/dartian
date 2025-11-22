@@ -1,4 +1,4 @@
-import 'package:dartian_cli/dartian_cli.dart';
+import 'package:dartian_console/dartian_cli.dart';
 import 'package:test/test.dart';
 
 void main() {

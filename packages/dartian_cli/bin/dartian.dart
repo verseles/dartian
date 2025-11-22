@@ -1,12 +1,12 @@
-import 'package:dartian_cli/dartian_cli.dart';
-import 'package:dartian_cli/src/commands/serve_command.dart';
-import 'package:dartian_cli/src/commands/new_command.dart';
-import 'package:dartian_cli/src/commands/queue_work_command.dart';
-import 'package:dartian_cli/src/commands/schedule_run_command.dart';
-import 'package:dartian_cli/src/commands/build_command.dart';
-import 'package:dartian_cli/src/commands/migrate_command.dart';
-import 'package:dartian_cli/src/commands/migrate_rollback_command.dart';
-import 'package:dartian_cli/src/commands/test_command.dart';
+import 'package:dartian_console/dartian_cli.dart';
+import 'package:dartian_console/src/commands/serve_command.dart';
+import 'package:dartian_console/src/commands/new_command.dart';
+import 'package:dartian_console/src/commands/queue_work_command.dart';
+import 'package:dartian_console/src/commands/schedule_run_command.dart';
+import 'package:dartian_console/src/commands/build_command.dart';
+import 'package:dartian_console/src/commands/migrate_command.dart';
+import 'package:dartian_console/src/commands/migrate_rollback_command.dart';
+import 'package:dartian_console/src/commands/test_command.dart';
 
 void main(List<String> arguments) async {
   // Check if async commands are being used

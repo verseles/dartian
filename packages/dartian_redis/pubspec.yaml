@@ -1,14 +1,21 @@
 name: dartian_redis
-description: Redis cache and pub/sub for Dartian
-version: 0.0.1
+description: Redis client for Dartian with caching, pub/sub, and distributed locks support
+version: 1.0.0
+homepage: https://github.com/verseles/dartian
+repository: https://github.com/verseles/dartian/tree/main/packages/dartian_redis
+issue_tracker: https://github.com/verseles/dartian/issues
+topics:
+  - redis
+  - cache
+  - pubsub
+  - distributed
 
 environment:
   sdk: ^3.9.4
 
 dependencies:
   redis: ^4.0.0
-  dartian_core:
-    path: ../dartian_core
+  dartian_core: ^1.0.0
 
 dev_dependencies:
   test: ^1.24.0
