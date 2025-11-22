@@ -33,3 +33,8 @@ Thumbs.db
 *.exe
 *.aot
 *.wasm
+
+# Test databases
+database/
+*.db
+*.sqlite

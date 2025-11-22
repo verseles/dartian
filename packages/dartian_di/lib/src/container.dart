@@ -68,4 +68,22 @@ class DIContainer {
   Future<void> ready() {
     return _getIt.allReady();
   }
+
+  /// Register a lazy singleton service (created on first access)
+  /// [T] - Service type
+  /// [factory] - Factory function to create the service
+  /// [instanceName] - Optional name for the service instance
+  void registerLazySingleton<T extends Object>(
+    T Function() factory, {
+    String? instanceName,
+  }) {
+    _getIt.registerLazySingleton<T>(factory, instanceName: instanceName);
+  }
+
+  /// Unregister a service
+  /// [T] - Service type
+  /// [instanceName] - Optional name for the service instance
+  void unregister<T extends Object>({String? instanceName}) {
+    _getIt.unregister<T>(instanceName: instanceName);
+  }
 }

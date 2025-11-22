@@ -1181,15 +1181,55 @@ gh run view            # Monitorar progresso
 
 ---
 
-### Gap #9: DI Auto-discovery (Fase 3.2)
+### Gap #9: DI Auto-discovery (Fase 3.2) ✅ COMPLETO
 
 **Pacote:** dartian_di
-**Tempo:** 1 dia
+**Status:** ✅ COMPLETO (sessão 2025-11-22)
+**Tempo gasto:** ~2 horas
 
-**Tarefas:**
-- Anotações @Service() e @Singleton()
-- Builder com source_gen
-- Geração de generated_providers.dart
+**Implementação realizada:**
+
+1. ✅ **Anotações criadas** (`lib/src/annotations.dart`):
+   - `@Singleton()` - Registra serviço como singleton
+   - `@Service()` - Registra serviço como factory (nova instância)
+   - `@LazySingleton()` - Singleton criado no primeiro acesso
+   - `@Named('name')` - Injeta dependência por nome
+   - `@Module()` - Agrupa registros de serviços
+   - `@Provides()` - Marca método como provider em módulo
+
+2. ✅ **Container atualizado** (`lib/src/container.dart`):
+   - `registerLazySingleton<T>()` - Registra singleton lazy
+   - `unregister<T>()` - Remove serviço do container
+
+3. ✅ **Code generation** (build_runner + source_gen):
+   - `lib/builder.dart` - Factory do builder
+   - `lib/src/generator.dart` - Generators para cada anotação
+   - `build.yaml` - Configuração do builder
+
+4. ✅ **Testes adicionados** (`test/annotations_test.dart`):
+   - 22 novos testes (total: 41 testes)
+   - Testa todas as anotações
+   - Testa novos métodos do container
+   - Simula padrão de código gerado
+
+**Uso:**
+```dart
+// Anotar classes
+@Singleton()
+class DatabaseService { }
+
+@Service()
+class RequestHandler { }
+
+@LazySingleton()
+class ExpensiveService { }
+
+@Singleton(name: 'primary')
+class PrimaryDatabase { }
+
+// Rodar code generation
+// dart run build_runner build
+```
 
 ---
 
@@ -1241,7 +1281,7 @@ Execute nesta ordem para máximo impacto:
 ### Sprint 5: Polimento (2-3 dias) - 🟡 EM PROGRESSO
 5. ✅ **Gap #7**: CI/CD (30 min) 🟢 COMPLETO
 6. ⏳ **Gap #8**: Documentação (1-2 dias) 🟢
-7. ⏳ **Gap #9**: DI auto-discovery (1 dia) 🟢
+7. ✅ **Gap #9**: DI auto-discovery (~2h) 🟢 COMPLETO
 8. ⏳ **Gap #10**: Cycle detection (4-6h) 🟢
 
 **Tempo Total Estimado:** 15-20 dias de trabalho

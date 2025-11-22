@@ -1,0 +1,18 @@
+targets:
+  $default:
+    builders:
+      dartian_di|dartian_di:
+        enabled: true
+        generate_for:
+          include:
+            - lib/**
+            - bin/**
+
+builders:
+  dartian_di:
+    import: "package:dartian_di/builder.dart"
+    builder_factories: ["dartianDiBuilder"]
+    build_extensions: {".dart": [".dartian_di.g.part"]}
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]
