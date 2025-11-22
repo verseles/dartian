@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import 'package:dartian_console/dartian_cli.dart';
+import 'package:dartian_console/dartian_console.dart';
 import 'dart:io';
 
 void main() {
@@ -13,10 +13,19 @@ void main() {
     });
 
     tearDown(() {
-      // Clean up
-      final langDir = Directory('resources/lang');
-      if (langDir.existsSync()) {
-        langDir.deleteSync(recursive: true);
+      // Clean up resources/lang if it exists
+      try {
+        final langDir = Directory('resources/lang');
+        if (langDir.existsSync()) {
+          langDir.deleteSync(recursive: true);
+        }
+        // Also clean up resources directory if empty
+        final resourcesDir = Directory('resources');
+        if (resourcesDir.existsSync() && resourcesDir.listSync().isEmpty) {
+          resourcesDir.deleteSync();
+        }
+      } catch (_) {
+        // Ignore cleanup errors
       }
     });
 

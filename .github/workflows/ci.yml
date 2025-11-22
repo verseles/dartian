@@ -3,119 +3,37 @@ name: Dartian CI
 on:
   push:
     branches: [main]
+    tags:
+      - 'v*'
   pull_request:
     branches: [main]
 
 jobs:
+  # Run tests for each package in parallel using matrix
   test:
-    name: Test on Dart ${{ matrix.dart-version }}
+    name: Test ${{ matrix.package }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        dart-version: ['3.9.4', 'stable']
+        package:
+          - dartian_core
+          - dartian_di
+          - dartian_router
+          - dartian_http
+          - dartian_auth
+          - dartian_i18n
+          - dartian_view
+          - dartian_redis
+          - dartian_queue
+          - dartian_scheduler
+          - dartian_orm
+          - dartian_cli
+          - dartian
+        include:
+          - package: dartian_orm
+            needs_build_runner: true
 
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: dart-lang/setup-dart@v1
-        with:
-          sdk: ${{ matrix.dart-version }}
-
-      - name: Print Dart version
-        run: dart --version
-
-      - name: Install coverage tool
-        run: dart pub global activate coverage
-
-      - name: Test dartian_core
-        working-directory: packages/dartian_core
-        run: |
-          dart pub get
-          dart analyze lib/ || true
-          dart test
-
-      - name: Test dartian_di
-        working-directory: packages/dartian_di
-        run: |
-          dart pub get
-          dart analyze lib/ || true
-          dart test
-
-      - name: Test dartian_router
-        working-directory: packages/dartian_router
-        run: |
-          dart pub get
-          dart analyze lib/ || true
-          dart test
-
-      - name: Test dartian_http
-        working-directory: packages/dartian_http
-        run: |
-          dart pub get
-          dart analyze lib/ || true
-          dart test
-
-      - name: Test dartian_auth
-        working-directory: packages/dartian_auth
-        run: |
-          dart pub get
-          dart analyze lib/ || true
-          dart test
-
-      - name: Test dartian_i18n
-        working-directory: packages/dartian_i18n
-        run: |
-          dart pub get
-          dart analyze lib/ || true
-          dart test
-
-      - name: Test dartian_view
-        working-directory: packages/dartian_view
-        run: |
-          dart pub get
-          dart analyze lib/ || true
-          dart test
-
-      - name: Test dartian_redis
-        working-directory: packages/dartian_redis
-        run: |
-          dart pub get
-          dart analyze lib/ || true
-          dart test
-
-      - name: Test dartian_queue
-        working-directory: packages/dartian_queue
-        run: |
-          dart pub get
-          dart analyze lib/ || true
-          dart test
-
-      - name: Test dartian_scheduler
-        working-directory: packages/dartian_scheduler
-        run: |
-          dart pub get
-          dart analyze lib/ || true
-          dart test
-
-      - name: Test dartian_orm
-        working-directory: packages/dartian_orm
-        run: |
-          dart pub get
-          dart run build_runner build --delete-conflicting-outputs
-          dart analyze lib/ || true
-          dart test
-
-      - name: Test dartian_cli
-        working-directory: packages/dartian_cli
-        run: |
-          dart pub get
-          dart analyze lib/ || true
-          dart test
-
-  analyze:
-    name: Static Analysis
-    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -123,18 +41,67 @@ jobs:
         with:
           sdk: stable
 
-      - name: Analyze all packages
-        run: |
-          for dir in packages/dartian_*/; do
-            echo "Analyzing $dir..."
-            cd "$dir"
-            dart pub get
-            dart analyze --fatal-infos || true
-            cd ../..
-          done
+      - name: Install dependencies
+        working-directory: packages/${{ matrix.package }}
+        run: dart pub get
 
+      - name: Run build_runner (if needed)
+        if: matrix.needs_build_runner
+        working-directory: packages/${{ matrix.package }}
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Run tests
+        working-directory: packages/${{ matrix.package }}
+        run: dart test
+
+  # Run static analysis for all packages in parallel
+  analyze:
+    name: Analyze ${{ matrix.package }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - dartian_core
+          - dartian_di
+          - dartian_router
+          - dartian_http
+          - dartian_auth
+          - dartian_i18n
+          - dartian_view
+          - dartian_redis
+          - dartian_queue
+          - dartian_scheduler
+          - dartian_orm
+          - dartian_cli
+          - dartian
+        include:
+          - package: dartian_orm
+            needs_build_runner: true
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+
+      - name: Install dependencies
+        working-directory: packages/${{ matrix.package }}
+        run: dart pub get
+
+      - name: Run build_runner (if needed)
+        if: matrix.needs_build_runner
+        working-directory: packages/${{ matrix.package }}
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Analyze
+        working-directory: packages/${{ matrix.package }}
+        run: dart analyze lib/
+
+  # Check code formatting
   format:
-    name: Code Formatting
+    name: Check Format
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -144,10 +111,55 @@ jobs:
           sdk: stable
 
       - name: Check formatting
-        run: |
-          for dir in packages/dartian_*/; do
-            echo "Checking format in $dir..."
-            cd "$dir"
-            dart format --set-exit-if-changed lib/ test/ || echo "Format issues in $dir"
-            cd ../..
-          done
+        run: dart format --set-exit-if-changed packages/
+
+  # Publish packages to pub.dev (only on tags)
+  publish:
+    name: Publish ${{ matrix.package }}
+    runs-on: ubuntu-latest
+    needs: [test, analyze, format]
+    if: startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      id-token: write  # Required for OIDC authentication
+    strategy:
+      fail-fast: false
+      max-parallel: 1  # Publish sequentially to avoid rate limits
+      matrix:
+        package:
+          # Order matters: dependencies first
+          - dartian_core
+          - dartian_di
+          - dartian_router
+          - dartian_i18n
+          - dartian_redis
+          - dartian_orm
+          - dartian_view
+          - dartian_http
+          - dartian_queue
+          - dartian_scheduler
+          - dartian_auth
+          - dartian_cli
+          - dartian
+        include:
+          - package: dartian_orm
+            needs_build_runner: true
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+
+      - name: Install dependencies
+        working-directory: packages/${{ matrix.package }}
+        run: dart pub get
+
+      - name: Run build_runner (if needed)
+        if: matrix.needs_build_runner
+        working-directory: packages/${{ matrix.package }}
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Publish to pub.dev
+        working-directory: packages/${{ matrix.package }}
+        run: dart pub publish --force
