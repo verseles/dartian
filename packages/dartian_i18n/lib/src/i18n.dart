@@ -16,6 +16,8 @@ extension I18nExtensions on String {
 /// Extension for I18n on various objects
 extension I18nHelper on Translator {
   /// Short alias for trans - available for use
+  /// This is a public API method, ignore unused warning
+  // ignore: unused_element
   String __(String key, {Map<String, dynamic>? params, String? locale}) {
     return trans(key, params: params, locale: locale);
   }
