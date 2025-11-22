@@ -831,11 +831,11 @@ dart analyze                    # ✅ PASSOU
 - 🔴 dartian_cli: 54.1% (172/318 linhas)
   - **Bloqueador**: serve_command.dart (0% - 105 linhas, teste skipped "requires VM service")
   - dartian_cli.dart principal: 80.8% (172/213 linhas)
-- 🔴 dartian_redis: 63.0% (46/73 linhas)
+- 🟡 dartian_redis: 64.4% (47/73 linhas) ✨ MELHORIA +1.4%
   - **Causa**: Testes usam FakeRedis, não RedisClient real
   - cache.dart: 100% ✅
-  - pubsub.dart: 92.3% 🟡
-  - redis_client.dart: 16.1% (5/31 linhas) 🔴
+  - pubsub.dart: **100%** ✅ (era 92.3%) - **COMPLETO** (sessão 2025-11-21 cont. #8)
+  - redis_client.dart: 16.1% (5/31 linhas) 🔴 - Requer conexão real
 
 **⚠️ Pacotes Sem Coverage (1/13 - 8% do framework):**
 - ⚠️ dartian_wasm: Experimental, sem testes ainda
@@ -1387,8 +1387,28 @@ O projeto estará **COMPLETO** quando:
   - ✅ 94 testes dartian_orm + 44 testes dartian_cli passando
   - 📝 Commit: "refactor: Remove legacy raw SQL migration system, consolidate to DriftMigration only"
 
+**Gap #6 Progresso (sessão 2025-11-21 continuação #8):**
+  - ✅ dartian_redis: 63% → 64.4% (+1.4%)
+    - pubsub.dart: 92.3% → **100%** ✅
+    - +19 testes para PubSubMessage e PubSubManager
+    - cache.dart: mantém 100%
+    - redis_client.dart: mantém 16.1% (bloqueador - requer conexão real)
+  - 🟡 dartian_cli: 54.1% (mantido)
+    - +28 testes para geradores (make:controller, make:model, etc.)
+    - dartian_cli.dart: 80.8% (estável)
+    - serve_command.dart: 0% (bloqueador - requer VM service)
+    - Testes cobrem pluralização, snake_case, duplicatas
+  - 📝 Total: +47 novos testes nesta sessão
+
+**Bloqueadores Estruturais Aceitos:**
+  - serve_command.dart (105 linhas) - Requer VM Service para hot reload
+  - redis_client.dart (26 linhas) - Requer conexão Redis real
+  - relationships.dart (42 linhas) - Classes abstratas genéricas
+  - drift_database.g.dart (4 linhas) - Código gerado por build_runner
+  - **Total**: ~177 linhas não testáveis por design
+
 **Gaps Críticos Restantes:** NENHUM! 🎉
-**Gaps Não-Críticos Restantes:** Gap #6 (3/13 pacotes com bloqueadores), Gap #7-10 (Polimento)
-**Estimativa de Conclusão:** 2-5 dias úteis (apenas polimento e decisões sobre bloqueadores)
+**Gaps Não-Críticos Restantes:** Gap #6 (bloqueadores aceitos), Gap #7-10 (Polimento)
+**Estimativa de Conclusão:** 2-5 dias úteis (apenas polimento)
 
 **Para continuar, basta dizer:** "Continue o PLAN.md de onde parou"
