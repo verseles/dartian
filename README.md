@@ -3,7 +3,7 @@
 A Laravel-inspired web framework for Dart, designed for high-performance production deployments.
 
 [![CI](https://github.com/verseles/dartian/actions/workflows/ci.yml/badge.svg)](https://github.com/verseles/dartian/actions/workflows/ci.yml)
-[![pub package](https://img.shields.io/pub/v/dartian_core.svg)](https://pub.dev/packages/dartian_core)
+[![pub package](https://img.shields.io/pub/v/dartian.svg)](https://pub.dev/packages/dartian)
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 
 ## Features
@@ -24,10 +24,10 @@ A Laravel-inspired web framework for Dart, designed for high-performance product
 
 ### Installation
 
-**Option 1: Single import (umbrella package)**
+**Option 1: Single import (umbrella package)** - Recommended
 ```yaml
 dependencies:
-  dartian: ^1.0.0  # Coming soon - use individual packages for now
+  dartian: ^1.0.0
 ```
 
 **Option 2: Individual packages**
@@ -236,6 +236,7 @@ All packages are available on [pub.dev](https://pub.dev/publishers/verseles.com/
 
 | Package | Version | Description |
 |---------|---------|-------------|
+| [dartian](https://pub.dev/packages/dartian) | [![pub](https://img.shields.io/pub/v/dartian.svg)](https://pub.dev/packages/dartian) | **Umbrella package** - includes all components |
 | [dartian_core](https://pub.dev/packages/dartian_core) | [![pub](https://img.shields.io/pub/v/dartian_core.svg)](https://pub.dev/packages/dartian_core) | Core utilities and telemetry |
 | [dartian_http](https://pub.dev/packages/dartian_http) | [![pub](https://img.shields.io/pub/v/dartian_http.svg)](https://pub.dev/packages/dartian_http) | HTTP kernel with Shelf integration |
 | [dartian_router](https://pub.dev/packages/dartian_router) | [![pub](https://img.shields.io/pub/v/dartian_router.svg)](https://pub.dev/packages/dartian_router) | Fluent routing DSL |

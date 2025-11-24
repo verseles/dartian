@@ -1,5 +1,8 @@
 # Dartian
 
+[![pub package](https://img.shields.io/pub/v/dartian.svg)](https://pub.dev/packages/dartian)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+
 A Laravel-inspired web framework for Dart - HTTP, routing, DI, ORM, auth, queues, and more.
 
 ## Features

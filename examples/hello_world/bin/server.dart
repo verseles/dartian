@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:dartian_di/dartian_di.dart';
-import 'package:dartian_http/dartian_http.dart';
-import 'package:dartian_router/dartian_router.dart';
+import 'package:dartian/di.dart';
+import 'package:dartian/http.dart';
+import 'package:dartian/router.dart';
 import 'package:hello_world/routes.dart';
 import 'package:hello_world/services.dart';
 
