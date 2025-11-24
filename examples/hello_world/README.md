@@ -85,7 +85,9 @@ router.get('/json', (request) {
 
 ## Next Steps
 
-- Add middleware for logging or authentication
-- Connect to a database with `dartian_orm`
-- Add caching with `dartian_redis`
-- Implement background jobs with `dartian_queue`
+This example uses the `dartian` umbrella package which includes all components. To add more features:
+
+- Add middleware for logging or authentication (`import 'package:dartian/http.dart'`)
+- Connect to a database with ORM (`import 'package:dartian/orm.dart'`)
+- Add caching with Redis (`import 'package:dartian/redis.dart'`)
+- Implement background jobs (`import 'package:dartian/queue.dart'`)

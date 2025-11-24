@@ -6,14 +6,7 @@ environment:
   sdk: ^3.9.4
 
 dependencies:
-  dartian_http:
-    path: ../../packages/dartian_http
-  dartian_router:
-    path: ../../packages/dartian_router
-  dartian_di:
-    path: ../../packages/dartian_di
-  dartian_view:
-    path: ../../packages/dartian_view
+  dartian: ^1.0.0
 
 dev_dependencies:
   test: ^1.24.0

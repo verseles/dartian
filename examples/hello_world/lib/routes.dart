@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:dartian_di/dartian_di.dart';
-import 'package:dartian_router/dartian_router.dart';
+import 'package:dartian/di.dart';
+import 'package:dartian/router.dart';
 import 'package:shelf/shelf.dart';
 
 import 'services.dart';
