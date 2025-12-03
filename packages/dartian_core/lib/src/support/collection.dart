@@ -51,7 +51,9 @@ class Collection<T> extends Iterable<T> {
 
     // Simple implementation
     if (key == null) {
-      return _items.reduce((a, b) => (a as Comparable).compareTo(b) < 0 ? a : b);
+      return _items.reduce(
+        (a, b) => (a as Comparable).compareTo(b) < 0 ? a : b,
+      );
     }
 
     return _items.reduce((a, b) {
@@ -66,7 +68,9 @@ class Collection<T> extends Iterable<T> {
     if (_items.isEmpty) return null;
 
     if (key == null) {
-      return _items.reduce((a, b) => (a as Comparable).compareTo(b) > 0 ? a : b);
+      return _items.reduce(
+        (a, b) => (a as Comparable).compareTo(b) > 0 ? a : b,
+      );
     }
 
     return _items.reduce((a, b) {
@@ -135,15 +139,17 @@ class Collection<T> extends Iterable<T> {
   /// Filter the collection.
   Collection<T> filter([bool Function(T)? callback]) {
     if (callback == null) {
-      return Collection(_items.where((e) {
-        if (e == null) return false;
-        if (e is bool) return e;
-        if (e is String) return e.isNotEmpty;
-        if (e is num) return e != 0;
-        if (e is Iterable) return e.isNotEmpty;
-        if (e is Map) return e.isNotEmpty;
-        return true;
-      }));
+      return Collection(
+        _items.where((e) {
+          if (e == null) return false;
+          if (e is bool) return e;
+          if (e is String) return e.isNotEmpty;
+          if (e is num) return e != 0;
+          if (e is Iterable) return e.isNotEmpty;
+          if (e is Map) return e.isNotEmpty;
+          return true;
+        }),
+      );
     }
     return Collection(_items.where(callback));
   }
@@ -174,10 +180,10 @@ class Collection<T> extends Iterable<T> {
     if (this is Collection<Map>) {
       for (final item in _items) {
         if ((item as Map).containsKey(key)) {
-           // This logic is flawed for Collection<Map>.
-           // Laravel's get() on a collection usually works if the collection IS a map (associative array).
-           // But here Collection IS a List.
-           // So get() usually means get by index?
+          // This logic is flawed for Collection<Map>.
+          // Laravel's get() on a collection usually works if the collection IS a map (associative array).
+          // But here Collection IS a List.
+          // So get() usually means get by index?
         }
       }
     }
@@ -211,7 +217,9 @@ class Collection<T> extends Iterable<T> {
     }
 
     // Convert values to Collections
-    final mapped = results.entries.map((e) => MapEntry(e.key, Collection(e.value)));
+    final mapped = results.entries.map(
+      (e) => MapEntry(e.key, Collection(e.value)),
+    );
     return Collection(mapped);
   }
 
@@ -348,7 +356,9 @@ class Collection<T> extends Iterable<T> {
     if (length == null) {
       return Collection(_items.sublist(start));
     }
-    return Collection(_items.sublist(start, math.min(start + length, _items.length)));
+    return Collection(
+      _items.sublist(start, math.min(start + length, _items.length)),
+    );
   }
 
   /// Sort through each item with a callback.
@@ -437,7 +447,11 @@ class Collection<T> extends Iterable<T> {
   }
 
   /// Apply the callback if the value is truthy.
-  Collection<T> when(bool value, void Function(Collection<T>) callback, [void Function(Collection<T>)? defaultCallback]) {
+  Collection<T> when(
+    bool value,
+    void Function(Collection<T>) callback, [
+    void Function(Collection<T>)? defaultCallback,
+  ]) {
     if (value) {
       callback(this);
     } else if (defaultCallback != null) {

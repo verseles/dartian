@@ -78,19 +78,33 @@ void main() {
     test('uuid', () {
       final uuid = Str.uuid();
       expect(uuid.length, 36);
-      expect(RegExp(r'^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$').hasMatch(uuid), isTrue);
+      expect(
+        RegExp(
+          r'^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$',
+        ).hasMatch(uuid),
+        isTrue,
+      );
     });
 
     test('replaceArray', () {
-      expect(Str.replaceArray('Hello ? ?', '?', ['World', 'Universe']), 'Hello World Universe');
+      expect(
+        Str.replaceArray('Hello ? ?', '?', ['World', 'Universe']),
+        'Hello World Universe',
+      );
     });
 
     test('replaceFirst', () {
-      expect(Str.replaceFirst('the', 'a', 'the quick brown fox the'), 'a quick brown fox the');
+      expect(
+        Str.replaceFirst('the', 'a', 'the quick brown fox the'),
+        'a quick brown fox the',
+      );
     });
 
     test('replaceLast', () {
-      expect(Str.replaceLast('the', 'a', 'the quick brown fox the'), 'the quick brown fox a');
+      expect(
+        Str.replaceLast('the', 'a', 'the quick brown fox the'),
+        'the quick brown fox a',
+      );
     });
 
     test('before', () {

@@ -9,10 +9,13 @@ void main() {
 
     test('avg', () {
       expect(collect([1, 2, 3, 4]).avg(), 2.5);
-      expect(collect([
-        {'id': 1, 'price': 100},
-        {'id': 2, 'price': 200}
-      ]).avg('price'), 150);
+      expect(
+        collect([
+          {'id': 1, 'price': 100},
+          {'id': 2, 'price': 200},
+        ]).avg('price'),
+        150,
+      );
     });
 
     test('chunk', () {
@@ -23,7 +26,10 @@ void main() {
     });
 
     test('collapse', () {
-      final collection = collect([[1, 2], [3, 4]]);
+      final collection = collect([
+        [1, 2],
+        [3, 4],
+      ]);
       expect(collection.collapse().all(), [1, 2, 3, 4]);
     });
 
@@ -48,7 +54,14 @@ void main() {
     });
 
     test('flatten', () {
-      final collection = collect([1, [2, 3], [4, [5, 6]]]);
+      final collection = collect([
+        1,
+        [2, 3],
+        [
+          4,
+          [5, 6],
+        ],
+      ]);
       expect(collection.flatten().all(), [1, 2, 3, 4, 5, 6]);
     });
 
@@ -116,8 +129,8 @@ void main() {
     });
 
     test('reduce', () {
-       final collection = collect([1, 2, 3]);
-       expect(collection.reduceCarry(0, (curr, next) => curr + next), 6);
+      final collection = collect([1, 2, 3]);
+      expect(collection.reduceCarry(0, (curr, next) => curr + next), 6);
     });
 
     test('reverse', () {

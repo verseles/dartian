@@ -63,7 +63,11 @@ class Arr {
   }
 
   /// Return the first element in an array passing a given truth test.
-  static T? first<T>(Iterable<T> array, [bool Function(T)? callback, T? defaultValue]) {
+  static T? first<T>(
+    Iterable<T> array, [
+    bool Function(T)? callback,
+    T? defaultValue,
+  ]) {
     if (callback == null) {
       if (array.isEmpty) return defaultValue;
       return array.first;
@@ -79,7 +83,11 @@ class Arr {
   }
 
   /// Return the last element in an array passing a given truth test.
-  static T? last<T>(Iterable<T> array, [bool Function(T)? callback, T? defaultValue]) {
+  static T? last<T>(
+    Iterable<T> array, [
+    bool Function(T)? callback,
+    T? defaultValue,
+  ]) {
     if (callback == null) {
       if (array.isEmpty) return defaultValue;
       return array.last;
@@ -116,7 +124,9 @@ class Arr {
       dynamic current = target;
 
       for (final segment in keys) {
-        if (accessible(current) && current is Map && current.containsKey(segment)) {
+        if (accessible(current) &&
+            current is Map &&
+            current.containsKey(segment)) {
           current = current[segment];
         } else {
           return defaultValue;
@@ -145,7 +155,9 @@ class Arr {
       bool found = true;
 
       for (final segment in segments) {
-        if (accessible(current) && current is Map && current.containsKey(segment)) {
+        if (accessible(current) &&
+            current is Map &&
+            current.containsKey(segment)) {
           current = current[segment];
         } else {
           found = false;
@@ -212,7 +224,11 @@ class Arr {
   }
 
   // Pluck returning a Map
-  static Map<dynamic, dynamic> pluckMap(Iterable array, String value, String key) {
+  static Map<dynamic, dynamic> pluckMap(
+    Iterable array,
+    String value,
+    String key,
+  ) {
     final results = <dynamic, dynamic>{};
 
     for (final item in array) {

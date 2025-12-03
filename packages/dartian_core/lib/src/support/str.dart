@@ -34,8 +34,10 @@ class Str {
     }
 
     var result = value.replaceAllMapped(RegExp(r'\s+'), (match) => '');
-    result = result.replaceAllMapped(RegExp(r'(.)(?=[A-Z])'),
-        (match) => '${match.group(1)}$delimiter');
+    result = result.replaceAllMapped(
+      RegExp(r'(.)(?=[A-Z])'),
+      (match) => '${match.group(1)}$delimiter',
+    );
 
     return _snakeCache[key] = result.toLowerCase();
   }
@@ -86,8 +88,9 @@ class Str {
 
   /// Limit the number of words in a string.
   static String words(String value, [int words = 100, String end = '...']) {
-    final matches = RegExp(r'^\s*(?:\S+\s*){1,' + words.toString() + '}')
-        .firstMatch(value);
+    final matches = RegExp(
+      r'^\s*(?:\S+\s*){1,' + words.toString() + '}',
+    ).firstMatch(value);
 
     if (matches == null || matches.group(0)!.length == value.length) {
       return value;
@@ -101,8 +104,10 @@ class Str {
     const chars =
         'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     final rnd = Random.secure();
-    return List.generate(length, (index) => chars[rnd.nextInt(chars.length)])
-        .join();
+    return List.generate(
+      length,
+      (index) => chars[rnd.nextInt(chars.length)],
+    ).join();
   }
 
   /// Generate a UUID (version 4).
@@ -125,14 +130,14 @@ class Str {
 
     // Transliterate simple accents (very basic version)
     slug = slug
-      .replaceAll(RegExp(r'[áàâäãå]'), 'a')
-      .replaceAll(RegExp(r'[éèêë]'), 'e')
-      .replaceAll(RegExp(r'[íìîï]'), 'i')
-      .replaceAll(RegExp(r'[óòôöõ]'), 'o')
-      .replaceAll(RegExp(r'[úùûü]'), 'u')
-      .replaceAll(RegExp(r'[ýÿ]'), 'y')
-      .replaceAll(RegExp(r'[ñ]'), 'n')
-      .replaceAll(RegExp(r'[ç]'), 'c');
+        .replaceAll(RegExp(r'[áàâäãå]'), 'a')
+        .replaceAll(RegExp(r'[éèêë]'), 'e')
+        .replaceAll(RegExp(r'[íìîï]'), 'i')
+        .replaceAll(RegExp(r'[óòôöõ]'), 'o')
+        .replaceAll(RegExp(r'[úùûü]'), 'u')
+        .replaceAll(RegExp(r'[ýÿ]'), 'y')
+        .replaceAll(RegExp(r'[ñ]'), 'n')
+        .replaceAll(RegExp(r'[ç]'), 'c');
 
     // Remove all non-word characters
     slug = slug.replaceAll(RegExp(r'[^a-z0-9\s-]'), '');
@@ -217,7 +222,11 @@ class Str {
   }
 
   /// Replace a given value in the string sequentially with an array.
-  static String replaceArray(String subject, String search, Iterable<String> replace) {
+  static String replaceArray(
+    String subject,
+    String search,
+    Iterable<String> replace,
+  ) {
     var result = subject;
     for (final value in replace) {
       result = result.replaceFirst(search, value);
@@ -234,7 +243,9 @@ class Str {
   static String replaceLast(String search, String replace, String subject) {
     final index = subject.lastIndexOf(search);
     if (index == -1) return subject;
-    return subject.substring(0, index) + replace + subject.substring(index + search.length);
+    return subject.substring(0, index) +
+        replace +
+        subject.substring(index + search.length);
   }
 
   /// Get the portion of a string before the first occurrence of a given value.

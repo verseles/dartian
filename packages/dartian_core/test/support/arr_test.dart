@@ -16,7 +16,13 @@ void main() {
     });
 
     test('collapse', () {
-      expect(Arr.collapse([[1, 2], [3, 4]]), [1, 2, 3, 4]);
+      expect(
+        Arr.collapse([
+          [1, 2],
+          [3, 4],
+        ]),
+        [1, 2, 3, 4],
+      );
     });
 
     test('divide', () {
@@ -26,13 +32,21 @@ void main() {
     });
 
     test('dot', () {
-      final result = Arr.dot({'products': {'desk': {'price': 100}}});
+      final result = Arr.dot({
+        'products': {
+          'desk': {'price': 100},
+        },
+      });
       expect(result, {'products.desk.price': 100});
     });
 
     test('except', () {
-      expect(Arr.except({'name': 'Desk', 'price': 100}, 'price'), {'name': 'Desk'});
-      expect(Arr.except({'name': 'Desk', 'price': 100}, ['price']), {'name': 'Desk'});
+      expect(Arr.except({'name': 'Desk', 'price': 100}, 'price'), {
+        'name': 'Desk',
+      });
+      expect(Arr.except({'name': 'Desk', 'price': 100}, ['price']), {
+        'name': 'Desk',
+      });
     });
 
     test('exists', () {
@@ -50,31 +64,75 @@ void main() {
     });
 
     test('flatten', () {
-      expect(Arr.flatten([1, [2, 3], [4, [5, 6]]]), [1, 2, 3, 4, 5, 6]);
-      expect(Arr.flatten([1, [2, 3], [4, [5, 6]]], 1), [1, 2, 3, 4, [5, 6]]);
+      expect(
+        Arr.flatten([
+          1,
+          [2, 3],
+          [
+            4,
+            [5, 6],
+          ],
+        ]),
+        [1, 2, 3, 4, 5, 6],
+      );
+      expect(
+        Arr.flatten([
+          1,
+          [2, 3],
+          [
+            4,
+            [5, 6],
+          ],
+        ], 1),
+        [
+          1,
+          2,
+          3,
+          4,
+          [5, 6],
+        ],
+      );
     });
 
     test('get', () {
-      final array = {'products': {'desk': {'price': 100}}};
+      final array = {
+        'products': {
+          'desk': {'price': 100},
+        },
+      };
       expect(Arr.get(array, 'products.desk.price'), 100);
       expect(Arr.get(array, 'products.desk.name', 'Unknown'), 'Unknown');
     });
 
     test('has', () {
-      final array = {'products': {'desk': {'price': 100}}};
+      final array = {
+        'products': {
+          'desk': {'price': 100},
+        },
+      };
       expect(Arr.has(array, 'products.desk.price'), isTrue);
       expect(Arr.has(array, 'products.desk.name'), isFalse);
       expect(Arr.has(array, ['products.desk.price', 'products']), isTrue);
     });
 
     test('only', () {
-      expect(Arr.only({'name': 'Desk', 'price': 100, 'orders': 10}, ['name', 'price']), {'name': 'Desk', 'price': 100});
+      expect(
+        Arr.only(
+          {'name': 'Desk', 'price': 100, 'orders': 10},
+          ['name', 'price'],
+        ),
+        {'name': 'Desk', 'price': 100},
+      );
     });
 
     test('pluck', () {
       final array = [
-        {'developer': {'id': 1, 'name': 'Taylor'}},
-        {'developer': {'id': 2, 'name': 'Abigail'}},
+        {
+          'developer': {'id': 1, 'name': 'Taylor'},
+        },
+        {
+          'developer': {'id': 2, 'name': 'Abigail'},
+        },
       ];
       expect(Arr.pluck(array, 'developer.name'), ['Taylor', 'Abigail']);
     });
@@ -90,7 +148,11 @@ void main() {
     });
 
     test('set', () {
-      final array = <String, dynamic>{'products': <String, dynamic>{'desk': <String, dynamic>{'price': 100}}};
+      final array = <String, dynamic>{
+        'products': <String, dynamic>{
+          'desk': <String, dynamic>{'price': 100},
+        },
+      };
       Arr.set(array, 'products.desk.price', 200);
       expect((array['products'] as Map)['desk']['price'], 200);
 
@@ -99,10 +161,20 @@ void main() {
     });
 
     test('forget', () {
-      final array = <String, dynamic>{'products': <String, dynamic>{'desk': <String, dynamic>{'price': 100, 'name': 'Table'}}};
+      final array = <String, dynamic>{
+        'products': <String, dynamic>{
+          'desk': <String, dynamic>{'price': 100, 'name': 'Table'},
+        },
+      };
       Arr.forget(array, 'products.desk.price');
-      expect(((array['products'] as Map)['desk'] as Map).containsKey('price'), isFalse);
-      expect(((array['products'] as Map)['desk'] as Map).containsKey('name'), isTrue);
+      expect(
+        ((array['products'] as Map)['desk'] as Map).containsKey('price'),
+        isFalse,
+      );
+      expect(
+        ((array['products'] as Map)['desk'] as Map).containsKey('name'),
+        isTrue,
+      );
     });
 
     test('shuffle', () {
