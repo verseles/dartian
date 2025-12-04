@@ -19,9 +19,36 @@ class Arr {
     return array;
   }
 
+  /// Convert the value to a boolean.
+  static bool boolean(dynamic value) {
+    if (value is bool) return value;
+    if (value is num) return value != 0;
+    if (value is String) {
+      final v = value.toLowerCase();
+      return v == 'true' || v == '1' || v == 'on' || v == 'yes';
+    }
+    return false;
+  }
+
   /// Collapse an array of arrays into a single array.
   static List collapse(Iterable<Iterable> array) {
     return array.expand((element) => element).toList();
+  }
+
+  /// Cross join the given arrays, returning all possible permutations.
+  static List<List> crossJoin(List<List> arrays) {
+    if (arrays.isEmpty) return [];
+    var result = arrays.first.map((e) => [e]).toList();
+    for (var i = 1; i < arrays.length; i++) {
+      final next = <List>[];
+      for (final item in result) {
+        for (final element in arrays[i]) {
+          next.add([...item, element]);
+        }
+      }
+      result = next;
+    }
+    return result;
   }
 
   /// Divide an array into two arrays. One with keys and the other with values.
@@ -42,6 +69,11 @@ class Arr {
     });
 
     return result;
+  }
+
+  /// Determine if all items pass the given truth test.
+  static bool every(Iterable array, bool Function(dynamic) callback) {
+    return array.every(callback);
   }
 
   /// Get all of the given array except for a specified array of keys.
@@ -82,20 +114,6 @@ class Arr {
     return defaultValue;
   }
 
-  /// Return the last element in an array passing a given truth test.
-  static T? last<T>(
-    Iterable<T> array, [
-    bool Function(T)? callback,
-    T? defaultValue,
-  ]) {
-    if (callback == null) {
-      if (array.isEmpty) return defaultValue;
-      return array.last;
-    }
-
-    return first(array.toList().reversed, callback, defaultValue);
-  }
-
   /// Flatten a multi-dimensional array into a single level.
   static List flatten(Iterable array, [num depth = double.infinity]) {
     final result = [];
@@ -109,6 +127,21 @@ class Arr {
     }
 
     return result;
+  }
+
+  /// Convert the given value to a float.
+  static double float(dynamic value) {
+      if (value is double) return value;
+      if (value is num) return value.toDouble();
+      if (value is String) return double.tryParse(value) ?? 0.0;
+      return 0.0;
+  }
+
+  /// Create a new array from the given value.
+  static List from(dynamic value) {
+      if (value is Iterable) return value.toList();
+      if (value == null) return [];
+      return [value];
   }
 
   /// Get an item from an array using "dot" notation.
@@ -128,6 +161,13 @@ class Arr {
             current is Map &&
             current.containsKey(segment)) {
           current = current[segment];
+        } else if (current is List && int.tryParse(segment) != null) {
+          final index = int.parse(segment);
+          if (index >= 0 && index < current.length) {
+            current = current[index];
+          } else {
+            return defaultValue;
+          }
         } else {
           return defaultValue;
         }
@@ -171,6 +211,30 @@ class Arr {
     return true;
   }
 
+  /// Determine if all of the given keys exist in the provided array.
+  static bool hasAll(Map target, dynamic keys) {
+      return has(target, keys);
+  }
+
+  /// Determine if any of the given keys exist in the provided array.
+  static bool hasAny(Map target, dynamic keys) {
+      if (keys is String) keys = [keys];
+      if (keys is Iterable) {
+          for (final key in keys) {
+              if (has(target, key)) return true;
+          }
+      }
+      return false;
+  }
+
+  /// Convert the given value to an integer.
+  static int integer(dynamic value) {
+      if (value is int) return value;
+      if (value is num) return value.toInt();
+      if (value is String) return int.tryParse(value) ?? 0;
+      return 0;
+  }
+
   /// Determines if an array is associative (i.e. a Map).
   static bool isAssoc(dynamic array) {
     return array is Map;
@@ -179,6 +243,74 @@ class Arr {
   /// Determines if an array is a list.
   static bool isList(dynamic array) {
     return array is List;
+  }
+
+  /// Join all items from the array using a string.
+  static String join(Iterable array, String glue, [String? finalGlue]) {
+      if (finalGlue == null) {
+          return array.join(glue);
+      }
+      final list = array.toList();
+      if (list.isEmpty) return '';
+      if (list.length == 1) return list.first.toString();
+
+      final lastItem = list.removeLast();
+      return '${list.join(glue)}$finalGlue$lastItem';
+  }
+
+  /// Key an associative array by a field.
+  static Map<dynamic, dynamic> keyBy(Iterable array, dynamic keyBy) {
+      final result = <dynamic, dynamic>{};
+      for (final item in array) {
+          dynamic key;
+          if (keyBy is Function) {
+              key = keyBy(item);
+          } else if (keyBy is String) {
+              key = get(item, keyBy);
+          }
+          if (key != null) {
+              result[key] = item;
+          }
+      }
+      return result;
+  }
+
+  /// Return the last element in an array passing a given truth test.
+  static T? last<T>(
+    Iterable<T> array, [
+    bool Function(T)? callback,
+    T? defaultValue,
+  ]) {
+    if (callback == null) {
+      if (array.isEmpty) return defaultValue;
+      return array.last;
+    }
+
+    return first(array.toList().reversed, callback, defaultValue);
+  }
+
+  /// Run a map over each of the items in the array.
+  static List map(Iterable array, Function(dynamic) callback) {
+      return array.map(callback).toList();
+  }
+
+  /// Map a collection and flatten the result by a single level.
+  static List mapSpread(Iterable array, Function(dynamic) callback) {
+      return array.expand((e) {
+          final res = callback(e);
+          if (res is Iterable) return res;
+          return [res];
+      }).toList();
+  }
+
+  /// Map an array with keys.
+  static Map mapWithKeys(Iterable array, MapEntry Function(dynamic) callback) {
+      final result = <dynamic, dynamic>{};
+      for (final item in array) {
+          final entry = callback(item);
+          result[entry.key] = entry.value;
+      }
+      return result;
   }
 
   /// Get a subset of the items from the given array.
@@ -200,23 +332,26 @@ class Arr {
     return result;
   }
 
+  /// Partition the array into two arrays.
+  static List<List> partition(Iterable array, bool Function(dynamic) callback) {
+      final passed = [];
+      final failed = [];
+      for (final item in array) {
+          if (callback(item)) {
+              passed.add(item);
+          } else {
+              failed.add(item);
+          }
+      }
+      return [passed, failed];
+  }
+
   /// Pluck an array of values from an array.
   static List pluck(Iterable array, String value, [String? key]) {
     final results = [];
 
     for (final item in array) {
       final itemValue = get(item, value);
-
-      if (key != null) {
-        final itemKey = get(item, key);
-        // Note: Dart Lists don't support keyed access like PHP arrays.
-        // So pluck with key usually returns a Map in PHP.
-        // Here we just return values unless we change return type to Map.
-        // For simplicity and matching typical list usage, we return list of values.
-        // If key is provided, we might want to return Map, but the signature says List.
-        // Let's stick to List of values for now, or change to Map if key is present.
-      }
-
       results.add(itemValue);
     }
 
@@ -248,6 +383,11 @@ class Arr {
     return array;
   }
 
+  /// Prepend the key names of an associative array.
+  static Map<String, dynamic> prependKeysWith(Map<String, dynamic> array, String prepend) {
+      return array.map((key, value) => MapEntry('$prepend$key', value));
+  }
+
   /// Get a value from the array, and remove it.
   static dynamic pull(Map array, String key, [dynamic defaultValue]) {
     final value = get(array, key, defaultValue);
@@ -261,6 +401,25 @@ class Arr {
       return array.remove(key);
     }
     return defaultValue;
+  }
+
+  /// Push an item onto the end of an array.
+  static List push(List array, dynamic value) {
+      array.add(value);
+      return array;
+  }
+
+  /// Convert the array to a query string.
+  static String query(Map<String, dynamic> array) {
+    final params = <String, dynamic>{};
+    array.forEach((key, value) {
+      if (value is Iterable) {
+        params[key] = value.map((e) => e.toString()).toList();
+      } else {
+        params[key] = value.toString();
+      }
+    });
+    return Uri(queryParameters: params).query;
   }
 
   /// Get one or a specified number of random values from an array.
@@ -286,16 +445,19 @@ class Arr {
     return keys.map((e) => list[e]).toList();
   }
 
+  /// Filter the array using the given callback.
+  static List reject(Iterable array, bool Function(dynamic) callback) {
+      return array.where((e) => !callback(e)).toList();
+  }
+
+  /// Select specific keys from the array (alias to only).
+  static Map<K, V> select<K, V>(Map<K, V> array, dynamic keys) {
+      return only(array, keys);
+  }
+
   /// Set an array item to a given value using "dot" notation.
-  ///
-  /// If no key is given to the method, the entire array will be replaced.
   static Map set(Map target, String? key, dynamic value) {
     if (key == null) {
-      // Cannot replace entire map reference in Dart via argument,
-      // but we can clear and addAll if we wanted to 'replace' content.
-      // But typically set returns the modified map.
-      // If key is null, we assume we return the value? No, Laravel merges.
-      // Let's just return the target.
       return target;
     }
 
@@ -311,7 +473,6 @@ class Arr {
         }
         current = current[segment];
       } else {
-        // Can't set property on non-map
         return target;
       }
     }
@@ -321,6 +482,132 @@ class Arr {
     }
 
     return target;
+  }
+
+  /// Shuffle the given array and return the result.
+  static List shuffle(Iterable array) {
+    final list = array.toList();
+    list.shuffle();
+    return list;
+  }
+
+  /// Get the first element in the array, but only if exactly one exists.
+  static T sole<T>(Iterable<T> array, [bool Function(T)? callback]) {
+      Iterable<T> items = array;
+      if (callback != null) {
+          items = array.where(callback);
+      }
+
+      if (items.isEmpty) throw Exception('No items found.');
+      if (items.length > 1) throw Exception('Multiple items found.');
+
+      return items.first;
+  }
+
+  /// Determine if some items pass the given truth test.
+  static bool some(Iterable array, bool Function(dynamic) callback) {
+      return array.any(callback);
+  }
+
+  /// Sort the array.
+  static List sort(Iterable array, [int Function(dynamic, dynamic)? compare]) {
+      final list = array.toList();
+      if (compare != null) {
+          list.sort(compare);
+      } else {
+          list.sort();
+      }
+      return list;
+  }
+
+  /// Sort the array in descending order.
+  static List sortDesc(Iterable array) {
+      final list = array.toList();
+      list.sort((a, b) => Comparable.compare(b, a));
+      return list;
+  }
+
+  /// Sort the array recursively.
+  static dynamic sortRecursive(dynamic array, [bool descending = false]) {
+      if (array is List) {
+          final list = array.map((e) => sortRecursive(e, descending)).toList();
+          if (descending) {
+              list.sort((a, b) {
+                  if (a is Comparable && b is Comparable) {
+                      return b.compareTo(a);
+                  }
+                  return 0;
+              });
+          } else {
+              list.sort((a, b) {
+                  if (a is Comparable && b is Comparable) {
+                      return a.compareTo(b);
+                  }
+                  return 0;
+              });
+          }
+          return list;
+      }
+      if (array is Map) {
+          final keys = array.keys.toList();
+          if (descending) {
+              keys.sort((a, b) => b.compareTo(a));
+          } else {
+              keys.sort();
+          }
+          final result = {};
+          for (final key in keys) {
+              result[key] = sortRecursive(array[key], descending);
+          }
+          return result;
+      }
+      return array;
+  }
+
+  /// Convert the value to a string.
+  static String string(dynamic value) {
+      return value.toString();
+  }
+
+  /// Take the first or last {limit} items.
+  static List take(Iterable array, int limit) {
+      if (limit < 0) {
+          return array.toList().sublist(max(0, array.length + limit));
+      }
+      return array.take(limit).toList();
+  }
+
+  /// Conditionally compile classes.
+  static String toCssClasses(dynamic array) {
+      final classes = <String>[];
+      if (array is List) {
+          for (final item in array) {
+              if (item is String && item.isNotEmpty) classes.add(item);
+              if (item is Map) {
+                   item.forEach((key, value) {
+                       if (boolean(value)) classes.add(key);
+                   });
+              }
+          }
+      } else if (array is Map) {
+          array.forEach((key, value) {
+               if (boolean(value)) classes.add(key);
+          });
+      } else if (array is String) {
+          classes.add(array);
+      }
+      return classes.join(' ');
+  }
+
+  /// Conditionally compile styles.
+  static String toCssStyles(Map<String, dynamic> array) {
+      final styles = <String>[];
+      array.forEach((key, value) {
+          if (value != null) {
+              styles.add('$key: $value');
+          }
+      });
+      return styles.join('; ');
   }
 
   /// Remove one or many array items from a given array using "dot" notation.
@@ -359,11 +646,23 @@ class Arr {
     }
   }
 
-  /// Shuffle the given array and return the result.
-  static List shuffle(Iterable array) {
-    final list = array.toList();
-    list.shuffle();
-    return list;
+  /// Expand a flattened array with dots.
+  static Map<String, dynamic> undot(Map<String, dynamic> array) {
+      final result = <String, dynamic>{};
+      array.forEach((key, value) {
+         set(result, key, value);
+      });
+      return result;
+  }
+
+  /// Filter the array using the given callback.
+  static List where(Iterable array, bool Function(dynamic) callback) {
+      return array.where(callback).toList();
+  }
+
+  /// Filter items where the given key is not null.
+  static List whereNotNull(Iterable array) {
+      return array.where((e) => e != null).toList();
   }
 
   /// Wrap the given value in an array if it is not already.
