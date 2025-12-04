@@ -30,5 +30,7 @@ void main(List<String> args) {
   }
 
   final percentage = (coveredLines / totalLines) * 100;
-  print('Coverage: ${percentage.toStringAsFixed(2)}% ($coveredLines/$totalLines lines)');
+  print(
+    'Coverage: ${percentage.toStringAsFixed(2)}% ($coveredLines/$totalLines lines)',
+  );
 }

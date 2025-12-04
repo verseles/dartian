@@ -46,8 +46,14 @@ void main(List<String> args) {
     final lh = entry.value['LH']!;
     final pct = lf > 0 ? (lh / lf) * 100 : 0.0;
 
-    final status = pct >= 95 ? '✅' : pct >= 80 ? '⚠️ ' : '❌';
-    print('$status ${pct.toStringAsFixed(1).padLeft(5)}% ${lh.toString().padLeft(3)}/${lf.toString().padLeft(3)} $filename');
+    final status = pct >= 95
+        ? '✅'
+        : pct >= 80
+        ? '⚠️ '
+        : '❌';
+    print(
+      '$status ${pct.toStringAsFixed(1).padLeft(5)}% ${lh.toString().padLeft(3)}/${lf.toString().padLeft(3)} $filename',
+    );
   }
 
   // Calculate totals
