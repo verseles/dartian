@@ -9,36 +9,34 @@ import 'services.dart';
 /// Registers all routes for the hello world example.
 void registerRoutes(Router router, DIContainer container) {
   // Home page
-  router.get('/', (Request request) {
-    return Response.ok(
-      _homePage(),
-      headers: {'Content-Type': 'text/html'},
-    );
-  })
-  // Simple hello
-  .get('/hello', (Request request) {
-    final greeting = container.get<GreetingService>();
-    return Response.ok(greeting.hello());
-  })
-  // Current time (new TimeService instance each request)
-  .get('/time', (Request request) {
-    final time = container.get<TimeService>();
-    return Response.ok(
-      'Current time: ${time.currentTime()} on ${time.currentDate()}',
-    );
-  })
-  // JSON response example
-  .get('/json', (Request request) {
-    final time = container.get<TimeService>();
-    final body = jsonEncode({
-      'message': 'Hello from Dartian!',
-      'framework': 'Dartian',
-      'version': '1.0.0',
-      'time': time.currentTime(),
-      'date': time.currentDate(),
-    });
-    return Response.ok(body, headers: {'Content-Type': 'application/json'});
-  });
+  router
+      .get('/', (Request request) {
+        return Response.ok(_homePage(), headers: {'Content-Type': 'text/html'});
+      })
+      // Simple hello
+      .get('/hello', (Request request) {
+        final greeting = container.get<GreetingService>();
+        return Response.ok(greeting.hello());
+      })
+      // Current time (new TimeService instance each request)
+      .get('/time', (Request request) {
+        final time = container.get<TimeService>();
+        return Response.ok(
+          'Current time: ${time.currentTime()} on ${time.currentDate()}',
+        );
+      })
+      // JSON response example
+      .get('/json', (Request request) {
+        final time = container.get<TimeService>();
+        final body = jsonEncode({
+          'message': 'Hello from Dartian!',
+          'framework': 'Dartian',
+          'version': '1.0.0',
+          'time': time.currentTime(),
+          'date': time.currentDate(),
+        });
+        return Response.ok(body, headers: {'Content-Type': 'application/json'});
+      });
 
   // Personalized greeting with route parameter (using shelf_router directly)
   router.shelfRouter.get('/hello/<name>', (Request request, String name) {

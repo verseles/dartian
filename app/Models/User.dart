@@ -3,11 +3,7 @@ class User {
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
-  User({
-    this.id,
-    this.createdAt,
-    this.updatedAt,
-  });
+  User({this.id, this.createdAt, this.updatedAt});
 
   /// The table associated with the model
   static String get tableName => 'users';
